@@ -1,3 +1,15 @@
 thumbs.db
 .DS_Store
 .vscode
+__pycache__
+
+/SaveData
+/System
+/AI_sakray
+/data/luafiles514
+/data/imf
+/Utility/Patches/Backup
+
+/Utility/Patches/LastPatchesInfo.json
+/licence.txt
+/*.exe
