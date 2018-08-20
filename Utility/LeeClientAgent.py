@@ -83,8 +83,12 @@ class LeeMenu:
 		'''
 		根据按钮汉化数据库的内容, 对客户端按钮进行汉化
 		'''
-		LeeButtonTranslator.doApplyButtonTranslate()
-		pass
+		try:
+			LeeButtonTranslator.doApplyButtonTranslate()
+			print('已完成客户端按钮的汉化工作, 请切换客户端版本以便生效\r\n')
+		except:
+			print('很抱歉, 对客户端按钮进行汉化的过程中发生了意外, 请检查结果\r\n')
+			raise
 
 	def maintenanceRevertButtonTranslate(self):
 		'''
@@ -92,9 +96,9 @@ class LeeMenu:
 		'''
 		try:
 			LeeButtonTranslator.doRevertButtonTranslate()
-			print('已成功撤销对客户端按钮的汉化')
+			print('已成功撤销对客户端按钮的汉化\r\n')
 		except:
-			print('很抱歉, 撤销对客户端按钮的汉化过程中发生了意外, 请检查结果')
+			print('很抱歉, 撤销对客户端按钮的汉化过程中发生了意外, 请检查结果\r\n')
 			
 	def item_SwitchWorkshop(self):
 		'''
@@ -152,18 +156,37 @@ class LeeMenu:
 	def item_MaintenanceApplyButtonTranslate(self):
 		'''
 		菜单处理函数
-		当选择“维护 - 执行客户端按钮汉化”时执行
+		当选择“维护 - 执行对客户端按钮的汉化”时执行
 		'''
+		if LeeButtonTranslator.hasSomethingCanBeRevert():
+			lines = [
+				'在进行汉化之前, 需要先回滚以前的按钮翻译结果',
+				'若您有自定义汉化的按钮图片请务必提前备份, 避免被程序误删'
+				''
+			]
+			title = '执行对客户端按钮的汉化'
+			prompt = '是否先进行回滚?'
+			self.leeCommon.simpleConfirm(lines, title, prompt, self, 'menus.maintenanceRevertButtonTranslate()')
+
+		print('正在汉化客户端的按钮图档, 请耐心等待...')
 		self.maintenanceApplyButtonTranslate()
-		pass
 
 	def item_MaintenanceRevertButtonTranslate(self):
 		'''
 		菜单处理函数
-		当选择“维护 - 撤销客户端按钮汉化”时执行
+		当选择“维护 - 撤销对客户端按钮的汉化”时执行
 		'''
-		self.maintenanceRevertButtonTranslate()
-		pass
+		if LeeButtonTranslator.hasSomethingCanBeRevert():
+			lines = [
+				'您确认要撤销以前的按钮翻译结果吗?',
+				'若您有自定义汉化的按钮图片请务必提前备份, 避免被程序误删'
+				''
+			]
+			title = '撤销对客户端按钮的汉化'
+			prompt = '是否进行撤销?'
+			self.leeCommon.simpleConfirm(lines, title, prompt, self, 'menus.maintenanceRevertButtonTranslate()')
+		else:
+			self.leeCommon.exitWithMessage('目前暂无客户端按钮的汉化记录, 无需进行撤销.')
 
 	def item_End(self):
 		'''
@@ -192,8 +215,8 @@ def main():
 		['切换仙境传说主程序的版本', 'menus.item_SwitchWorkshop()'],
 		['重置 LeeClient 客户端到干净状态', 'menus.item_ResetWorkshop()'],
 		['维护 - 更新客户端按钮的翻译数据库', 'menus.item_UpdateButtonTranslateDataBase()'],
-		['维护 - 执行客户端按钮汉化', 'menus.item_MaintenanceApplyButtonTranslate()'],
-		['维护 - 撤销客户端按钮汉化', 'menus.item_MaintenanceRevertButtonTranslate()'],
+		['维护 - 执行对客户端按钮的汉化', 'menus.item_MaintenanceApplyButtonTranslate()'],
+		['维护 - 撤销对客户端按钮的汉化', 'menus.item_MaintenanceRevertButtonTranslate()'],
 		['退出程序', 'menus.item_End()']
 	]
 	title = 'LeeClient 控制台'

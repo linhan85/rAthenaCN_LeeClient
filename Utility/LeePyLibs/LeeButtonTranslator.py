@@ -43,7 +43,6 @@ class _LeeButtonTranslator:
 	def __createSession(self):
 		self.transFiles.clear()
 
-
 	def __loadSession(self):
 		sessionInfoFile = self.__getSessionPath()
 		if os.path.exists(sessionInfoFile) and os.path.isfile(sessionInfoFile):
@@ -67,6 +66,10 @@ class _LeeButtonTranslator:
 			'transtime' : time.strftime('%Y-%m-%d %H:%M:%S',time.localtime()),
 			'transfiles' : self.transFiles
 		}, open(sessionInfoFile, 'w', encoding = 'utf-8'), indent = 4)
+	
+	def hasSomethingCanBeRevert(self):
+		self.__loadSession()
+		return len(self.transFiles) > 0
 
 	def __detectFileMode(self, filepath):
 		if not filepath.lower().endswith('.bmp'):
