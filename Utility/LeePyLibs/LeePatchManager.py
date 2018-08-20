@@ -205,9 +205,13 @@ class _LeePatchManager:
 		translatedDir = self.leeCommon.getClientTranslatedDirectory(clientver)
 		afterDir = self.leeCommon.getAfterPatchesDirectory()
 
+		beforeImportDir = self.leeCommon.getBeforePatchesDirectory(True)
+		importDir = self.leeCommon.getClientImportDirectory(clientver)
+		afterImportDir = self.leeCommon.getAfterPatchesDirectory(True)
+
 		# 确认对应的资源目录在是存在的
 		if not self.leeCommon.isDirectoryExists(beforeDir):
-			self.leeCommon.exitWithMessage('无法找到 BeforePatches 目录: %s' % beforeDir)
+			self.leeCommon.exitWithMessage('无法找到 BeforePatches 的 Base 目录: %s' % beforeDir)
 		if not self.leeCommon.isDirectoryExists(ragexeDir):
 			self.leeCommon.exitWithMessage('无法找到 %s 版本的 Ragexe 目录: %s' % (clientver, ragexeDir))
 		if not self.leeCommon.isDirectoryExists(originDir):
@@ -215,15 +219,25 @@ class _LeePatchManager:
 		if not self.leeCommon.isDirectoryExists(translatedDir):
 			self.leeCommon.exitWithMessage('无法找到 %s 版本的 Translated 目录: %s' % (clientver, translatedDir))
 		if not self.leeCommon.isDirectoryExists(afterDir):
-			self.leeCommon.exitWithMessage('无法找到 AfterPatches 目录: %s' % afterDir)
+			self.leeCommon.exitWithMessage('无法找到 AfterPatches 的 Base 目录: %s' % afterDir)
+
+		if not self.leeCommon.isDirectoryExists(beforeImportDir):
+			self.leeCommon.exitWithMessage('无法找到 BeforePatches 的 Import 目录: %s' % beforeImportDir)
+		if not self.leeCommon.isDirectoryExists(importDir):
+			self.leeCommon.exitWithMessage('无法找到 %s 版本的 Import 目录: %s' % (clientver, importDir))
+		if not self.leeCommon.isDirectoryExists(afterImportDir):
+			self.leeCommon.exitWithMessage('无法找到 AfterPatches 的 Import 目录: %s' % afterImportDir)
 		
 		# 创建一个事务并执行复制工作, 最后提交事务
 		self.__createSession()
 		self.__copyDirectory(beforeDir)
+		self.__copyDirectory(beforeImportDir)	# Import
 		self.__copyDirectory(ragexeDir)
 		self.__copyDirectory(originDir)
 		self.__copyDirectory(translatedDir)
+		self.__copyDirectory(importDir)			# Import
 		self.__copyDirectory(afterDir)
+		self.__copyDirectory(afterImportDir)	# Import
 		
 		if not self.__commitSession():
 			print('应用特定版本的补丁过程中发生错误, 终止...')
