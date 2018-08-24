@@ -174,6 +174,25 @@ class _LeeCommon:
 		except ValueError:
 			return False
 	
+	def strHexToRgb(self, val):
+		'''
+		将类似 #ffffff 的颜色代码转换成 (255, 255, 255)
+		'''
+		val = val.lstrip('#')
+		lv = len(val)
+		return tuple(int(val[i:i+lv//3], 16) for i in range(0, lv, lv//3))
+
+	def is_positive(self, z):
+		'''
+		判断一个数字是否为正整数
+		'''
+		try:
+			z_handle = int(z)
+			if isinstance(z_handle,int) and z_handle >= 0: 
+				return True 
+		except:
+			return False
+	
 	def getStringWidthLen(self, val):
 		'''
 		计算字符串长度, 一个中文算两个字符

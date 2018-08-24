@@ -27,6 +27,7 @@ class _LeeButtonTranslator:
 			{ 'base': '_b', 'refer': ['_a', '_c'], 'disable': '_d', 'n': '_a|_b|_c', 'd': '_a|_b|_c|_d' },
 			{ 'base': '_a', 'refer': ['', '_b'], 'disable': '_dis', 'n': '|_a|_b', 'd': '|_a|_b|_dis' },
 			{ 'base': '_a', 'refer': ['', '_b'], 'disable': '_c', 'n': '|_a|_b', 'd': '|_a|_b|_c' },
+			{ 'base': 'b', 'refer': ['a', 'c'], 'disable': '', 'n': 'a|b|c', 'd': ''},
 			{ 'base': 'b', 'refer': ['a'], 'disable': '', 'n': 'a|b', 'd': ''}
 		]
 	

@@ -2,6 +2,7 @@
 
 import os
 import sys
+import json
 import contextlib
 from PIL import Image, ImageChops, ImageDraw, ImageFont
 
@@ -11,6 +12,7 @@ with contextlib.redirect_stdout(None):
 class _LeeButtonRender:
 	def __init__(self, leeCommon):
 		self.leeCommon = leeCommon
+		self.btnConfigure = {}
 		pygame.font.init()
 
 	def autoCrop(self, image, backgroundColor = None):
@@ -86,6 +88,10 @@ class _LeeButtonRender:
 		return image
 
 	def createButtonImage(self, tplName, btnState, btnText, btnWidth):
+		self.btnConfigure = self.__loadButtonConfigure(tplName)
+		globalOffsetX = int(self.__getButtonConfigureValue(btnState, 'globalOffset').split(',')[0])
+		globalOffsetY = int(self.__getButtonConfigureValue(btnState, 'globalOffset').split(',')[1])
+
 		imgButton = self.createButtonBackgroundImage(tplName, btnState, btnWidth)
 		imgText = self.createTextImage(btnText, btnState)
 
@@ -93,10 +99,10 @@ class _LeeButtonRender:
 		imgTextWidth, imgTextHeight = imgText.size
 
 		pasteRect = (
-			(imgButtonWidth - imgTextWidth) // 2,
-			(imgButtonHeight - imgTextHeight) // 2,
-			((imgButtonWidth - imgTextWidth) // 2) + imgTextWidth,
-			((imgButtonHeight - imgTextHeight) // 2) + imgTextHeight
+			((imgButtonWidth - imgTextWidth) // 2) + globalOffsetX,
+			((imgButtonHeight - imgTextHeight) // 2) + globalOffsetY,
+			(((imgButtonWidth - imgTextWidth) // 2) + imgTextWidth) + globalOffsetX,
+			(((imgButtonHeight - imgTextHeight) // 2) + imgTextHeight) + globalOffsetY
 		)
 
 		imgButton = imgButton.convert('RGB')
@@ -107,8 +113,7 @@ class _LeeButtonRender:
 	def createButtonBmpFile(self, tplName, btnState, btnText, btnWidth, savePath):
 		try:
 			btnImage = self.createButtonImage(tplName, btnState, btnText, btnWidth)
-			# TODO: 判断 btnImage 是否为 None 以及为 Image 类
-			btnImage.save(savePath, 'bmp')
+			btnImage.save(os.path.abspath(savePath), 'bmp')
 		except Exception:
 			raise
 
@@ -157,48 +162,72 @@ class _LeeButtonRender:
 		return imgButton
 	
 	def createTextImage(self, btnText, btnState):
-		pathFont = self.getFontPath('simsun.ttc')
-		fontSize = 12
-		foreFontColor = (111, 111, 111) if btnState.lower() == 'disabled' else (0, 0, 0)
-		backFontColor = (0, 0, 0) if btnState.lower() in ('normal', 'hover') else (255, 255, 255)
-		backFontAlpha = 50 if btnState.lower() in ('press', 'disabled') else 12
+		fontName, fontSize = self.__getButtonFontInfomation()
+		fontPath = self.getFontPath(fontName)
+		foreFontColor = self.leeCommon.strHexToRgb(self.__getButtonConfigureValue(btnState, 'fontColor'))
+		shadowFontColor = self.leeCommon.strHexToRgb(self.__getButtonConfigureValue(btnState, 'shadowColor'))
+		shadowFontAlpha = int(self.__getButtonConfigureValue(btnState, 'shadowAlpha'))
 
-		#####################################################################
-		# 进行前端文字的渲染
-		#####################################################################
-		pygameForeFont = pygame.font.Font(pathFont, fontSize)
-		pygameForeText = pygameForeFont.render(btnText, True, foreFontColor)
-		pyForeTextStor = pygame.image.tostring(pygameForeText, 'RGBA', False)
-		imgForeText = Image.frombytes('RGBA', pygameForeText.get_size(), pyForeTextStor)
-		imgForeText = self.autoCrop(imgForeText)
+		# 根据不同的阴影类型, 进行渲染
+		if self.__getButtonConfigureValue(btnState, 'shadowMode') == 'offset':
 
-		#####################################################################
-		# 进行阴影文字的渲染
-		#####################################################################
-		pygameBackFont = pygame.font.Font(pathFont, fontSize)
-		pygameBackText = pygameBackFont.render(btnText, True, backFontColor)
-		pyBackTextStor = pygame.image.tostring(pygameBackText, 'RGBA', False)
-		imgBackText = Image.frombytes('RGBA', pygameBackText.get_size(), pyBackTextStor)
-		imgBackText = self.autoCrop(imgBackText)
+			# 进行前端文字的渲染
+			pygameForeFont = pygame.font.Font(fontPath, fontSize)
+			pygameForeText = pygameForeFont.render(btnText, True, foreFontColor)
+			pyForeTextStor = pygame.image.tostring(pygameForeText, 'RGBA', False)
+			imgForeText = Image.frombytes('RGBA', pygameForeText.get_size(), pyForeTextStor)
+			imgForeText = self.autoCrop(imgForeText)
 
-		# 对阴影字体应用指定透明度
-		_red, _green, _blue, alpha = imgBackText.split()
-		alpha = alpha.point(lambda i: i > 0 and (255 / 100) * backFontAlpha)
-		imgBackText.putalpha(alpha)
+			# 进行阴影字体的渲染
+			pygameBackFont = pygame.font.Font(fontPath, fontSize)
+			pygameBackText = pygameBackFont.render(btnText, True, shadowFontColor)
+			pyBackTextStor = pygame.image.tostring(pygameBackText, 'RGBA', False)
+			imgBackText = Image.frombytes('RGBA', pygameBackText.get_size(), pyBackTextStor)
+			imgBackText = self.autoCrop(imgBackText)
+
+			# 对阴影字体应用指定透明度
+			_red, _green, _blue, alpha = imgBackText.split()
+			alpha = alpha.point(lambda i: i > 0 and (255 / 100) * shadowFontAlpha)
+			imgBackText.putalpha(alpha)
 		
-		#####################################################################
-		# 文字的阴影的偏移叠加处理过程
-		#####################################################################
-		imgMergeText = Image.new('RGBA', (imgForeText.size[0] + 1, imgForeText.size[1] + 1), (0,0,0,0))
+			# 文字的阴影的偏移叠加处理过程
+			shadowOffsetX = int(self.__getButtonConfigureValue(btnState, 'shadowOffset').split(',')[0])
+			shadowOffsetY = int(self.__getButtonConfigureValue(btnState, 'shadowOffset').split(',')[1])
+			boardWidth = imgForeText.size[0] + abs(shadowOffsetX)
+			boardHeight = imgForeText.size[1] + abs(shadowOffsetY)
+			foreOffsetX = 0 if self.leeCommon.is_positive(shadowOffsetX) else abs(shadowOffsetX)
+			foreOffsetY = 0 if self.leeCommon.is_positive(shadowOffsetY) else abs(shadowOffsetY)
+			shadowOffsetX = 0 if not self.leeCommon.is_positive(shadowOffsetX) else shadowOffsetX
+			shadowOffsetY = 0 if not self.leeCommon.is_positive(shadowOffsetY) else shadowOffsetY
 
-		if btnState.lower() in ('normal', 'hover'):
-			imgMergeText.paste(imgBackText, (1, 1))
-			imgMergeText.paste(imgForeText, (0, 0), mask = imgForeText)
-		elif btnState.lower() in ('press', 'disabled'):
-			imgMergeText.paste(imgBackText, (0, 0))
-			imgMergeText.paste(imgForeText, (1, 1), mask = imgForeText)
+			imgMergeText = Image.new('RGBA', (boardWidth, boardHeight), (0,0,0,0))
+			imgMergeText.paste(imgBackText, (shadowOffsetX, shadowOffsetY))
+			imgMergeText.paste(imgForeText, (foreOffsetX, foreOffsetY), mask = imgForeText)
 		
-		return imgMergeText
+			return imgMergeText
+		
+		elif self.__getButtonConfigureValue(btnState, 'shadowMode') == 'outline':
+
+			outFont = pygame.font.Font(fontPath, fontSize + 2)
+			imgSurface = pygame.Surface(outFont.size(btnText), pygame.SRCALPHA)
+			innerFont = pygame.font.Font(fontPath, fontSize)
+			outline = innerFont.render(btnText, 1, shadowFontColor)
+
+			w, h = imgSurface.get_size()
+			ww, hh = outline.get_size()
+			cx = w/2 - ww/2
+			cy = h/2 - hh/2
+
+			for x in range(-1,2):
+			    for y in range(-1,2):
+			        imgSurface.blit(outline, (x+cx, y+cy))
+			
+			imgSurface.blit(innerFont.render(btnText, 1, foreFontColor), (cx,cy))
+			imgSurfaceTextStor = pygame.image.tostring(imgSurface, 'RGBA', False)
+			imgFinalText = Image.frombytes('RGBA', imgSurface.get_size(), imgSurfaceTextStor)
+			imgFinalText = self.autoCrop(imgFinalText)
+
+			return imgFinalText
 
 	def getButtonTemplatePath(self, tplName, btnState, piece):
 		scriptDir = self.leeCommon.getScriptDirectory()
@@ -218,19 +247,22 @@ class _LeeButtonRender:
 		img.close()
 		return imgsize
 
-    # def renderOutlineText(text, color, border, fontFilename, size,
-    #                     colorkey=(128,128,0)):
-    
-    #     font = pygame.font.Font(fontFilename, size+4)
-    #     image = pygame.Surface(font.size(text), pygame.SRCALPHA)
-    #     inner = pygame.font.Font(fontFilename, size - 4)
-    #     outline = inner.render(text, 2, border)
-    #     w, h = image.get_size()
-    #     ww, hh = outline.get_size()
-    #     cx = w/2-ww/2
-    #     cy = h/2-hh/2
-    #     for x in xrange(-3,3):
-    #         for y in xrange(-3,3):
-    #             image.blit(outline, (x+cx, y+cy))
-    #     image.blit(inner.render(text, 1, color), (cx,cy))
-    #     return image
+	def __loadButtonConfigure(self, tplName):
+		scriptDir = self.leeCommon.getScriptDirectory()
+		configurePath = '%s/Resources/ButtonTexture/Style_%s/configure.json' % (scriptDir, tplName)
+		return json.load(open(configurePath, 'r')) if self.leeCommon.isFileExists(configurePath) else None
+	
+	def __getButtonFontInfomation(self):
+		if self.btnConfigure:
+			return self.btnConfigure['fontName'], int(self.btnConfigure['fontSize'])
+		else:
+			self.leeCommon.exitWithMessage('__getButtonFontInfomation: 无法加载字体的配置信息')
+			return None, None
+	
+	def __getButtonConfigureValue(self, btnState, attrib):
+		if self.btnConfigure:
+			return self.btnConfigure[btnState][attrib]
+		else:
+			self.leeCommon.exitWithMessage('__getButtonConfigureValue: 无法加载字体的配置信息')
+			return None, None
+
