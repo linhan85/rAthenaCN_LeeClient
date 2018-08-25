@@ -16,19 +16,19 @@ class _LeeButtonTranslator:
 
 		# demo_out.bmp | demo_over.bmp | demo_press.bmp | demo_disable.bmp
 		# demo_out.bmp | demo_over.bmp | demo_press.bmp
-		# demo_a.bmp | demo_b.bmp | demo_c.bmp | demo_d.bmp
 		# demo.bmp | demo_a.bmp | demo_b.bmp | demo_c.bmp
 		# demo.bmp | demo_a.bmp | demo_b.bmp | demo_dis.bmp
 		# demo.bmp | demo_a.bmp | demo_b.bmp
+		# demo_a.bmp | demo_b.bmp | demo_c.bmp | demo_d.bmp
 		# demoa.bmp | demob.bmp
 
 		self.fileNameModes = [
-			{ 'base': '_over', 'refer': ['_out', '_press'], 'disable': '_disable', 'n': '_out|_over|_press', 'd': '_out|_over|_press|_disable' },
-			{ 'base': '_b', 'refer': ['_a', '_c'], 'disable': '_d', 'n': '_a|_b|_c', 'd': '_a|_b|_c|_d' },
-			{ 'base': '_a', 'refer': ['', '_b'], 'disable': '_dis', 'n': '|_a|_b', 'd': '|_a|_b|_dis' },
-			{ 'base': '_a', 'refer': ['', '_b'], 'disable': '_c', 'n': '|_a|_b', 'd': '|_a|_b|_c' },
-			{ 'base': 'b', 'refer': ['a', 'c'], 'disable': '', 'n': 'a|b|c', 'd': ''},
-			{ 'base': 'b', 'refer': ['a'], 'disable': '', 'n': 'a|b', 'd': ''}
+			{ 'base': '_over', 'refer': ['_out', '_press'], 'block': [''], 'disable': '_disable', 'n': '_out|_over|_press', 'd': '_out|_over|_press|_disable' },
+			{ 'base': '_a', 'refer': ['', '_b'], 'block': ['_c'], 'disable': '_dis', 'n': '|_a|_b', 'd': '|_a|_b|_dis' },
+			{ 'base': '_a', 'refer': ['', '_b'], 'block': ['_dis'], 'disable': '_c', 'n': '|_a|_b', 'd': '|_a|_b|_c' },
+			{ 'base': '_b', 'refer': ['_a', '_c'], 'block': [''], 'disable': '_d', 'n': '_a|_b|_c', 'd': '_a|_b|_c|_d' },
+			{ 'base': 'b', 'refer': ['a', 'c'], 'block': [''], 'disable': '', 'n': 'a|b|c', 'd': ''},
+			{ 'base': 'b', 'refer': ['a'], 'block': ['c'], 'disable': '', 'n': 'a|b', 'd': ''}
 		]
 	
 	def __getSessionPath(self):
@@ -98,6 +98,12 @@ class _LeeButtonTranslator:
 					referPass = False
 			if not referPass: continue
 
+			blockPass = True
+			for block in fileNameMode['block']:
+				if self.leeCommon.isFileExists('%s/%s%s.bmp' % (dirpath, real_basename, block)):
+					blockPass = False
+			if not blockPass: continue
+
 			with_disabled = self.leeCommon.isFileExists('%s/%s%s.bmp' % (dirpath, real_basename, fileNameMode['disable']))
 			filename_mode = fileNameMode['d'] if with_disabled else fileNameMode['n']
 			break
@@ -120,6 +126,8 @@ class _LeeButtonTranslator:
 					continue
 				if dirpath.lower().find('resource/translated') > 0:
 					continue
+				if dirpath.lower().find('ragexeclient/import') > 0:
+					continue
 				
 				fullpath = '%s/%s' % (dirpath, filename)
 				result, real_basename, refer_postfix, filename_mode, with_disabled = self.__detectFileMode(fullpath)
@@ -136,7 +144,6 @@ class _LeeButtonTranslator:
 					'StyleFormat': '' if not (nodekey in self.trans_data) else self.trans_data[nodekey]['StyleFormat'],
 					'ButtonText': '' if not (nodekey in self.trans_data) else self.trans_data[nodekey]['ButtonText']
 				}
-				
 
 				ragexeButtons[nodekey] = trans_item
 
