@@ -198,7 +198,7 @@ class LeeMenu:
 	
 def main():
 	'''
-	此脚本的主入口函数
+	LeeClientAgent 的主入口函数
 	'''
 	# 验证此脚本所处的位置, 不正确则报错并退出
 	if not LeeCommon.verifyAgentLocation():

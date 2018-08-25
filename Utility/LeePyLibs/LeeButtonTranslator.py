@@ -127,7 +127,7 @@ class _LeeButtonTranslator:
 
 				relpath = re.search('Original/(.*)$'.replace('/', os.path.sep), fullpath).group(1)
 				full_namemode = '%s#%s#%s' % (refer_postfix, filename_mode, with_disabled)
-				nodekey = self.getNodeKey(os.path.dirname(relpath).lower() + os.path.sep, real_basename, full_namemode)
+				nodekey = self.getNodeKey(os.path.dirname(relpath).lower() + os.path.sep, '%s%s' % (real_basename, refer_postfix))
 
 				trans_item = {
 					'Directory': os.path.dirname(relpath).lower() + os.path.sep,
@@ -162,17 +162,15 @@ class _LeeButtonTranslator:
 		self.trans_data.clear()
 	
 	def getTranslateInfo(self, relpath):
-		dirname = os.path.normpath(os.path.dirname(relpath).lower() + os.path.sep)
-		full_basename = (os.path.splitext(os.path.basename(relpath))[0]).lower()
-		for _k,v in self.trans_data.items():
-			if not (os.path.normpath(v['Directory']) == dirname): continue
-			refer_postfix = v['FilenameMode'].split('#')[0]
-			if (v['Basename'] + refer_postfix).lower() == full_basename:
-				return v
-		return None
+		dirname = os.path.normpath(os.path.dirname(relpath).lower()) + os.path.sep
+		filename = (os.path.splitext(os.path.basename(relpath))[0]).lower()
+		nodekey = self.getNodeKey(dirname, filename)
 
-	def getNodeKey(self, dirpath, basename, namemode):
-		hashstr = '%s|%s|%s' % (dirpath, basename, namemode)
+		if nodekey not in self.trans_data: return None
+		return self.trans_data[nodekey]
+
+	def getNodeKey(self, dirpath, filename):
+		hashstr = '%s%s' % (dirpath, filename)
 		return hashlib.md5(hashstr.lower().encode(encoding='UTF-8')).hexdigest()
 
 	def doApplyButtonTranslate(self):
@@ -211,10 +209,6 @@ class _LeeButtonTranslator:
 				btnState = btnStateDefine[idx]
 				btnSavePath = '%s/%s%s.bmp' % (textureDirPath, item['Basename'], postfix)
 				self.buttonTranslator.createButtonBmpFile(item['StyleFormat'], btnState, item['ButtonText'], item['ButtonWidth'], btnSavePath)
-				print('生成 %s 目录下 %s 的 %-8s 态按钮 -- %s' % (
-					os.path.dirname(item['RelativePath']),
-					item['Basename'], btnState, '%s%s.bmp' % (item['Basename'], postfix)
-				))
 				self.__transButtonFiles(btnSavePath)
 		
 		self.__commitSession()
