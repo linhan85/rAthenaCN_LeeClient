@@ -95,12 +95,16 @@ class _LeeCommon:
 		scriptDir = self.getScriptDirectory()
 		return os.path.abspath('%s/Patches/RagexeClient/%s/Resource/Translated' % (scriptDir, clientver)) + os.sep
 	
-	def getClientImportDirectory(self, clientver):
+	def getClientImportDirectory(self, clientver = None):
 		'''
 		获取客户端版本的 Import 目录 (末尾自动补充斜杠)
+		如果 clientver 为 None 则取全部客户端版本通用的 Import 目录
 		'''
 		scriptDir = self.getScriptDirectory()
-		return os.path.abspath('%s/Patches/RagexeClient/%s/Resource/Import' % (scriptDir, clientver)) + os.sep
+		if clientver is None:
+			return os.path.abspath('%s/Patches/RagexeClient/Import' % scriptDir) + os.sep
+		else:
+			return os.path.abspath('%s/Patches/RagexeClient/%s/Resource/Import' % (scriptDir, clientver)) + os.sep
 
 	def getRagexeClientList(self, dirpath):
 		'''

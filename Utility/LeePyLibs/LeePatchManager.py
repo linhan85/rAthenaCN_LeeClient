@@ -206,7 +206,8 @@ class _LeePatchManager:
 		afterDir = self.leeCommon.getAfterPatchesDirectory()
 
 		beforeImportDir = self.leeCommon.getBeforePatchesDirectory(True)
-		importDir = self.leeCommon.getClientImportDirectory(clientver)
+		clientCommonImportDir = self.leeCommon.getClientImportDirectory()
+		clientVerImportDir = self.leeCommon.getClientImportDirectory(clientver)
 		afterImportDir = self.leeCommon.getAfterPatchesDirectory(True)
 
 		# 确认对应的资源目录在是存在的
@@ -223,21 +224,24 @@ class _LeePatchManager:
 
 		if not self.leeCommon.isDirectoryExists(beforeImportDir):
 			self.leeCommon.exitWithMessage('无法找到 BeforePatches 的 Import 目录: %s' % beforeImportDir)
-		if not self.leeCommon.isDirectoryExists(importDir):
-			self.leeCommon.exitWithMessage('无法找到 %s 版本的 Import 目录: %s' % (clientver, importDir))
+		if not self.leeCommon.isDirectoryExists(clientCommonImportDir):
+			self.leeCommon.exitWithMessage('无法找到客户端版本的通用 Import 目录: %s' % clientCommonImportDir)
+		if not self.leeCommon.isDirectoryExists(clientVerImportDir):
+			self.leeCommon.exitWithMessage('无法找到 %s 版本的 Import 目录: %s' % (clientver, clientVerImportDir))
 		if not self.leeCommon.isDirectoryExists(afterImportDir):
 			self.leeCommon.exitWithMessage('无法找到 AfterPatches 的 Import 目录: %s' % afterImportDir)
 		
 		# 创建一个事务并执行复制工作, 最后提交事务
 		self.__createSession()
 		self.__copyDirectory(beforeDir)
-		self.__copyDirectory(beforeImportDir)	# Import
+		self.__copyDirectory(beforeImportDir)		# Import
 		self.__copyDirectory(ragexeDir)
 		self.__copyDirectory(originDir)
 		self.__copyDirectory(translatedDir)
-		self.__copyDirectory(importDir)			# Import
+		self.__copyDirectory(clientCommonImportDir)	# Import
+		self.__copyDirectory(clientVerImportDir)	# Import
 		self.__copyDirectory(afterDir)
-		self.__copyDirectory(afterImportDir)	# Import
+		self.__copyDirectory(afterImportDir)		# Import
 		
 		if not self.__commitSession():
 			print('应用特定版本的补丁过程中发生错误, 终止...')
