@@ -116,7 +116,7 @@ class _LeeButtonTranslator:
 	def updateTranslate(self):
 		# 是否需要记录, 内容[目录, 基础文件名, 命名规则]
 		scriptDir = self.leeCommon.getScriptDirectory()
-		ragexeClientDir = os.path.normpath('%s/Patches/RagexeClient' % scriptDir)
+		ragexeClientDir = os.path.normpath('%s/Patches' % scriptDir)
 		ragexeButtons = {}
 
 		for dirpath, _dirnames, filenames in os.walk(ragexeClientDir):
@@ -126,7 +126,7 @@ class _LeeButtonTranslator:
 					continue
 				if dirpath.lower().find('resource/translated') > 0:
 					continue
-				if dirpath.lower().find('ragexeclient/import') > 0:
+				if dirpath.lower().find('utility/common') > 0:
 					continue
 				
 				fullpath = '%s/%s' % (dirpath, filename)
@@ -183,7 +183,7 @@ class _LeeButtonTranslator:
 	def doApplyButtonTranslate(self):
 		scriptDir = self.leeCommon.getScriptDirectory()
 		patchesDir = os.path.normpath('%s/Patches/' % scriptDir)
-		rePathPattern = '^.*?/Patches/RagexeClient/.*?/Resource/Original/data/texture/蜡历牢磐其捞胶'.replace('/', os.path.sep)
+		rePathPattern = '^.*?/Patches/.*?/Resource/Original/data/texture/蜡历牢磐其捞胶'.replace('/', os.path.sep)
 		self.loadTranslate()
 		self.__createSession()
 

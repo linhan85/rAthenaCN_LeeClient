@@ -21,7 +21,7 @@ class _LeeCommon:
 		os.chdir(scriptDir)
 
 		# 检查脚本所在的目录中, 是否存在特定的平级目录
-		verifyDirList = ['Bin', 'LeePyLibs', 'Patches']
+		verifyDirList = ['LeePyLibs', 'Patches', 'Resources']
 		for dir in verifyDirList:
 			verifyPath = (os.path.abspath(scriptDir + dir) + os.sep)
 			if False == (os.path.isdir(verifyPath) and os.path.exists(verifyPath)):
@@ -63,48 +63,44 @@ class _LeeCommon:
 		获取通用的 BeforePatches 目录 (末尾自动补充斜杠)
 		'''
 		scriptDir = self.getScriptDirectory()
-		lastDirname = 'Import' if isImport else 'Base'
-		return os.path.abspath('%s/Patches/Common/BeforePatches/%s' % (scriptDir, lastDirname)) + os.sep
+		baseDirname = 'Import' if isImport else 'Patches'
+		return os.path.abspath('%s/%s/Common/BeforePatches' % (scriptDir, baseDirname)) + os.sep
 
 	def getAfterPatchesDirectory(self, isImport = False):
 		'''
 		获取通用的 AfterPatches 目录 (末尾自动补充斜杠)
 		'''
 		scriptDir = self.getScriptDirectory()
-		lastDirname = 'Import' if isImport else 'Base'
-		return os.path.abspath('%s/Patches/Common/AfterPatches/%s' % (scriptDir, lastDirname)) + os.sep
+		baseDirname = 'Import' if isImport else 'Patches'
+		return os.path.abspath('%s/%s/Common/AfterPatches' % (scriptDir, baseDirname)) + os.sep
 
 	def getClientBuildDirectory(self, clientver):
 		'''
 		获取客户端版本的 Build 目录 (末尾自动补充斜杠)
 		'''
 		scriptDir = self.getScriptDirectory()
-		return os.path.abspath('%s/Patches/RagexeClient/%s/Ragexe/Build' % (scriptDir, clientver)) + os.sep
+		return os.path.abspath('%s/Patches/%s/Ragexe/Build' % (scriptDir, clientver)) + os.sep
 	
 	def getClientOriginDirectory(self, clientver):
 		'''
 		获取客户端版本的 Original 目录 (末尾自动补充斜杠)
 		'''
 		scriptDir = self.getScriptDirectory()
-		return os.path.abspath('%s/Patches/RagexeClient/%s/Resource/Original' % (scriptDir, clientver)) + os.sep
+		return os.path.abspath('%s/Patches/%s/Resource/Original' % (scriptDir, clientver)) + os.sep
 	
 	def getClientTranslatedDirectory(self, clientver):
 		'''
 		获取客户端版本的 Translated 目录 (末尾自动补充斜杠)
 		'''
 		scriptDir = self.getScriptDirectory()
-		return os.path.abspath('%s/Patches/RagexeClient/%s/Resource/Translated' % (scriptDir, clientver)) + os.sep
+		return os.path.abspath('%s/Patches/%s/Resource/Translated' % (scriptDir, clientver)) + os.sep
 	
-	def getClientImportDirectory(self, clientver = None):
+	def getClientImportDirectory(self, clientver):
 		'''
 		获取客户端版本的 Import 目录 (末尾自动补充斜杠)
-		如果 clientver 为 None 则取全部客户端版本通用的 Import 目录
 		'''
 		scriptDir = self.getScriptDirectory()
-		if clientver is None:
-			return os.path.abspath('%s/Patches/RagexeClient/Import' % scriptDir) + os.sep
-		else:
-			return os.path.abspath('%s/Patches/RagexeClient/%s/Resource/Import' % (scriptDir, clientver)) + os.sep
+		return os.path.abspath('%s/Import/%s' % (scriptDir, clientver)) + os.sep
 
 	def getRagexeClientList(self, dirpath):
 		'''
@@ -122,6 +118,7 @@ class _LeeCommon:
 			return None
 		
 		for dname in list:
+			if dname.lower() in ['common']: continue
 			if os.path.isdir(os.path.normpath(dirpath) + os.path.sep + dname):
 				dirlist.append(dname)
 		

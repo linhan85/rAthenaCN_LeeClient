@@ -194,54 +194,50 @@ class _LeePatchManager:
 		应用特定版本的补丁
 		'''
 		scriptDir = self.leeCommon.getScriptDirectory()
-		clientList = self.leeCommon.getRagexeClientList(os.path.abspath(scriptDir + 'Patches/RagexeClient') + os.sep)
+		clientList = self.leeCommon.getRagexeClientList(os.path.abspath(scriptDir + 'Patches') + os.sep)
 		
 		if not clientver in clientList:
 			self.leeCommon.exitWithMessage('您期望切换的版本号 %s 是无效的' % clientver)
 		
 		beforeDir = self.leeCommon.getBeforePatchesDirectory()
 		ragexeDir = self.leeCommon.getClientBuildDirectory(clientver)
-		originDir = self.leeCommon.getClientOriginDirectory(clientver)
-		translatedDir = self.leeCommon.getClientTranslatedDirectory(clientver)
+		clientOriginDir = self.leeCommon.getClientOriginDirectory(clientver)
+		clientTranslatedDir = self.leeCommon.getClientTranslatedDirectory(clientver)
 		afterDir = self.leeCommon.getAfterPatchesDirectory()
 
-		beforeImportDir = self.leeCommon.getBeforePatchesDirectory(True)
-		clientCommonImportDir = self.leeCommon.getClientImportDirectory()
-		clientVerImportDir = self.leeCommon.getClientImportDirectory(clientver)
-		afterImportDir = self.leeCommon.getAfterPatchesDirectory(True)
+		importBeforeDir = self.leeCommon.getBeforePatchesDirectory(True)
+		importClientDir = self.leeCommon.getClientImportDirectory(clientver)
+		importAftertDir = self.leeCommon.getAfterPatchesDirectory(True)
 
 		# 确认对应的资源目录在是存在的
 		if not self.leeCommon.isDirectoryExists(beforeDir):
 			self.leeCommon.exitWithMessage('无法找到 BeforePatches 的 Base 目录: %s' % beforeDir)
 		if not self.leeCommon.isDirectoryExists(ragexeDir):
 			self.leeCommon.exitWithMessage('无法找到 %s 版本的 Ragexe 目录: %s' % (clientver, ragexeDir))
-		if not self.leeCommon.isDirectoryExists(originDir):
-			self.leeCommon.exitWithMessage('无法找到 %s 版本的 Original 目录: %s' % (clientver, originDir))
-		if not self.leeCommon.isDirectoryExists(translatedDir):
-			self.leeCommon.exitWithMessage('无法找到 %s 版本的 Translated 目录: %s' % (clientver, translatedDir))
+		if not self.leeCommon.isDirectoryExists(clientOriginDir):
+			self.leeCommon.exitWithMessage('无法找到 %s 版本的 Original 目录: %s' % (clientver, clientOriginDir))
+		if not self.leeCommon.isDirectoryExists(clientTranslatedDir):
+			self.leeCommon.exitWithMessage('无法找到 %s 版本的 Translated 目录: %s' % (clientver, clientTranslatedDir))
 		if not self.leeCommon.isDirectoryExists(afterDir):
 			self.leeCommon.exitWithMessage('无法找到 AfterPatches 的 Base 目录: %s' % afterDir)
 
-		if not self.leeCommon.isDirectoryExists(beforeImportDir):
-			self.leeCommon.exitWithMessage('无法找到 BeforePatches 的 Import 目录: %s' % beforeImportDir)
-		if not self.leeCommon.isDirectoryExists(clientCommonImportDir):
-			self.leeCommon.exitWithMessage('无法找到客户端版本的通用 Import 目录: %s' % clientCommonImportDir)
-		if not self.leeCommon.isDirectoryExists(clientVerImportDir):
-			self.leeCommon.exitWithMessage('无法找到 %s 版本的 Import 目录: %s' % (clientver, clientVerImportDir))
-		if not self.leeCommon.isDirectoryExists(afterImportDir):
-			self.leeCommon.exitWithMessage('无法找到 AfterPatches 的 Import 目录: %s' % afterImportDir)
+		if not self.leeCommon.isDirectoryExists(importBeforeDir):
+			self.leeCommon.exitWithMessage('无法找到 BeforePatches 的 Import 目录: %s' % importBeforeDir)
+		if not self.leeCommon.isDirectoryExists(importClientDir):
+			self.leeCommon.exitWithMessage('无法找到 %s 版本的 Import 目录: %s' % (clientver, importClientDir))
+		if not self.leeCommon.isDirectoryExists(importAftertDir):
+			self.leeCommon.exitWithMessage('无法找到 AfterPatches 的 Import 目录: %s' % importAftertDir)
 		
 		# 创建一个事务并执行复制工作, 最后提交事务
 		self.__createSession()
 		self.__copyDirectory(beforeDir)
-		self.__copyDirectory(beforeImportDir)		# Import
+		self.__copyDirectory(importBeforeDir)		# Import
 		self.__copyDirectory(ragexeDir)
-		self.__copyDirectory(originDir)
-		self.__copyDirectory(translatedDir)
-		self.__copyDirectory(clientCommonImportDir)	# Import
-		self.__copyDirectory(clientVerImportDir)	# Import
+		self.__copyDirectory(clientOriginDir)
+		self.__copyDirectory(clientTranslatedDir)
+		self.__copyDirectory(importClientDir)		# Import
 		self.__copyDirectory(afterDir)
-		self.__copyDirectory(afterImportDir)		# Import
+		self.__copyDirectory(importAftertDir)		# Import
 		
 		if not self.__commitSession():
 			print('应用特定版本的补丁过程中发生错误, 终止...')

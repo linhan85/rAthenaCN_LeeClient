@@ -65,13 +65,13 @@ class LeeMenu:
 	
 	def updateButtonTranslateDataBase(self):
 		'''
-		根据目前 RagexeClient 中各个客户端的 Resource/Original 目录中的最新文件
+		根据目前各个客户端的 Resource/Original 目录中的最新文件
 		来更新目前正在使用的按钮汉化数据库文件
 		'''
 		try:
 			print('正在读取数据库...')
 			LeeButtonTranslator.loadTranslate()
-			print('正在根据目前 Patches/RagexeClient 的内容升级数据库...')
+			print('正在根据目前 Patches 的内容升级数据库...')
 			LeeButtonTranslator.updateTranslate()
 			print('正在保存数据库...')
 			LeeButtonTranslator.saveTranslate()
@@ -108,7 +108,7 @@ class LeeMenu:
 		self.leeCommon.cleanScreen()
 		
 		scriptDir = self.leeCommon.getScriptDirectory()
-		clientList = self.leeCommon.getRagexeClientList(os.path.abspath(scriptDir + 'Patches/RagexeClient') + os.sep)
+		clientList = self.leeCommon.getRagexeClientList(os.path.abspath(scriptDir + 'Patches') + os.sep)
 		
 		menus = []
 		for client in clientList:
@@ -206,7 +206,7 @@ def main():
 	
 	# 获取支持的客户端版本列表
 	scriptDir = LeeCommon.getScriptDirectory()
-	ragexeClientList = LeeCommon.getRagexeClientList(scriptDir + 'Patches/RagexeClient')
+	ragexeClientList = LeeCommon.getRagexeClientList(scriptDir + 'Patches')
 	if ragexeClientList is None:
 		LeeCommon.exitWithMessage('很抱歉, 无法获取客户端版本列表, 程序终止')
 	
