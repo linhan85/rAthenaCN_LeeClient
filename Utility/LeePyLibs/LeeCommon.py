@@ -102,6 +102,12 @@ class _LeeCommon:
 		scriptDir = self.getScriptDirectory()
 		return os.path.abspath('%s/Import/%s' % (scriptDir, clientver)) + os.sep
 
+	def normpath(self, path):
+		'''
+		改进版本的 os.path.normpath 会自动根据系统调整路径
+		'''
+		return os.path.normpath(path.replace('\\', os.path.sep).replace('/', os.path.sep))
+
 	def getRagexeClientList(self, dirpath):
 		'''
 		根据指定的 dir 中枚举出子目录的名字

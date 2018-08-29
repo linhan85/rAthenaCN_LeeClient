@@ -7,9 +7,11 @@ from .LeeConstant import _LeeConstant
 from .LeeButtonRender import _LeeButtonRender
 from .LeeButtonTranslator import _LeeButtonTranslator
 from .LeePatchManager import _LeePatchManager
+from .LeeVerifier import _LeeVerifier
 
 LeeCommon = _LeeCommon()
 LeeConstant = _LeeConstant()
 LeePatchManager = _LeePatchManager(LeeCommon)
 LeeButtonRender = _LeeButtonRender(LeeCommon)
 LeeButtonTranslator = _LeeButtonTranslator(LeeCommon, LeeButtonRender)
+LeeVerifier = _LeeVerifier(LeeCommon)

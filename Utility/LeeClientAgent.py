@@ -3,7 +3,7 @@
 
 import os
 
-from LeePyLibs import LeeCommon, LeeConstant, LeeButtonTranslator, LeeButtonRender, LeePatchManager
+from LeePyLibs import LeeCommon, LeeConstant, LeeButtonTranslator, LeeButtonRender, LeePatchManager, LeeVerifier
 
 # pip3 install pygame -i https://pypi.douban.com/simple --trusted-host=pypi.douban.com
 # pip3 install pillow -i https://pypi.douban.com/simple --trusted-host=pypi.douban.com
@@ -17,13 +17,6 @@ LeeConstant.Environment = 'develop'
 # ==============================================================================
 # 类的定义和实现
 # ==============================================================================
-
-# class LeeVerifier:
-# 	'''
-# 	这个类主要实现了对 RO 常用客户端文件格式的简单解析
-# 	目的用于验证客户端的文件是否完整
-# 	'''
-# 	pass
 
 class LeeMenu:
 	def __init__(self, mainFunc, leeCommon, patchManager):
@@ -63,7 +56,7 @@ class LeeMenu:
 		else:
 			print('已切换仙境传说的主程序到 %s 版本\r\n' % clientver)
 	
-	def updateButtonTranslateDataBase(self):
+	def maintenanceUpdateButtonTranslateDB(self):
 		'''
 		根据目前各个客户端的 Resource/Original 目录中的最新文件
 		来更新目前正在使用的按钮汉化数据库文件
@@ -99,6 +92,13 @@ class LeeMenu:
 			print('已成功撤销对客户端按钮的汉化\r\n')
 		except:
 			print('很抱歉, 撤销对客户端按钮的汉化过程中发生了意外, 请检查结果\r\n')
+	
+	def maintenanceRunClientResourceCheck(self):
+		'''
+		对客户端进行资源完整性校验
+		'''
+		LeeVerifier.runVerifier()
+		print('完整性校验过程已结束\r\n')
 			
 	def item_SwitchWorkshop(self):
 		'''
@@ -137,7 +137,7 @@ class LeeMenu:
 		else:
 			self.leeCommon.exitWithMessage('您的客户端环境看起来十分干净, 不需要再进行清理了.')
 
-	def item_UpdateButtonTranslateDataBase(self):
+	def item_MaintenanceUpdateButtonTranslateDB(self):
 		'''
 		菜单处理函数
 		当选择“维护 - 更新客户端按钮的翻译数据库”时执行
@@ -151,7 +151,7 @@ class LeeMenu:
 		]
 		title = '更新客户端按钮的翻译数据库'
 		prompt = '是否执行更新操作?'
-		self.leeCommon.simpleConfirm(lines, title, prompt, self, 'menus.updateButtonTranslateDataBase()')
+		self.leeCommon.simpleConfirm(lines, title, prompt, self, 'menus.maintenanceUpdateButtonTranslateDB()')
 
 	def item_MaintenanceApplyButtonTranslate(self):
 		'''
@@ -187,6 +187,20 @@ class LeeMenu:
 			self.leeCommon.simpleConfirm(lines, title, prompt, self, 'menus.maintenanceRevertButtonTranslate()')
 		else:
 			self.leeCommon.exitWithMessage('目前暂无客户端按钮的汉化记录, 无需进行撤销.')
+	
+	def item_MaintenanceRunClientResourceCheck(self):
+		'''
+		菜单处理函数
+		当选择“维护 - 对客户端资源进行完整性校验”时执行
+		'''
+		lines = [
+			'此过程可以协助排除可能的一些图档丢失情况.',
+			'不过由于需要对客户端的大量文件进行判断, 时间可能会比较长.'
+			''
+		]
+		title = '对客户端资源进行完整性校验'
+		prompt = '是否开始执行?'
+		self.leeCommon.simpleConfirm(lines, title, prompt, self, 'menus.maintenanceRunClientResourceCheck()')
 
 	def item_End(self):
 		'''
@@ -214,9 +228,10 @@ def main():
 	menus = [
 		['切换仙境传说主程序的版本', 'menus.item_SwitchWorkshop()'],
 		['重置 LeeClient 客户端到干净状态', 'menus.item_ResetWorkshop()'],
-		['维护 - 更新客户端按钮的翻译数据库', 'menus.item_UpdateButtonTranslateDataBase()'],
+		['维护 - 更新客户端按钮的翻译数据库', 'menus.item_MaintenanceUpdateButtonTranslateDB()'],
 		['维护 - 执行对客户端按钮的汉化', 'menus.item_MaintenanceApplyButtonTranslate()'],
 		['维护 - 撤销对客户端按钮的汉化', 'menus.item_MaintenanceRevertButtonTranslate()'],
+		['维护 - 对客户端资源进行完整性校验', 'menus.item_MaintenanceRunClientResourceCheck()'],
 		['退出程序', 'menus.item_End()']
 	]
 	title = 'LeeClient 控制台'
