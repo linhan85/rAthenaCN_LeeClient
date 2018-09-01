@@ -9,12 +9,6 @@ from LeePyLibs import LeeCommon, LeeConstant, LeeButtonTranslator, LeeButtonRend
 # pip3 install pillow -i https://pypi.douban.com/simple --trusted-host=pypi.douban.com
 
 # ==============================================================================
-# 常量定义
-# ==============================================================================
-
-LeeConstant.Environment = 'develop'
-
-# ==============================================================================
 # 类的定义和实现
 # ==============================================================================
 

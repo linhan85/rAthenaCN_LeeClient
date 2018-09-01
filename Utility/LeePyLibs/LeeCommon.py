@@ -9,6 +9,9 @@ class _LeeCommon:
 	这个类用来存放一些通用的函数
 	此类中的任何一个方法都可以被独立使用, 无需依赖
 	'''
+	def __init__(self, leeConstant):
+		self.leeConstant = leeConstant
+
 	def verifyAgentLocation(self):
 		'''
 		用于验证此脚本是否处于正确的运行位置

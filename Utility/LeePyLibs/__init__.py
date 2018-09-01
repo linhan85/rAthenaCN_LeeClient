@@ -9,8 +9,15 @@ from .LeeButtonTranslator import _LeeButtonTranslator
 from .LeePatchManager import _LeePatchManager
 from .LeeVerifier import _LeeVerifier
 
-LeeCommon = _LeeCommon()
+# 常量定义
+# ====================================================
 LeeConstant = _LeeConstant()
+LeeConstant.Environment = 'develop'
+LeeConstant.EncodingForSaveFile = 'gbk'
+
+# 常量定义
+# ====================================================
+LeeCommon = _LeeCommon(LeeConstant)
 LeePatchManager = _LeePatchManager(LeeCommon)
 LeeButtonRender = _LeeButtonRender(LeeCommon)
 LeeButtonTranslator = _LeeButtonTranslator(LeeCommon, LeeButtonRender)

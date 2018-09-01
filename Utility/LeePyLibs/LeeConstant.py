@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-class _LeeConstant(object):
+class _LeeConstant:
 	'''
 	常量操作类
 	这个类里面的所有变量只能赋值一次, 随后再也禁止赋值
