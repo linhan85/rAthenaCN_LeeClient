@@ -3,20 +3,29 @@
 
 import os
 
-from LeePyLibs import LeeCommon, LeeConstant, LeeButtonTranslator, LeeButtonRender, LeePatchManager, LeeVerifier
+from LeePyLibs import LeeConstant
+from LeePyLibs import LeeCommon
+from LeePyLibs import LeePatchManager
+from LeePyLibs import LeeButtonTranslator
+from LeePyLibs import LeeVerifier
 
 # pip3 install pygame -i https://pypi.douban.com/simple --trusted-host=pypi.douban.com
 # pip3 install pillow -i https://pypi.douban.com/simple --trusted-host=pypi.douban.com
+
+LeeConstant().Environment = 'develop'
+LeeConstant().EncodingForSaveFile = 'utf-8'
 
 # ==============================================================================
 # 类的定义和实现
 # ==============================================================================
 
 class LeeMenu:
-	def __init__(self, mainFunc, leeCommon, patchManager):
+	def __init__(self, mainFunc):
 		self.item_Main = main
-		self.patchManager = patchManager
-		self.leeCommon = leeCommon
+		self.patchManager = LeePatchManager()
+		self.buttonTranslator = LeeButtonTranslator()
+		self.leeVerifier = LeeVerifier()
+		self.leeCommon = LeeCommon()
 
 	def resetWorkshop(self):
 		'''
@@ -57,11 +66,11 @@ class LeeMenu:
 		'''
 		try:
 			print('正在读取数据库...')
-			LeeButtonTranslator.loadTranslate()
+			self.buttonTranslator.loadTranslate()
 			print('正在根据目前 Patches 的内容升级数据库...')
-			LeeButtonTranslator.updateTranslate()
+			self.buttonTranslator.updateTranslate()
 			print('正在保存数据库...')
-			LeeButtonTranslator.saveTranslate()
+			self.buttonTranslator.saveTranslate()
 			print('更新操作已经完成, 请确认文件的变更内容...\r\n')
 		except:
 			raise
@@ -71,7 +80,7 @@ class LeeMenu:
 		根据按钮汉化数据库的内容, 对客户端按钮进行汉化
 		'''
 		try:
-			LeeButtonTranslator.doApplyButtonTranslate()
+			self.buttonTranslator.doTranslate()
 			print('已完成客户端按钮的汉化工作, 请切换客户端版本以便生效\r\n')
 		except:
 			print('很抱歉, 对客户端按钮进行汉化的过程中发生了意外, 请检查结果\r\n')
@@ -82,7 +91,7 @@ class LeeMenu:
 		根据上次对按钮汉化时备份的信息, 删掉被汉化出来的按钮文件
 		'''
 		try:
-			LeeButtonTranslator.doRevertButtonTranslate()
+			self.buttonTranslator.doRevertButtonTranslate()
 			print('已成功撤销对客户端按钮的汉化\r\n')
 		except:
 			print('很抱歉, 撤销对客户端按钮的汉化过程中发生了意外, 请检查结果\r\n')
@@ -91,7 +100,7 @@ class LeeMenu:
 		'''
 		对客户端进行资源完整性校验
 		'''
-		LeeVerifier.runVerifier()
+		self.leeVerifier.runVerifier()
 		print('完整性校验过程已结束\r\n')
 			
 	def item_SwitchWorkshop(self):
@@ -103,7 +112,9 @@ class LeeMenu:
 		
 		scriptDir = self.leeCommon.getScriptDirectory()
 		clientList = self.leeCommon.getRagexeClientList(os.path.abspath(scriptDir + 'Patches') + os.sep)
-		
+		if clientList is None:
+			self.leeCommon.exitWithMessage('很抱歉, 无法获取客户端版本列表, 程序终止')
+
 		menus = []
 		for client in clientList:
 			menuItem = [client, 'menus.switchWorkshop(\'%s\')' % client]
@@ -152,7 +163,7 @@ class LeeMenu:
 		菜单处理函数
 		当选择“维护 - 执行对客户端按钮的汉化”时执行
 		'''
-		if LeeButtonTranslator.hasSomethingCanBeRevert():
+		if self.buttonTranslator.hasSomethingCanBeRevert():
 			lines = [
 				'在进行汉化之前, 需要先回滚以前的按钮翻译结果',
 				'若您有自定义汉化的按钮图片请务必提前备份, 避免被程序误删'
@@ -170,7 +181,7 @@ class LeeMenu:
 		菜单处理函数
 		当选择“维护 - 撤销对客户端按钮的汉化”时执行
 		'''
-		if LeeButtonTranslator.hasSomethingCanBeRevert():
+		if self.buttonTranslator.hasSomethingCanBeRevert():
 			lines = [
 				'您确认要撤销以前的按钮翻译结果吗?',
 				'若您有自定义汉化的按钮图片请务必提前备份, 避免被程序误删'
@@ -208,15 +219,11 @@ def main():
 	'''
 	LeeClientAgent 的主入口函数
 	'''
+	leeCommon = LeeCommon()
+
 	# 验证此脚本所处的位置, 不正确则报错并退出
-	if not LeeCommon.verifyAgentLocation():
-		LeeCommon.exitWithMessage('LeeClientAgent 所处的位置不正确, 拒绝执行')
-	
-	# 获取支持的客户端版本列表
-	scriptDir = LeeCommon.getScriptDirectory()
-	ragexeClientList = LeeCommon.getRagexeClientList(scriptDir + 'Patches')
-	if ragexeClientList is None:
-		LeeCommon.exitWithMessage('很抱歉, 无法获取客户端版本列表, 程序终止')
+	if not leeCommon.verifyAgentLocation():
+		leeCommon.exitWithMessage('LeeClientAgent 所处的位置不正确, 拒绝执行')
 	
 	# 选择操作
 	menus = [
@@ -230,10 +237,10 @@ def main():
 	]
 	title = 'LeeClient 控制台'
 	prompt = '请填写想要执行的任务的菜单编号'
-	LeeCommon.simpleMenu(menus, title, prompt, LeeMenu(main, LeeCommon, LeePatchManager))
+	leeCommon.simpleMenu(menus, title, prompt, LeeMenu(main))
 	
 	# 若在 Win 环境下则输出 pause 指令, 暂停等待用户确认退出
-	LeeCommon.pauseScreen()
+	leeCommon.pauseScreen()
 
 if __name__ == '__main__':
 	main()

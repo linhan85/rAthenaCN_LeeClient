@@ -3,14 +3,15 @@
 import os
 import sys
 import platform
+from LeePyLibs import LeeConstant
 
-class _LeeCommon:
+class LeeCommon:
 	'''
 	这个类用来存放一些通用的函数
 	此类中的任何一个方法都可以被独立使用, 无需依赖
 	'''
-	def __init__(self, leeConstant):
-		self.leeConstant = leeConstant
+	def __init__(self):
+		self.leeConstant = LeeConstant()
 
 	def verifyAgentLocation(self):
 		'''

@@ -6,13 +6,16 @@ import json
 import hashlib
 import copy
 import time
+from LeePyLibs import LeeCommon
+from LeePyLibs import LeeButtonRender
 
-class _LeeButtonTranslator:
-	def __init__(self, leeCommon, buttonTranslator):
-		self.leeCommon = leeCommon
-		self.buttonTranslator = buttonTranslator
-		self.trans_data = {}
+class LeeButtonTranslator:
+	def __init__(self):
+		self.leeCommon = LeeCommon()
+		self.buttonRender = LeeButtonRender()
+		self.translateMap = {}
 		self.transFiles = []
+		self.translateDatabasePath = 'Resources/Databases/ButtonTranslate.json'
 
 		# demo_out.bmp | demo_over.bmp | demo_press.bmp | demo_disable.bmp
 		# demo_out.bmp | demo_over.bmp | demo_press.bmp
@@ -141,46 +144,48 @@ class _LeeButtonTranslator:
 					'Directory': os.path.dirname(relpath).lower() + os.path.sep,
 					'Basename': real_basename, 
 					'FilenameMode': full_namemode,
-					'StyleFormat': '' if not (nodekey in self.trans_data) else self.trans_data[nodekey]['StyleFormat'],
-					'ButtonText': '' if not (nodekey in self.trans_data) else self.trans_data[nodekey]['ButtonText']
+					'StyleFormat': '' if not (nodekey in self.translateMap) else self.translateMap[nodekey]['StyleFormat'],
+					'ButtonText': '' if not (nodekey in self.translateMap) else self.translateMap[nodekey]['ButtonText']
 				}
 
 				ragexeButtons[nodekey] = trans_item
 
-		self.trans_data.clear()
-		self.trans_data = ragexeButtons
+		self.translateMap.clear()
+		self.translateMap = ragexeButtons
 
-	def loadTranslate(self, filename = 'Resources/Databases/ButtonTranslate.json'):
+	def loadTranslate(self, filename = None):
+		if filename is None: filename = self.translateDatabasePath
 		translatePath = '%s/%s' % (self.leeCommon.getScriptDirectory(), filename)
-		self.trans_data = {}
+		self.translateMap = {}
 		if self.leeCommon.isFileExists(translatePath):
-			self.trans_data = json.load(open(translatePath, 'r', encoding='utf-8'))
+			self.translateMap = json.load(open(translatePath, 'r', encoding='utf-8'))
 
-	def saveTranslate(self, saveFilename = 'Resources/Databases/ButtonTranslate.json'):
+	def saveTranslate(self, saveFilename = None):
+		if saveFilename is None: saveFilename = self.translateDatabasePath
 		scriptDir = self.leeCommon.getScriptDirectory()
 		try:
 			savePath = os.path.abspath('%s/%s' % (scriptDir, saveFilename))
-			json.dump(self.trans_data, open(savePath, 'w+', encoding='utf-8'), indent=4, ensure_ascii=False)
+			json.dump(self.translateMap, open(savePath, 'w', encoding='utf-8'), indent=4, ensure_ascii=False)
 			return True
 		except FileNotFoundError as _err:
 			raise
 		
 	def clear(self):
-		self.trans_data.clear()
+		self.translateMap.clear()
 	
 	def getTranslateInfo(self, relpath):
 		dirname = os.path.normpath(os.path.dirname(relpath).lower()) + os.path.sep
 		filename = (os.path.splitext(os.path.basename(relpath))[0]).lower()
 		nodekey = self.getNodeKey(dirname, filename)
 
-		if nodekey not in self.trans_data: return None
-		return self.trans_data[nodekey]
+		if nodekey not in self.translateMap: return None
+		return self.translateMap[nodekey]
 
 	def getNodeKey(self, dirpath, filename):
 		hashstr = '%s%s' % (dirpath, filename)
-		return hashlib.md5(hashstr.lower().encode(encoding='UTF-8')).hexdigest()
+		return hashlib.md5(hashstr.lower().encode(encoding='utf-8')).hexdigest()
 
-	def doApplyButtonTranslate(self):
+	def doTranslate(self):
 		scriptDir = self.leeCommon.getScriptDirectory()
 		patchesDir = os.path.normpath('%s/Patches/' % scriptDir)
 		rePathPattern = '^.*?/Patches/.*?/Resource/Original/data/texture/蜡历牢磐其捞胶'.replace('/', os.path.sep)
@@ -200,7 +205,7 @@ class _LeeButtonTranslator:
 				
 				traninfo['RelativePath'] = relpath
 				traninfo['FullPath'] = fullpath
-				traninfo['ButtonWidth'], traninfo['ButtonHeight'] = self.buttonTranslator.getImageSizeByFilePath(fullpath)
+				traninfo['ButtonWidth'], traninfo['ButtonHeight'] = self.buttonRender.getImageSizeByFilePath(fullpath)
 				deepcopy_traninfo = copy.deepcopy(traninfo)
 				buildlist.append(deepcopy_traninfo)
 
@@ -215,7 +220,7 @@ class _LeeButtonTranslator:
 			for idx, postfix in enumerate(filename_mode.split('|')):
 				btnState = btnStateDefine[idx]
 				btnSavePath = '%s/%s%s.bmp' % (textureDirPath, item['Basename'], postfix)
-				self.buttonTranslator.createButtonBmpFile(item['StyleFormat'], btnState, item['ButtonText'], item['ButtonWidth'], btnSavePath)
+				self.buttonRender.createButtonBmpFile(item['StyleFormat'], btnState, item['ButtonText'], item['ButtonWidth'], btnSavePath)
 				self.__transButtonFiles(btnSavePath)
 		
 		self.__commitSession()

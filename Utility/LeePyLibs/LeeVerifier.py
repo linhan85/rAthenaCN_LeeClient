@@ -5,14 +5,15 @@ import glob
 import time
 import timeit
 import struct
+from LeePyLibs import LeeCommon
 
-class _LeeVerifier:
+class LeeVerifier:
 	'''
 	这个类主要实现了对 RO 常用客户端文件格式的简单解析
 	目的用于验证客户端的文件是否完整
 	'''
-	def __init__(self, leeCommon):
-		self.leeCommon = leeCommon
+	def __init__(self):
+		self.leeCommon = LeeCommon()
 		self.textureDirs = ['data/texture/']
 		self.modelDris = ['data/model/']
 

@@ -4,15 +4,16 @@ import os
 import json
 import shutil
 import time
+from LeePyLibs import LeeCommon
 
-class _LeePatchManager:
+class LeePatchManager:
 	'''
 	用于管理补丁文件列表的操作类
 	'''
 	class SourceFileNotFoundError(FileNotFoundError): pass
 
-	def __init__(self, leeCommon):
-		self.leeCommon = leeCommon
+	def __init__(self):
+		self.leeCommon = LeeCommon()
 		self.stagingFiles = []
 		self.patchesFiles = []
 		self.backupFiles = []

@@ -4,14 +4,15 @@ import os
 import sys
 import json
 import contextlib
+from LeePyLibs import LeeCommon
 from PIL import Image, ImageChops, ImageDraw, ImageFont
 
 with contextlib.redirect_stdout(None):
     import pygame
 
-class _LeeButtonRender:
-	def __init__(self, leeCommon):
-		self.leeCommon = leeCommon
+class LeeButtonRender:
+	def __init__(self):
+		self.leeCommon = LeeCommon()
 		self.btnConfigure = {}
 		pygame.font.init()
 
