@@ -12,5 +12,7 @@ __pycache__
 /Utility/Reports
 
 /Utility/Patches/LastPatchesInfo.json
+/Utility/Patches/*/Resource/Translated/System/iteminfo.lub
+/Utility/Patches/*/Resource/Translated/System/iteminfo_sak.lub
 /licence.txt
 /*.exe
