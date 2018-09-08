@@ -68,7 +68,7 @@ end
 '''
 
 	def __normdesc(self, desc):
-		matches = re.finditer(r"\"(.*?)\"", desc, re.MULTILINE | re.IGNORECASE | re.DOTALL)
+		matches = re.finditer(r"(?<!\\)\"(.*?)(?<!\\)\"", desc, re.MULTILINE | re.IGNORECASE)
 		descLines = []
 		for match in matches:
 			descLines.append(match.group(1))
@@ -145,7 +145,7 @@ end
 	
 	def save(self, savepath):
 		# 构建表格主体部分, 先定义一下格式部分
-		lastItemID = list(self.itemInfoDict.keys())[-1]
+		lastItemID = list(sorted(self.itemInfoDict))[-1]
 		fullItemText = []	# 保存每一个道具完整的文本段
 
 		for itemID in sorted(self.itemInfoDict):
