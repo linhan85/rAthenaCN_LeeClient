@@ -8,9 +8,11 @@ from LeePyLibs import LeeCommon
 from LeePyLibs import LeePatchManager
 from LeePyLibs import LeeButtonTranslator
 from LeePyLibs import LeeVerifier
+from LeePyLibs import LeeItemInfoTranslator
 
 # pip3 install pygame -i https://pypi.douban.com/simple --trusted-host=pypi.douban.com
 # pip3 install pillow -i https://pypi.douban.com/simple --trusted-host=pypi.douban.com
+# pip3 install chardet -i https://pypi.douban.com/simple --trusted-host=pypi.douban.com
 
 LeeConstant().Environment = 'develop'
 LeeConstant().EncodingForSaveFile = 'utf-8'
@@ -102,6 +104,13 @@ class LeeMenu:
 		'''
 		self.leeVerifier.runVerifier()
 		print('完整性校验过程已结束\r\n')
+	
+	def maintenanceApplyIteminfoTranslate(self):
+		'''
+		对客户端的 Iteminfo 文件进行汉化操作
+		'''
+		LeeItemInfoTranslator().doTranslate()
+		print('已汉化全部 Iteminfo 文件\r\n')
 			
 	def item_SwitchWorkshop(self):
 		'''
@@ -204,8 +213,22 @@ class LeeMenu:
 			''
 		]
 		title = '对客户端资源进行完整性校验'
-		prompt = '是否开始执行?'
+		prompt = '是否确认执行?'
 		self.leeCommon.simpleConfirm(lines, title, prompt, self, 'menus.maintenanceRunClientResourceCheck()')
+	
+	def item_MaintenanceApplyIteminfoTranslate(self):
+		'''
+		菜单处理函数
+		当选择“维护 - 根据对照表翻译全部 Iteminfo 文件”时执行
+		'''
+		lines = [
+			'此过程将自动汉化 Iteminfo 文件.',
+			'汉化后的文件将覆盖到各客户端资源目录的 Translated 文件夹中.'
+			''
+		]
+		title = '是否汉化全部 Iteminfo 文件'
+		prompt = '是否确认执行?'
+		self.leeCommon.simpleConfirm(lines, title, prompt, self, 'menus.maintenanceApplyIteminfoTranslate()')
 
 	def item_End(self):
 		'''
@@ -233,6 +256,7 @@ def main():
 		['维护 - 执行对客户端按钮的汉化', 'menus.item_MaintenanceApplyButtonTranslate()'],
 		['维护 - 撤销对客户端按钮的汉化', 'menus.item_MaintenanceRevertButtonTranslate()'],
 		['维护 - 对客户端资源进行完整性校验', 'menus.item_MaintenanceRunClientResourceCheck()'],
+		['维护 - 根据对照表翻译全部 Iteminfo 文件', 'menus.item_MaintenanceApplyIteminfoTranslate()'],
 		['退出程序', 'menus.item_End()']
 	]
 	title = 'LeeClient 控制台'
