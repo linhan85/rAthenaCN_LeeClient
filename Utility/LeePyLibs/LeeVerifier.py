@@ -5,7 +5,9 @@ import glob
 import time
 import timeit
 import struct
+import re
 from LeePyLibs import LeeCommon
+from LeePyLibs import LeeIteminfoLua
 
 class LeeVerifier:
 	'''
@@ -15,7 +17,8 @@ class LeeVerifier:
 	def __init__(self):
 		self.leeCommon = LeeCommon()
 		self.textureDirs = ['data/texture/']
-		self.modelDris = ['data/model/']
+		self.modelDirs = ['data/model/']
+		self.spriteDirs = ['data/sprite/']
 
 		self.reportInfo = []
 		self.reportStartTime = 0    # 用于记录当前检测项目的启动时间
@@ -270,6 +273,35 @@ class LeeVerifier:
 
 		strfile.close()
 		return True, texturePathList
+	
+	def __parseIteminfo(self, iteminfofilepath):
+		if not self.leeCommon.isFileExists(iteminfofilepath):
+			print("读取 Iteminfo 文件失败, 文件不存在: %s" % iteminfofilepath)
+			return False, [], []
+		
+		iteminfoLua = LeeIteminfoLua()
+		iteminfoLua.load(iteminfofilepath)
+
+		texturePathList = []
+		spritePathList = []
+		
+		for itemID in iteminfoLua.items():
+			unidentifiedResourceName = iteminfoLua.getItemAttribute(itemID, 'unidentifiedResourceName')
+			texturePathList.append('蜡历牢磐其捞胶/collection/%s.bmp' % unidentifiedResourceName)
+			texturePathList.append('蜡历牢磐其捞胶/item/%s.bmp' % unidentifiedResourceName)
+			spritePathList.append('酒捞袍/%s.spr' % unidentifiedResourceName)
+			spritePathList.append('酒捞袍/%s.act' % unidentifiedResourceName)
+			
+			identifiedResourceName = iteminfoLua.getItemAttribute(itemID, 'identifiedResourceName')
+			texturePathList.append('蜡历牢磐其捞胶/collection/%s.bmp' % identifiedResourceName)
+			texturePathList.append('蜡历牢磐其捞胶/item/%s.bmp' % identifiedResourceName)
+			spritePathList.append('酒捞袍/%s.spr' % identifiedResourceName)
+			spritePathList.append('酒捞袍/%s.act' % identifiedResourceName)
+
+		texturePathList = list(set(texturePathList))
+		spritePathList = list(set(spritePathList))
+
+		return True, texturePathList, spritePathList
 
 	def __verifyGnd(self, gndfilepath):
 		result, texturePathList = self.__parseGnd(gndfilepath)
@@ -297,7 +329,7 @@ class LeeVerifier:
 		leeClientDir = self.leeCommon.getLeeClientDirectory()
 
 		for modelPath in modelPathList:
-			for modelDir in self.modelDris:
+			for modelDir in self.modelDirs:
 				fullpath = self.leeCommon.normpath('%s/%s/%s' % (leeClientDir, modelDir, modelPath))
 				if self.leeCommon.isFileExists(fullpath):
 					# print('existsModelPathList: %s' % modelPath)
@@ -357,6 +389,32 @@ class LeeVerifier:
 
 		return missTexturePathList
 	
+	def __verifyIteminfo(self, iteminfofilepath):
+		result, texturePathList, spritePathList = self.__parseIteminfo(iteminfofilepath)
+		if not result: return None, None
+
+		leeClientDir = self.leeCommon.getLeeClientDirectory()
+
+		missTexturePathList = []
+		for texturePath in texturePathList:
+			for textureDir in self.textureDirs:
+				fullpath = self.leeCommon.normpath('%s/%s/%s' % (leeClientDir, textureDir, texturePath))
+				if self.leeCommon.isFileExists(fullpath): break
+			else:
+				# print('missTexturePathList: %s' % texturePath)
+				missTexturePathList.append(fullpath)
+		
+		missSpritePathList = []
+		for spritePath in spritePathList:
+			for spriteDir in self.spriteDirs:
+				fullpath = self.leeCommon.normpath('%s/%s/%s' % (leeClientDir, spriteDir, spritePath))
+				if self.leeCommon.isFileExists(fullpath): break
+			else:
+				# print('missSpritePathList: %s' % spritePath)
+				missSpritePathList.append(fullpath)
+
+		return missTexturePathList, missSpritePathList
+	
 	def __resetReport(self):
 		self.reportInfo.clear
 
@@ -379,17 +437,28 @@ class LeeVerifier:
 			self.reportInfo.append('')
 			self.reportInfo.append('')
 
-	def __appendReportData(self, sourceFile, missFiles):
-		if len(missFiles) <= 0: return
-		self.reportInfo.append('>>>> %s' % sourceFile)
-		for missFile in missFiles:
-			self.reportInfo.append('     缺失: %s' % missFile)
+	def __appendReportData(self, sourceFile, firstMissFiles, secondMissFiles = None):
+		if len(firstMissFiles) <= 0: return
+		leeClientDir = self.leeCommon.getLeeClientDirectory()
+		missFileCount = len(firstMissFiles) + (0 if secondMissFiles is None else len(secondMissFiles))
+
+		self.reportInfo.append('>>>> %s (缺失 %d 个文件)' % (os.path.relpath(sourceFile, leeClientDir), missFileCount))
+		
+		if firstMissFiles is not None:
+			for missFile in firstMissFiles:
+				self.reportInfo.append('     缺失: %s' % os.path.relpath(missFile, leeClientDir))
+		
+		if secondMissFiles is not None:
+			for missFile in secondMissFiles:
+				self.reportInfo.append('     缺失: %s' % os.path.relpath(missFile, leeClientDir))
+		
 		self.reportInfo.append('')
 		self.reportFileCount = self.reportFileCount + 1
-		self.reportMissCount = self.reportMissCount + len(missFiles)
+		self.reportMissCount = self.reportMissCount + missFileCount
 	
 	def __saveReport(self):
 		reportTime = time.strftime("%Y%m%d_%H%M%S", time.localtime())
+		leeClientDir = self.leeCommon.getLeeClientDirectory()
 		savePath = '%s/Reports/VerifyRpt_%s.txt' % (self.leeCommon.getScriptDirectory(), reportTime)
 		savePath = self.leeCommon.normpath(savePath)
 		os.makedirs(os.path.dirname(savePath), exist_ok = True)
@@ -397,6 +466,8 @@ class LeeVerifier:
 		with open(savePath, 'w+', encoding = 'utf-8') as rptfile:
 			for line in self.reportInfo:
 				rptfile.write('%s\r\n' % line)
+		
+		print('校验结果已保存到 : %s' % os.path.relpath(savePath, leeClientDir))
 	
 	def runVerifier(self):
 		self.__resetReport()
@@ -405,6 +476,7 @@ class LeeVerifier:
 		# 校验地图基础文件的 gnd 文件（地表纹理）
 		gndfiles = glob.glob('%s/data/*.gnd' % leeClientDir)
 		self.__appendReportMessage('header', '校验 gnd 地图文件共 %d 个' % len(gndfiles))
+		print('正在校验 gnd 地图文件共 %d 个' % len(gndfiles))
 		for gndfile in gndfiles:
 			_missTexturePathList = self.__verifyGnd(gndfile)
 			self.__appendReportData(gndfile, _missTexturePathList)
@@ -413,6 +485,7 @@ class LeeVerifier:
 		# 校验地图基础文件的 rsw 文件（模型层）
 		rswfiles = glob.glob('%s/data/*.rsw' % leeClientDir)
 		self.__appendReportMessage('header', '校验 rsw 地图文件共 %d 个' % len(rswfiles))
+		print('正在校验 rsw 地图文件共 %d 个' % len(rswfiles))
 		validModelPathList = []
 		for rswfile in rswfiles:
 			_existsModelPathList, _missModelPathList = self.__verifyRsw(rswfile)
@@ -423,6 +496,7 @@ class LeeVerifier:
 		# 校验地图中有效的 rsm 模型文件的贴图
 		# 这里的 validModelPathList 存储的是有效的全路径
 		self.__appendReportMessage('header', '校验 rsm 模型文件共 %d 个' % len(validModelPathList))
+		print('正在校验 rsm 模型文件共 %d 个' % len(validModelPathList))
 		for modelpath in validModelPathList:
 			_missTexturePathList = self.__verifyRsm(modelpath)
 			self.__appendReportData(modelpath, _missTexturePathList)
@@ -436,12 +510,32 @@ class LeeVerifier:
 				if fullpath.lower().endswith('.str'):
 					strFilePathList.append(fullpath)
 		
-		self.__appendReportMessage('header', '校验 str 索引文件共 %d 个' % len(strFilePathList))
+		self.__appendReportMessage('header', '校验 str 动画描述文件共 %d 个' % len(strFilePathList))
+		print('正在校验 str 动画描述文件共 %d 个' % len(strFilePathList))
 		for strfilepath in strFilePathList:
 			_missTexturePathList = self.__verifyStr(strfilepath)
 			self.__appendReportData(strfilepath, _missTexturePathList)
 		self.__appendReportMessage('footer', '')
 
+		# 校验 Iteminfo 文件中所需的贴图
+		scriptDir = self.leeCommon.getScriptDirectory()
+		patchesDir = os.path.normpath('%s/Patches/' % scriptDir)
+		rePathPattern = r'^.*?/Patches/.*?/Resource/Original/System/iteminfo.*?\.(lua|lub)'.replace('/', os.path.sep)
+		
+		iteminfoFilePathList = []
+		for dirpath, _dirnames, filenames in os.walk(patchesDir):
+			for filename in filenames:
+				fullpath = os.path.normpath('%s/%s' % (dirpath, filename))
+				if not (filename.lower().startswith('iteminfo')): continue
+				if not re.match(rePathPattern, fullpath, re.I): continue
+				iteminfoFilePathList.append(fullpath)
+		
+		self.__appendReportMessage('header', '校验 Iteminfo 道具描述文件共 %d 个' % len(iteminfoFilePathList))
+		print('正在校验 Iteminfo 道具描述文件共 %d 个' % len(iteminfoFilePathList))
+		for iteminfofilepath in iteminfoFilePathList:
+			_missTexturePathList, _missSpritePathList = self.__verifyIteminfo(iteminfofilepath)
+			self.__appendReportData(iteminfofilepath, _missTexturePathList, _missSpritePathList)
+		self.__appendReportMessage('footer', '')
+
 		# TODO: 未来可能还有更多的数据校验...
-	
 		self.__saveReport()
