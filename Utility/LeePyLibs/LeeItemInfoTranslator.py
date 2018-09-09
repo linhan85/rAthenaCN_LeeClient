@@ -3,30 +3,29 @@
 import os
 import json
 import re
-import chardet
-from LeePyLibs import LeeItemInfoLua
+from LeePyLibs import LeeIteminfoLua
 from LeePyLibs import LeeCommon
 
-class LeeItemInfoTranslator:
+class LeeIteminfoTranslator:
 	def __init__(self):
 		self.leeCommon = LeeCommon()
-		self.leeItemInfoLua = LeeItemInfoLua()
-		self.translateDatabasePath = 'Resources/Databases/ItemInfoTranslate.json'
+		self.leeIteminfoLua = LeeIteminfoLua()
+		self.translateDatabasePath = 'Resources/Databases/IteminfoTranslate.json'
 		self.translateMap = {}
 	
 	def createTranslate(self, srcIteminfoPath, saveFilename = None):
 		if saveFilename is None: saveFilename = self.translateDatabasePath
-		self.leeItemInfoLua.clear()
-		self.leeItemInfoLua.load(srcIteminfoPath)
+		self.leeIteminfoLua.clear()
+		self.leeIteminfoLua.load(srcIteminfoPath)
 
 		self.translateMap = {}
-		for itemID in self.leeItemInfoLua.items():
-			unidentifiedDescriptionName = self.leeItemInfoLua.getItemAttribute(itemID, 'unidentifiedDescriptionName')
-			identifiedDescriptionName = self.leeItemInfoLua.getItemAttribute(itemID, 'identifiedDescriptionName')
+		for itemID in self.leeIteminfoLua.items():
+			unidentifiedDescriptionName = self.leeIteminfoLua.getItemAttribute(itemID, 'unidentifiedDescriptionName')
+			identifiedDescriptionName = self.leeIteminfoLua.getItemAttribute(itemID, 'identifiedDescriptionName')
 			self.translateMap[itemID] = {
-				'unidentifiedDisplayName' : self.leeItemInfoLua.getItemAttribute(itemID, 'unidentifiedDisplayName'),
+				'unidentifiedDisplayName' : self.leeIteminfoLua.getItemAttribute(itemID, 'unidentifiedDisplayName'),
 				'unidentifiedDescriptionName' : [] if unidentifiedDescriptionName is None else unidentifiedDescriptionName.split('\r\n'),
-				'identifiedDisplayName' : self.leeItemInfoLua.getItemAttribute(itemID, 'identifiedDisplayName'),
+				'identifiedDisplayName' : self.leeIteminfoLua.getItemAttribute(itemID, 'identifiedDisplayName'),
 				'identifiedDescriptionName' : [] if identifiedDescriptionName is None else identifiedDescriptionName.split('\r\n')
 			}
 		self.saveTranslate(saveFilename)
@@ -58,19 +57,19 @@ class LeeItemInfoTranslator:
 			return obj == None
 
 	def __translateSingleIteminfo(self, loadfilepath, savefilepath):
-		self.leeItemInfoLua.load(loadfilepath)
-		for itemID in self.leeItemInfoLua.items():
+		self.leeIteminfoLua.load(loadfilepath)
+		for itemID in self.leeIteminfoLua.items():
 			if str(itemID) not in self.translateMap: continue
 			itemTranslateData = self.translateMap[str(itemID)]
 			if not self.isEmpty(itemTranslateData['unidentifiedDisplayName']):
-				self.leeItemInfoLua.setItemAttribute(itemID, 'unidentifiedDisplayName', itemTranslateData['unidentifiedDisplayName'])
+				self.leeIteminfoLua.setItemAttribute(itemID, 'unidentifiedDisplayName', itemTranslateData['unidentifiedDisplayName'])
 			if not self.isEmpty(itemTranslateData['unidentifiedDescriptionName']):
-				self.leeItemInfoLua.setItemAttribute(itemID, 'unidentifiedDescriptionName', '\r\n'.join(itemTranslateData['unidentifiedDescriptionName']))
+				self.leeIteminfoLua.setItemAttribute(itemID, 'unidentifiedDescriptionName', '\r\n'.join(itemTranslateData['unidentifiedDescriptionName']))
 			if not self.isEmpty(itemTranslateData['identifiedDisplayName']):
-				self.leeItemInfoLua.setItemAttribute(itemID, 'identifiedDisplayName', itemTranslateData['identifiedDisplayName'])
+				self.leeIteminfoLua.setItemAttribute(itemID, 'identifiedDisplayName', itemTranslateData['identifiedDisplayName'])
 			if not self.isEmpty(itemTranslateData['identifiedDescriptionName']):
-				self.leeItemInfoLua.setItemAttribute(itemID, 'identifiedDescriptionName', '\r\n'.join(itemTranslateData['identifiedDescriptionName']))
-		self.leeItemInfoLua.save(savefilepath)
+				self.leeIteminfoLua.setItemAttribute(itemID, 'identifiedDescriptionName', '\r\n'.join(itemTranslateData['identifiedDescriptionName']))
+		self.leeIteminfoLua.save(savefilepath)
 
 	def doTranslate(self):
 		leeClientDir = self.leeCommon.getLeeClientDirectory()
@@ -90,12 +89,12 @@ class LeeItemInfoTranslator:
 
 		# 挨个处理并保存到对应的 Translated 目录中
 		for iteminfoFilePath in iteminfoFilePathList:
-			print('正在处理, 请稍候: %s' % os.path.relpath(iteminfoFilePath, leeClientDir))
+			print('正在汉化, 请稍候: %s' % os.path.relpath(iteminfoFilePath, leeClientDir))
 			regex = r'(^.*?/Patches/.*?/Resource)/Original/(System/iteminfo.*?\.(lua|lub))'.replace('/', os.path.sep)
 			match = re.search(regex, iteminfoFilePath, re.MULTILINE | re.IGNORECASE | re.DOTALL)
 			if match is None:
 				self.leeCommon.exitWithMessage('无法确定翻译后的 iteminfo 文件存放位置, 程序终止')
 			savePath = '%s/Translated/%s' % (match.group(1), match.group(2))
 			self.__translateSingleIteminfo(iteminfoFilePath, savePath)
-			print('处理完毕, 保存到: %s\r\n' % os.path.relpath(savePath, leeClientDir))
+			print('处理汉化, 保存到: %s\r\n' % os.path.relpath(savePath, leeClientDir))
 

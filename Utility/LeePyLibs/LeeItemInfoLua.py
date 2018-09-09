@@ -2,12 +2,11 @@
 
 import re
 import os
-import chardet
 from dataclasses import dataclass
 from LeePyLibs import LeeCommon
 
 @dataclass
-class LeeItemInfoSingleItem:
+class LeeIteminfoSingleItem:
 	itemID: int
 	unidentifiedDisplayName: str
 	unidentifiedResourceName: str
@@ -18,7 +17,7 @@ class LeeItemInfoSingleItem:
 	slotCount: int
 	ClassNum: int
 
-class LeeItemInfoLua:
+class LeeIteminfoLua:
 	def __init__(self):
 		self.leeCommon = LeeCommon()
 		self.itemInfoDict = {}
@@ -127,7 +126,7 @@ end
 		for iteminfoText in itemInfoTextList:
 			try:
 				match = re.search(regex, iteminfoText, re.MULTILINE | re.IGNORECASE | re.DOTALL)
-				singleItem = LeeItemInfoSingleItem(
+				singleItem = LeeIteminfoSingleItem(
 					itemID = self.leeCommon.atoi(match.group(1)),		# 物品编号
 					unidentifiedDisplayName = match.group(2),			# 物品未鉴定时候的道具名称
 					unidentifiedResourceName = match.group(3),			# 物品未鉴定时候的图档资源名称
@@ -145,7 +144,6 @@ end
 	
 	def save(self, savepath):
 		# 构建表格主体部分, 先定义一下格式部分
-		lastItemID = list(sorted(self.itemInfoDict))[-1]
 		fullItemText = []	# 保存每一个道具完整的文本段
 
 		for itemID in sorted(self.itemInfoDict):
@@ -159,14 +157,14 @@ end
 				self.__quotedesc(self.itemInfoDict[itemID].identifiedDescriptionName),
 				self.itemInfoDict[itemID].slotCount,
 				self.itemInfoDict[itemID].ClassNum,
-				',' if itemID != lastItemID else ''
+				self.leeCommon.isLastReturn(sorted(self.itemInfoDict), itemID, '', ',')
 			)
 			fullItemText.append(singleItemText)
 		
+		luaContent = self.itemInfoFormat % ('\r\n'.join(fullItemText))
+		
 		fullSavePath = os.path.abspath(savepath)
 		os.makedirs(os.path.dirname(fullSavePath), exist_ok = True)
-		luaContent = self.itemInfoFormat % ('\r\n'.join(fullItemText))
-
 		luafile = open(fullSavePath, 'w', encoding = 'latin1')
 		luafile.write(luaContent)
 		luafile.close
@@ -174,12 +172,12 @@ end
 	def items(self):
 		return self.itemInfoDict
 
-	def getItemInfo(self, itemID):
+	def getIteminfo(self, itemID):
 		return None if itemID not in self.itemInfoDict else self.itemInfoDict[itemID]
 	
 	def getItemAttribute(self, itemID, attribname, dstEncode = 'gbk'):
 		try:
-			itemdata = self.getItemInfo(itemID)
+			itemdata = self.getIteminfo(itemID)
 			if itemdata == None: return None
 			value = getattr(itemdata, attribname, None)
 			if value is None: return None
@@ -195,7 +193,7 @@ end
 
 	def setItemAttribute(self, itemID, attribname, value, srcEncode = 'gbk'):
 		try:
-			itemdata = self.getItemInfo(itemID)
+			itemdata = self.getIteminfo(itemID)
 			if itemdata == None: return False
 			if isinstance(value, list):
 				for index, val in enumerate(value):

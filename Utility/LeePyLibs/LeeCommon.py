@@ -173,6 +173,21 @@ class LeeCommon:
 		判断指定的文件是否存在
 		'''
 		return os.path.exists(filepath) and os.path.isfile(filepath)
+	
+	def isLastElement(self, list_or_dict, val):
+		'''
+		判断一个值是否处于某个列表或者字典的最后一个
+		'''
+		if (isinstance(list_or_dict, dict)):
+			return list(list_or_dict).index(val) == len(list_or_dict) - 1
+		else:
+			return list_or_dict.index(val) == len(list_or_dict) - 1
+
+	def isLastReturn(self, list_or_dict, val, true_str, false_str):
+		'''
+		根据一个值是否处于某个列表或者字典的最后一个来返回字符串
+		'''
+		return true_str if self.isLastElement(list_or_dict, val) else false_str
 
 	def atoi(self, val):
 		'''

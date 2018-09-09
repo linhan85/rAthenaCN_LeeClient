@@ -8,5 +8,7 @@ from .LeePatchManager import LeePatchManager
 from .LeeButtonRender import LeeButtonRender
 from .LeeButtonTranslator import LeeButtonTranslator
 from .LeeVerifier import LeeVerifier
-from .LeeItemInfoLua import LeeItemInfoLua
-from .LeeItemInfoTranslator import LeeItemInfoTranslator
+from .LeeIteminfoLua import LeeIteminfoLua
+from .LeeIteminfoTranslator import LeeIteminfoTranslator
+from .LeeTowninfoLua import LeeTowninfoLua
+from .LeeTowninfoTranslator import LeeTowninfoTranslator

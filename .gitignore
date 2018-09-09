@@ -14,5 +14,6 @@ __pycache__
 /Utility/Patches/LastPatchesInfo.json
 /Utility/Patches/*/Resource/Translated/System/iteminfo.lub
 /Utility/Patches/*/Resource/Translated/System/iteminfo_sak.lub
+/Utility/Patches/*/Resource/Translated/System/towninfo.lub
 /licence.txt
 /*.exe
