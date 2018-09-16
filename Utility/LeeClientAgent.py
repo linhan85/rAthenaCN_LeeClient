@@ -10,6 +10,7 @@ from LeePyLibs import LeeButtonTranslator
 from LeePyLibs import LeeVerifier
 from LeePyLibs import LeeIteminfoTranslator
 from LeePyLibs import LeeTowninfoTranslator
+from LeePyLibs import LeeSkillinfolistTranslator
 
 # pip3 install pygame -i https://pypi.douban.com/simple --trusted-host=pypi.douban.com
 # pip3 install pillow -i https://pypi.douban.com/simple --trusted-host=pypi.douban.com
@@ -119,6 +120,13 @@ class LeeMenu:
 		'''
 		LeeTowninfoTranslator().doTranslate()
 		print('已汉化全部 Towninfo 文件\r\n')
+	
+	def maintenanceApplySkillInfoListTranslate(self):
+		'''
+		对客户端的 SkillInfoLis 文件进行汉化操作
+		'''
+		LeeSkillinfolistTranslator().doTranslate()
+		print('已汉化全部 SkillInfoLis 文件\r\n')
 			
 	def item_SwitchWorkshop(self):
 		'''
@@ -251,6 +259,20 @@ class LeeMenu:
 		title = '是否汉化全部 Towninfo 文件'
 		prompt = '是否确认执行?'
 		self.leeCommon.simpleConfirm(lines, title, prompt, self, 'menus.maintenanceApplyTowninfoTranslate()')
+	
+	def item_MaintenanceApplySkillInfoListTranslate(self):
+		'''
+		菜单处理函数
+		当选择“维护 - 根据对照表翻译全部 SkillInfoList 文件”时执行
+		'''
+		lines = [
+			'此过程将自动汉化 SkillInfoList 文件.',
+			'汉化后的文件将覆盖到各客户端资源目录的 Translated 文件夹中.'
+			''
+		]
+		title = '是否汉化全部 SkillInfoList 文件'
+		prompt = '是否确认执行?'
+		self.leeCommon.simpleConfirm(lines, title, prompt, self, 'menus.maintenanceApplySkillInfoListTranslate()')
 
 	def item_End(self):
 		'''
@@ -280,6 +302,7 @@ def main():
 		['维护 - 对客户端资源进行完整性校验', 'menus.item_MaintenanceRunClientResourceCheck()'],
 		['维护 - 根据对照表翻译全部 Iteminfo 文件', 'menus.item_MaintenanceApplyIteminfoTranslate()'],
 		['维护 - 根据对照表翻译全部 Towninfo 文件', 'menus.item_MaintenanceApplyTowninfoTranslate()'],
+		['维护 - 根据对照表翻译全部 SkillInfoList 文件', 'menus.item_MaintenanceApplySkillInfoListTranslate()'],
 		['退出程序', 'menus.item_End()']
 	]
 	title = 'LeeClient 控制台'

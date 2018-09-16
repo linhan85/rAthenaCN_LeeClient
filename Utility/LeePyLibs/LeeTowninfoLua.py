@@ -3,7 +3,6 @@
 import re
 import os
 import lupa
-
 from lupa import LuaRuntime
 from dataclasses import dataclass
 from LeePyLibs import LeeCommon
@@ -47,23 +46,25 @@ end
 '''
 
 	def load(self, filepath):
+		self.towninfoDict.clear()
+
 		luafile = open(filepath, 'r', encoding = 'latin1')
 		content = luafile.read()
 		luafile.close()
 
 		lua = LuaRuntime(unpack_returned_tuples=True)
 		lua.execute(content)
-		luaglobal = lua.globals()
+		g = lua.globals()
 
-		for mapname in list(luaglobal.mapNPCInfoTable):
+		for mapname in list(g.mapNPCInfoTable):
 			self.towninfoDict[mapname] = []
-			for tagid in list(luaglobal.mapNPCInfoTable[mapname]):
+			for tagid in list(g.mapNPCInfoTable[mapname]):
 				singleItem = LeeTowninfoSingleItem(
-					tagname = luaglobal.mapNPCInfoTable[mapname][tagid]['name'],
-					gbkname = luaglobal.mapNPCInfoTable[mapname][tagid]['name'].encode('latin1').decode('gbk'),
-					x = luaglobal.mapNPCInfoTable[mapname][tagid]['X'],
-					y = luaglobal.mapNPCInfoTable[mapname][tagid]['Y'],
-					tagtype = luaglobal.mapNPCInfoTable[mapname][tagid]['TYPE']
+					tagname = g.mapNPCInfoTable[mapname][tagid]['name'],
+					gbkname = g.mapNPCInfoTable[mapname][tagid]['name'].encode('latin1').decode('gbk'),
+					x = g.mapNPCInfoTable[mapname][tagid]['X'],
+					y = g.mapNPCInfoTable[mapname][tagid]['Y'],
+					tagtype = g.mapNPCInfoTable[mapname][tagid]['TYPE']
 				)
 				self.towninfoDict[mapname].append(singleItem)
 	

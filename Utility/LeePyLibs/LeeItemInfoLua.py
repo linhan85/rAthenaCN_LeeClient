@@ -180,7 +180,7 @@ end
 			itemdata = self.getIteminfo(itemID)
 			if itemdata == None: return None
 			value = getattr(itemdata, attribname, None)
-			if value is None: return None
+			if value == None: return None
 			if isinstance(value, list):
 				for index, val in enumerate(value):
 					value[index] = val.encode('latin1').decode(dstEncode)
