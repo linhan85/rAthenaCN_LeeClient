@@ -200,6 +200,18 @@ class LeeCommon:
 		except ValueError:
 			return False
 	
+	def iterlen(self, iterator):
+		'''
+		查询一个迭代器的内容长度(内容个数)
+		'''
+		if hasattr(iterator, "__len__"):
+			return len(iterator)
+		
+		nelements = 0
+		for _ in iterator:
+			nelements += 1
+			return nelements
+	
 	def strHexToRgb(self, val):
 		'''
 		将类似 #ffffff 的颜色代码转换成 (255, 255, 255)

@@ -10,7 +10,7 @@ class LeeSkilldescriptTranslator:
 	def __init__(self):
 		self.leeCommon = LeeCommon()
 		self.leeSkilldescriptLua = LeeSkilldescriptLua()
-		self.translateDatabasePath = 'Resources/Databases/SkillTranslate.json'
+		self.translateDatabasePath = 'Resources/Databases/SkillDescriptTranslate.json'
 		self.translateMap = []
 	
 	def loadTranslate(self, filename = None):
