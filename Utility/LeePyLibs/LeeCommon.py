@@ -188,6 +188,15 @@ class LeeCommon:
 		根据一个值是否处于某个列表或者字典的最后一个来返回字符串
 		'''
 		return true_str if self.isLastElement(list_or_dict, val) else false_str
+	
+	def isEmpty(self, obj):
+		'''
+		判断一个对象的内容是否为空或者为 None
+		'''
+		if hasattr(obj, "__len__"):
+			return len(obj) == 0
+		else:
+			return obj is None
 
 	def atoi(self, val):
 		'''
