@@ -7,13 +7,13 @@ from LeePyLibs import LeeBaseTranslator
 
 class LeeSkilldescriptTranslator(LeeBaseTranslator):
 	def __init__(self):
-		super().__init__()
+		LeeBaseTranslator.__init__(self)
 		self.leeFileIO = LeeSkilldescriptLua()
 		self.translateDefaultDBPath = 'Resources/Databases/SkillDescriptTranslate.json'
 		self.reSrcPathPattern = r'^.*?/Patches/.*?/Resource/Original/data/luafiles514/lua files/skillinfoz/skilldescript\.(lua|lub)'.replace('/', os.path.sep)
 		self.reDstPathPattern = r'(^.*?/Patches/.*?/Resource)/Original/(data/luafiles514/lua files/skillinfoz/skilldescript\.(lua|lub))'.replace('/', os.path.sep)
 
-	def trans(self, srcFilepath, dstFilepath):
+	def translate(self, srcFilepath, dstFilepath):
 		self.leeFileIO.load(srcFilepath)
 		for skillConstant in self.leeFileIO.items():
 			if str(skillConstant) not in self.translateMap: continue

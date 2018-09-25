@@ -7,7 +7,7 @@ from LeePyLibs import LeeBaseTranslator
 
 class LeeIteminfoTranslator(LeeBaseTranslator):
 	def __init__(self):
-		super().__init__()
+		LeeBaseTranslator.__init__(self)
 		self.leeFileIO = LeeIteminfoLua()
 		self.translateDefaultDBPath = 'Resources/Databases/IteminfoTranslate.json'
 		self.reSrcPathPattern = r'^.*?/Patches/.*?/Resource/Original/System/iteminfo.*?\.(lua|lub)'.replace('/', os.path.sep)
@@ -29,7 +29,7 @@ class LeeIteminfoTranslator(LeeBaseTranslator):
 			}
 		self.save(translateDBPath)
 
-	def trans(self, srcFilepath, dstFilepath):
+	def translate(self, srcFilepath, dstFilepath):
 		self.leeFileIO.load(srcFilepath)
 		for itemID in self.leeFileIO.items():
 			if str(itemID) not in self.translateMap: continue

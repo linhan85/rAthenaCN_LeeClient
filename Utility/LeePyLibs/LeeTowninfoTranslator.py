@@ -7,13 +7,13 @@ from LeePyLibs import LeeBaseTranslator
 
 class LeeTowninfoTranslator(LeeBaseTranslator):
 	def __init__(self):
-		super().__init__()
+		LeeBaseTranslator.__init__(self)
 		self.leeFileIO = LeeTowninfoLua()
 		self.translateDefaultDBPath = 'Resources/Databases/TowninfoTranslate.json'
 		self.reSrcPathPattern = r'^.*?/Patches/.*?/Resource/Original/System/Towninfo.*?\.(lua|lub)'.replace('/', os.path.sep)
 		self.reDstPathPattern = r'(^.*?/Patches/.*?/Resource)/Original/(System/Towninfo.*?\.(lua|lub))'.replace('/', os.path.sep)
 
-	def trans(self, srcFilepath, dstFilepath):
+	def translate(self, srcFilepath, dstFilepath):
 		self.leeFileIO.load(srcFilepath)
 		for translateItem in self.translateMap:
 			self.leeFileIO.replaceName(translateItem['src'], translateItem['dst'])
