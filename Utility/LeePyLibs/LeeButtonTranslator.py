@@ -6,17 +6,140 @@ import json
 import hashlib
 import copy
 import time
+import glob
 from LeePyLibs import LeeCommon
 from LeePyLibs import LeeButtonRender
+from LeePyLibs import LeeBaseTranslator
+from LeePyLibs import LeeBaseRevert
 
-class LeeButtonTranslator:
+class LeeButtonTranslator(LeeBaseTranslator, LeeBaseRevert):
 	def __init__(self):
+		LeeBaseTranslator.__init__(self)
+		LeeBaseRevert.__init__(self)
 		self.leeCommon = LeeCommon()
-		self.buttonRender = LeeButtonRender()
-		self.translateMap = {}
-		self.transFiles = []
-		self.translateDatabasePath = 'Resources/Databases/ButtonTranslate.json'
+		self.leeFileIO = LeeButtonRender()
+		self.translateDefaultDBPath = 'Resources/Databases/ButtonTranslate.json'
+		self.specifiedClientVer = None
+		self.__updateRevertDefaultDBPath()
 
+	def doTranslate(self, specifiedClientVer = None):
+		'''
+		重写 LeeBaseTranslator 的 doTranslate 方法
+		因为翻译按钮时的文件遍历方式与翻译其他单个文件的遍历方式有所不同
+		'''
+		self.__updateRevertDefaultDBPath(specifiedClientVer)
+		leeClientDir = self.leeCommon.getLeeClientDirectory()
+		scriptDir = self.leeCommon.getScriptDirectory()
+		patchesDir = os.path.normpath('%s/Patches/' % scriptDir)
+		rePathPattern = '^.*?/Patches/.*?/Resource/Original/data/texture/蜡历牢磐其捞胶'.replace('/', os.path.sep)
+		self.load()
+		self.clearRevert()
+
+		# 先确定需要被生成的翻译信息列表（汉化过程实际上是生成按钮图片）
+		# 最终存放到 waitingToBuildTranslateInfolist 数组中, 以便后续进行处理
+		waitingToBuildTranslateInfolist = []
+		for dirpath, _dirnames, filenames in os.walk(patchesDir):
+			for filename in filenames:
+				fullpath = os.path.normpath('%s/%s' % (dirpath, filename))
+				if not filename.lower().endswith('.bmp'): continue
+				if not re.match(rePathPattern, fullpath, re.I): continue
+				
+				relpath = re.search('Original/(.*)$'.replace('/', os.path.sep), fullpath).group(1)
+				translateInfo = self.__getTranslateInfo(relpath)
+				if not (translateInfo and translateInfo['ButtonText'] and translateInfo['StyleFormat']): continue
+				
+				translateInfo['RelativePath'] = relpath
+				translateInfo['FullPath'] = fullpath
+				translateInfo['ButtonWidth'], translateInfo['ButtonHeight'] = self.leeFileIO.getImageSizeByFilePath(fullpath)
+				deepTranslateInfo = copy.deepcopy(translateInfo)
+				waitingToBuildTranslateInfolist.append(deepTranslateInfo)
+
+		# 根据汉化信息来逐个生成按钮文件（包括按钮的各个状态）
+		btnStateDefine = ['normal', 'hover', 'press', 'disabled']
+		for translateInfo in waitingToBuildTranslateInfolist:
+			if (specifiedClientVer is not None) and (specifiedClientVer not in translateInfo['FullPath']): continue
+			translatedDirPath = re.search('^(.*)Original/data/texture'.replace('/', os.path.sep), translateInfo['FullPath'], re.I).group(1) + 'Translated'
+			textureDirPath = '%s/%s' % (translatedDirPath, os.path.dirname(translateInfo['RelativePath']))
+			os.makedirs(textureDirPath, exist_ok = True)
+
+			_referPostfix, filenameMode, _withDisabled = translateInfo['FilenameMode'].split('#')
+
+			for btnStateIndex, postfix in enumerate(filenameMode.split('|')):
+				btnSavePath = '%s/%s%s.bmp' % (textureDirPath, translateInfo['Basename'], postfix)
+				print('正在汉化, 请稍候: %s' % os.path.relpath(btnSavePath, leeClientDir).replace('Translated', 'Original'))
+				self.leeFileIO.createButtonBmpFile(
+					translateInfo['StyleFormat'], 
+					btnStateDefine[btnStateIndex], 
+					translateInfo['ButtonText'], 
+					translateInfo['ButtonWidth'], 
+					btnSavePath
+				)
+				self.insertRecord(btnSavePath)
+				print('汉化完毕, 保存到: %s\r\n' % os.path.relpath(btnSavePath, leeClientDir))
+		
+		self.saveRevert()
+	
+	def update(self):
+		scriptDir = self.leeCommon.getScriptDirectory()
+		ragexeClientDir = os.path.normpath('%s/Patches' % scriptDir)
+		updTranslateMap = {}
+
+		for dirpath, _dirnames, filenames in os.walk(ragexeClientDir):
+			for filename in filenames:
+				if not filename.lower().endswith('.bmp'): continue
+				if dirpath.lower().find('resource/original') <= 0: continue
+				
+				fullpath = '%s/%s' % (dirpath, filename)
+				result, realBasename, referPostfix, filenameMode, withDisabled = self.__detectFilemode(fullpath)
+				if not result: continue
+
+				relpath = re.search('Original/(.*)$'.replace('/', os.path.sep), fullpath).group(1)
+				fullNameMode = '%s#%s#%s' % (referPostfix, filenameMode, withDisabled)
+				translateKey = self.__generateKey(os.path.dirname(relpath).lower() + os.path.sep, '%s%s' % (realBasename, referPostfix))
+
+				translateItem = {
+					'Directory': os.path.dirname(relpath).lower() + os.path.sep,
+					'Basename': realBasename, 
+					'FilenameMode': fullNameMode,
+					'StyleFormat': '' if not (translateKey in self.translateMap) else self.translateMap[translateKey]['StyleFormat'],
+					'ButtonText': '' if not (translateKey in self.translateMap) else self.translateMap[translateKey]['ButtonText']
+				}
+
+				updTranslateMap[translateKey] = translateItem
+
+		self.translateMap.clear()
+		self.translateMap = updTranslateMap
+
+	def doRevert(self, specifiedClientVer = None):
+		if specifiedClientVer == 'AllVersions':
+			scriptDir = self.leeCommon.getScriptDirectory()
+			for filepath in glob.glob('%sResources/Databases/RevertData/ButtonTranslate*.json' % scriptDir):
+				relpath = os.path.relpath(filepath, scriptDir)
+				LeeBaseRevert.doRevert(self, relpath)
+		else:
+			self.__updateRevertDefaultDBPath(specifiedClientVer)
+			LeeBaseRevert.doRevert(self)
+
+	def __generateKey(self, dirpath, filename):
+		hashstr = '%s%s' % (dirpath, filename)
+		return hashlib.md5(hashstr.lower().encode(encoding='utf-8')).hexdigest()
+
+	def __getTranslateInfo(self, relpath):
+		dirname = os.path.normpath(os.path.dirname(relpath).lower()) + os.path.sep
+		filename = (os.path.splitext(os.path.basename(relpath))[0]).lower()
+		translateKey = self.__generateKey(dirname, filename)
+
+		if translateKey not in self.translateMap: return None
+		return self.translateMap[translateKey]
+
+	def __updateRevertDefaultDBPath(self, specifiedClientVer = None):
+		if specifiedClientVer is not None: self.specifiedClientVer = specifiedClientVer
+		self.revertDefaultDBPath = 'Resources/Databases/RevertData/ButtonTranslate%s.json' % ('' if self.specifiedClientVer is None else '_%s' % self.specifiedClientVer)
+	
+	def __detectFilemode(self, filepath):
+		if not filepath.lower().endswith('.bmp'):
+			return False, None, None, None, None
+		
 		# demo_out.bmp | demo_over.bmp | demo_press.bmp | demo_disable.bmp
 		# demo_out.bmp | demo_over.bmp | demo_press.bmp
 		# demo.bmp | demo_a.bmp | demo_b.bmp | demo_c.bmp
@@ -25,7 +148,7 @@ class LeeButtonTranslator:
 		# demo_a.bmp | demo_b.bmp | demo_c.bmp | demo_d.bmp
 		# demoa.bmp | demob.bmp
 
-		self.fileNameModes = [
+		fileNameModes = [
 			{ 'base': '_over', 'refer': ['_out', '_press'], 'block': [''], 'disable': '_disable', 'n': '_out|_over|_press', 'd': '_out|_over|_press|_disable' },
 			{ 'base': '_a', 'refer': ['', '_b'], 'block': ['_c'], 'disable': '_dis', 'n': '|_a|_b', 'd': '|_a|_b|_dis' },
 			{ 'base': '_a', 'refer': ['', '_b'], 'block': ['_dis'], 'disable': '_c', 'n': '|_a|_b', 'd': '|_a|_b|_c' },
@@ -33,214 +156,37 @@ class LeeButtonTranslator:
 			{ 'base': 'b', 'refer': ['a', 'c'], 'block': [''], 'disable': '', 'n': 'a|b|c', 'd': ''},
 			{ 'base': 'b', 'refer': ['a'], 'block': ['c'], 'disable': '', 'n': 'a|b', 'd': ''}
 		]
-	
-	def __getSessionPath(self):
-		'''
-		获取最后一次汉化按钮补丁时，信息数据库的存储路径
-		'''
-		scriptDir = self.leeCommon.getScriptDirectory()
-		patchesDir = os.path.abspath('%s/Patches/' % scriptDir)
-		os.makedirs(patchesDir, exist_ok = True)
-		sessionInfoFile = os.path.abspath('%s/LastButtonTransInfo.json' % patchesDir)
-		return sessionInfoFile
 
-	def __createSession(self):
-		self.transFiles.clear()
-
-	def __loadSession(self):
-		sessionInfoFile = self.__getSessionPath()
-		if os.path.exists(sessionInfoFile) and os.path.isfile(sessionInfoFile):
-			self.transFiles.clear()
-
-			patchesInfo = json.load(open(sessionInfoFile, 'r', encoding = 'utf-8'))
-			self.transFiles = patchesInfo['transfiles']
-			return True
-		return False
-	
-	def __transButtonFiles(self, filepath):
-		scriptDir = self.leeCommon.getScriptDirectory()
-		patchesDir = os.path.normpath('%s/Patches/' % scriptDir)
-		self.transFiles.append(os.path.relpath(filepath, patchesDir))
-	
-	def __commitSession(self):
-		# 记录成功被程序汉化的按钮文件路径
-		sessionInfoFile = self.__getSessionPath()
-		if os.path.exists(sessionInfoFile): os.remove(sessionInfoFile)
-		json.dump({
-			'transtime' : time.strftime('%Y-%m-%d %H:%M:%S',time.localtime()),
-			'transfiles' : self.transFiles
-		}, open(sessionInfoFile, 'w', encoding = 'utf-8'), indent = 4)
-	
-	def hasSomethingCanBeRevert(self):
-		self.__loadSession()
-		return len(self.transFiles) > 0
-
-	def __detectFileMode(self, filepath):
-		if not filepath.lower().endswith('.bmp'):
-			return False, None, None, None, None
-		
 		dirpath = os.path.dirname(filepath)
-		full_basename = (os.path.splitext(os.path.basename(filepath))[0]).lower()
-		real_basename = ''
-		refer_postfix = ''
-		filename_mode = ''
-		with_disabled = False
+		fullBasename = (os.path.splitext(os.path.basename(filepath))[0]).lower()
+		realBasename = referPostfix = finallyFilenameMode = ''
+		withDisabled = isValid = False
 
-		isValid = False
-		for fileNameMode in self.fileNameModes:
-			if full_basename.endswith(fileNameMode['base']): isValid = True
+		for fileNameMode in fileNameModes:
+			if fullBasename.endswith(fileNameMode['base']): isValid = True
 		if not isValid: return False, None, None, None, None
 
-		for fileNameMode in self.fileNameModes:
-			real_basename = full_basename[:len(full_basename) - len(fileNameMode['base'])]
-			refer_postfix = fileNameMode['base']
+		for fileNameMode in fileNameModes:
+			realBasename = fullBasename[:len(fullBasename) - len(fileNameMode['base'])]
+			referPostfix = fileNameMode['base']
 
 			referPass = True
 			for refer in fileNameMode['refer']:
-				if not self.leeCommon.isFileExists('%s/%s%s.bmp' % (dirpath, real_basename, refer)):
+				if not self.leeCommon.isFileExists('%s/%s%s.bmp' % (dirpath, realBasename, refer)):
 					referPass = False
 			if not referPass: continue
 
 			blockPass = True
 			for block in fileNameMode['block']:
-				if self.leeCommon.isFileExists('%s/%s%s.bmp' % (dirpath, real_basename, block)):
+				if self.leeCommon.isFileExists('%s/%s%s.bmp' % (dirpath, realBasename, block)):
 					blockPass = False
 			if not blockPass: continue
 
-			with_disabled = self.leeCommon.isFileExists('%s/%s%s.bmp' % (dirpath, real_basename, fileNameMode['disable']))
-			filename_mode = fileNameMode['d'] if with_disabled else fileNameMode['n']
+			withDisabled = self.leeCommon.isFileExists('%s/%s%s.bmp' % (dirpath, realBasename, fileNameMode['disable']))
+			finallyFilenameMode = fileNameMode['d'] if withDisabled else fileNameMode['n']
 			break
 		
-		if len(filename_mode) <= 0:
+		if len(finallyFilenameMode) <= 0:
 			return False, None, None, None, None
 
-		return True, real_basename, refer_postfix, filename_mode, with_disabled
-
-	def updateTranslate(self):
-		# 是否需要记录, 内容[目录, 基础文件名, 命名规则]
-		scriptDir = self.leeCommon.getScriptDirectory()
-		ragexeClientDir = os.path.normpath('%s/Patches' % scriptDir)
-		ragexeButtons = {}
-
-		for dirpath, _dirnames, filenames in os.walk(ragexeClientDir):
-			# print('Directory: %s' % dirpath)
-			for filename in filenames:
-				if not filename.lower().endswith('.bmp'):
-					continue
-				if dirpath.lower().find('resource/translated') > 0:
-					continue
-				if dirpath.lower().find('utility/common') > 0:
-					continue
-				
-				fullpath = '%s/%s' % (dirpath, filename)
-				result, real_basename, refer_postfix, filename_mode, with_disabled = self.__detectFileMode(fullpath)
-				if not result: continue
-
-				relpath = re.search('Original/(.*)$'.replace('/', os.path.sep), fullpath).group(1)
-				full_namemode = '%s#%s#%s' % (refer_postfix, filename_mode, with_disabled)
-				nodekey = self.getNodeKey(os.path.dirname(relpath).lower() + os.path.sep, '%s%s' % (real_basename, refer_postfix))
-
-				trans_item = {
-					'Directory': os.path.dirname(relpath).lower() + os.path.sep,
-					'Basename': real_basename, 
-					'FilenameMode': full_namemode,
-					'StyleFormat': '' if not (nodekey in self.translateMap) else self.translateMap[nodekey]['StyleFormat'],
-					'ButtonText': '' if not (nodekey in self.translateMap) else self.translateMap[nodekey]['ButtonText']
-				}
-
-				ragexeButtons[nodekey] = trans_item
-
-		self.translateMap.clear()
-		self.translateMap = ragexeButtons
-
-	def loadTranslate(self, filename = None):
-		if filename is None: filename = self.translateDatabasePath
-		translatePath = '%s/%s' % (self.leeCommon.getScriptDirectory(), filename)
-		self.translateMap = {}
-		if self.leeCommon.isFileExists(translatePath):
-			self.translateMap = json.load(open(translatePath, 'r', encoding='utf-8'))
-
-	def saveTranslate(self, saveFilename = None):
-		if saveFilename is None: saveFilename = self.translateDatabasePath
-		scriptDir = self.leeCommon.getScriptDirectory()
-		try:
-			savePath = os.path.abspath('%s/%s' % (scriptDir, saveFilename))
-			json.dump(self.translateMap, open(savePath, 'w', encoding='utf-8'), indent=4, ensure_ascii=False)
-			return True
-		except FileNotFoundError as _err:
-			raise
-		
-	def clear(self):
-		self.translateMap.clear()
-	
-	def getTranslateInfo(self, relpath):
-		dirname = os.path.normpath(os.path.dirname(relpath).lower()) + os.path.sep
-		filename = (os.path.splitext(os.path.basename(relpath))[0]).lower()
-		nodekey = self.getNodeKey(dirname, filename)
-
-		if nodekey not in self.translateMap: return None
-		return self.translateMap[nodekey]
-
-	def getNodeKey(self, dirpath, filename):
-		hashstr = '%s%s' % (dirpath, filename)
-		return hashlib.md5(hashstr.lower().encode(encoding='utf-8')).hexdigest()
-
-	def doTranslate(self):
-		scriptDir = self.leeCommon.getScriptDirectory()
-		patchesDir = os.path.normpath('%s/Patches/' % scriptDir)
-		rePathPattern = '^.*?/Patches/.*?/Resource/Original/data/texture/蜡历牢磐其捞胶'.replace('/', os.path.sep)
-		self.loadTranslate()
-		self.__createSession()
-
-		buildlist = []
-		for dirpath, _dirnames, filenames in os.walk(patchesDir):
-			for filename in filenames:
-				fullpath = os.path.normpath('%s/%s' % (dirpath, filename))
-				if not filename.lower().endswith('.bmp'): continue
-				if not re.match(rePathPattern, fullpath, re.I): continue
-				
-				relpath = re.search('Original/(.*)$'.replace('/', os.path.sep), fullpath).group(1)
-				traninfo = self.getTranslateInfo(relpath)
-				if not (traninfo and traninfo['ButtonText'] and traninfo['StyleFormat']): continue
-				
-				traninfo['RelativePath'] = relpath
-				traninfo['FullPath'] = fullpath
-				traninfo['ButtonWidth'], traninfo['ButtonHeight'] = self.buttonRender.getImageSizeByFilePath(fullpath)
-				deepcopy_traninfo = copy.deepcopy(traninfo)
-				buildlist.append(deepcopy_traninfo)
-
-		btnStateDefine = ['normal', 'hover', 'press', 'disabled']
-		for item in buildlist:
-			translatedDirPath = re.search('^(.*)Original/data/texture'.replace('/', os.path.sep), item['FullPath'], re.I).group(1) + 'Translated'
-			textureDirPath = '%s/%s' % (translatedDirPath, os.path.dirname(item['RelativePath']))
-			_refer_postfix, filename_mode, _with_disabled = item['FilenameMode'].split('#')
-
-			os.makedirs(textureDirPath, exist_ok = True)
-
-			for idx, postfix in enumerate(filename_mode.split('|')):
-				btnState = btnStateDefine[idx]
-				btnSavePath = '%s/%s%s.bmp' % (textureDirPath, item['Basename'], postfix)
-				self.buttonRender.createButtonBmpFile(item['StyleFormat'], btnState, item['ButtonText'], item['ButtonWidth'], btnSavePath)
-				self.__transButtonFiles(btnSavePath)
-		
-		self.__commitSession()
-
-	def doRevertButtonTranslate(self, loadSession = True):
-		if loadSession:
-			self.__loadSession()
-
-		scriptDir = self.leeCommon.getScriptDirectory()
-		patchesDir = os.path.normpath('%s/Patches/' % scriptDir)
-
-		for relpath in self.transFiles:
-			fullpath = os.path.abspath('%s/%s' % (patchesDir, relpath))
-			if self.leeCommon.isFileExists(fullpath):
-				os.remove(fullpath)
-
-		sessionInfoFile = self.__getSessionPath()
-		if self.leeCommon.isFileExists(sessionInfoFile):
-			os.remove(sessionInfoFile)
-
-		self.leeCommon.removeEmptyDirectorys(patchesDir)
-
-		return True
+		return True, realBasename, referPostfix, finallyFilenameMode, withDisabled
