@@ -38,7 +38,12 @@ class LeeMenu:
 		为接下来切换其他版本的客户端做好准备
 		'''
 		try:
+			print('正在重置 按钮汉化文件 ...')
+			self.buttonTranslator.doRevert('AllVersions')
+
+			print('正在重置 客户端环境 ...')
 			self.patchManager.doRevertPatch()
+
 			print('已成功重置 LeeClient 客户端环境')
 		except:
 			print('很抱歉, 重置 LeeClient 客户端环境的过程中发生了意外, 请检查结果')
@@ -57,6 +62,22 @@ class LeeMenu:
 			prompt = '是否立刻执行重置操作?'
 			self.leeCommon.simpleConfirm(lines, title, prompt, self, 'menus.resetWorkshop()')
 
+		# 先执行与此版本相关的汉化工作
+		print('正在汉化 iteminfo ...')
+		LeeIteminfoTranslator().doTranslate(clientver)
+
+		print('正在汉化 towninfo ...')
+		LeeTowninfoTranslator().doTranslate(clientver)
+
+		print('正在汉化 skillinfolist ...')
+		LeeSkillinfolistTranslator().doTranslate(clientver)
+
+		print('正在汉化 skilldescript ...')
+		LeeSkilldescriptTranslator().doTranslate(clientver)
+
+		print('正在汉化 客户端按钮 ...')
+		LeeButtonTranslator().doTranslate(clientver)
+
 		# 将对应的资源覆盖到 LeeClient 主目录
 		print('正在切换版本, 请耐心等待...')
 		if not self.patchManager.doApplyPatch(clientver):
@@ -71,35 +92,14 @@ class LeeMenu:
 		'''
 		try:
 			print('正在读取数据库...')
-			self.buttonTranslator.loadTranslate()
+			self.buttonTranslator.load()
 			print('正在根据目前 Patches 的内容升级数据库...')
-			self.buttonTranslator.updateTranslate()
+			self.buttonTranslator.update()
 			print('正在保存数据库...')
-			self.buttonTranslator.saveTranslate()
+			self.buttonTranslator.save()
 			print('更新操作已经完成, 请确认文件的变更内容...\r\n')
 		except:
 			raise
-	
-	def maintenanceApplyButtonTranslate(self):
-		'''
-		根据按钮汉化数据库的内容, 对客户端按钮进行汉化
-		'''
-		try:
-			self.buttonTranslator.doTranslate()
-			print('已完成客户端按钮的汉化工作, 请切换客户端版本以便生效\r\n')
-		except:
-			print('很抱歉, 对客户端按钮进行汉化的过程中发生了意外, 请检查结果\r\n')
-			raise
-
-	def maintenanceRevertButtonTranslate(self):
-		'''
-		根据上次对按钮汉化时备份的信息, 删掉被汉化出来的按钮文件
-		'''
-		try:
-			self.buttonTranslator.doRevertButtonTranslate()
-			print('已成功撤销对客户端按钮的汉化\r\n')
-		except:
-			print('很抱歉, 撤销对客户端按钮的汉化过程中发生了意外, 请检查结果\r\n')
 	
 	def maintenanceRunClientResourceCheck(self):
 		'''
@@ -107,34 +107,7 @@ class LeeMenu:
 		'''
 		self.leeVerifier.runVerifier()
 		print('完整性校验过程已结束\r\n')
-	
-	def maintenanceApplyIteminfoTranslate(self):
-		'''
-		对客户端的 Iteminfo 文件进行汉化操作
-		'''
-		LeeIteminfoTranslator().doTranslate()
-		print('已汉化全部 Iteminfo 文件\r\n')
 
-	def maintenanceApplyTowninfoTranslate(self):
-		'''
-		对客户端的 Towninfo 文件进行汉化操作
-		'''
-		LeeTowninfoTranslator().doTranslate()
-		print('已汉化全部 Towninfo 文件\r\n')
-	
-	def maintenanceApplySkillInfoListTranslate(self):
-		'''
-		对客户端的 SkillInfoList 文件进行汉化操作
-		'''
-		LeeSkillinfolistTranslator().doTranslate()
-		print('已汉化全部 SkillInfoList 文件\r\n')
-
-	def maintenanceApplySkillDescriptTranslate(self):
-		'''
-		对客户端的 SkillDescript 文件进行汉化操作
-		'''
-		LeeSkilldescriptTranslator().doTranslate()
-		print('已汉化全部 SkillDescript 文件\r\n')
 			
 	def item_SwitchWorkshop(self):
 		'''
@@ -190,41 +163,6 @@ class LeeMenu:
 		title = '更新客户端按钮的翻译数据库'
 		prompt = '是否执行更新操作?'
 		self.leeCommon.simpleConfirm(lines, title, prompt, self, 'menus.maintenanceUpdateButtonTranslateDB()')
-
-	def item_MaintenanceApplyButtonTranslate(self):
-		'''
-		菜单处理函数
-		当选择“维护 - 执行对客户端按钮的汉化”时执行
-		'''
-		if self.buttonTranslator.hasSomethingCanBeRevert():
-			lines = [
-				'在进行汉化之前, 需要先回滚以前的按钮翻译结果',
-				'若您有自定义汉化的按钮图片请务必提前备份, 避免被程序误删'
-				''
-			]
-			title = '执行对客户端按钮的汉化'
-			prompt = '是否先进行回滚?'
-			self.leeCommon.simpleConfirm(lines, title, prompt, self, 'menus.maintenanceRevertButtonTranslate()')
-
-		print('正在汉化客户端的按钮图档, 请耐心等待...')
-		self.maintenanceApplyButtonTranslate()
-
-	def item_MaintenanceRevertButtonTranslate(self):
-		'''
-		菜单处理函数
-		当选择“维护 - 撤销对客户端按钮的汉化”时执行
-		'''
-		if self.buttonTranslator.hasSomethingCanBeRevert():
-			lines = [
-				'您确认要撤销以前的按钮翻译结果吗?',
-				'若您有自定义汉化的按钮图片请务必提前备份, 避免被程序误删'
-				''
-			]
-			title = '撤销对客户端按钮的汉化'
-			prompt = '是否进行撤销?'
-			self.leeCommon.simpleConfirm(lines, title, prompt, self, 'menus.maintenanceRevertButtonTranslate()')
-		else:
-			self.leeCommon.exitWithMessage('目前暂无客户端按钮的汉化记录, 无需进行撤销.')
 	
 	def item_MaintenanceRunClientResourceCheck(self):
 		'''
@@ -240,62 +178,7 @@ class LeeMenu:
 		prompt = '是否确认执行?'
 		self.leeCommon.simpleConfirm(lines, title, prompt, self, 'menus.maintenanceRunClientResourceCheck()')
 	
-	def item_MaintenanceApplyIteminfoTranslate(self):
-		'''
-		菜单处理函数
-		当选择“维护 - 根据对照表翻译全部 Iteminfo 文件”时执行
-		'''
-		lines = [
-			'此过程将自动汉化 Iteminfo 文件.',
-			'汉化后的文件将覆盖到各客户端资源目录的 Translated 文件夹中.'
-			''
-		]
-		title = '是否汉化全部 Iteminfo 文件'
-		prompt = '是否确认执行?'
-		self.leeCommon.simpleConfirm(lines, title, prompt, self, 'menus.maintenanceApplyIteminfoTranslate()')
-	
-	def item_MaintenanceApplyTowninfoTranslate(self):
-		'''
-		菜单处理函数
-		当选择“维护 - 根据对照表翻译全部 Towninfo 文件”时执行
-		'''
-		lines = [
-			'此过程将自动汉化 Towninfo 文件.',
-			'汉化后的文件将覆盖到各客户端资源目录的 Translated 文件夹中.'
-			''
-		]
-		title = '是否汉化全部 Towninfo 文件'
-		prompt = '是否确认执行?'
-		self.leeCommon.simpleConfirm(lines, title, prompt, self, 'menus.maintenanceApplyTowninfoTranslate()')
-	
-	def item_MaintenanceApplySkillInfoListTranslate(self):
-		'''
-		菜单处理函数
-		当选择“维护 - 根据对照表翻译全部 SkillInfoList 文件”时执行
-		'''
-		lines = [
-			'此过程将自动汉化 SkillInfoList 文件.',
-			'汉化后的文件将覆盖到各客户端资源目录的 Translated 文件夹中.'
-			''
-		]
-		title = '是否汉化全部 SkillInfoList 文件'
-		prompt = '是否确认执行?'
-		self.leeCommon.simpleConfirm(lines, title, prompt, self, 'menus.maintenanceApplySkillInfoListTranslate()')
 
-	def item_MaintenanceApplySkillDescriptTranslate(self):
-		'''
-		菜单处理函数
-		当选择“维护 - 根据对照表翻译全部 SkillDescript 文件”时执行
-		'''
-		lines = [
-			'此过程将自动汉化 SkillDescript 文件.',
-			'汉化后的文件将覆盖到各客户端资源目录的 Translated 文件夹中.'
-			''
-		]
-		title = '是否汉化全部 SkillDescript 文件'
-		prompt = '是否确认执行?'
-		self.leeCommon.simpleConfirm(lines, title, prompt, self, 'menus.maintenanceApplySkillDescriptTranslate()')
-	
 	def item_End(self):
 		'''
 		菜单处理函数
@@ -316,16 +199,10 @@ def main():
 	
 	# 选择操作
 	menus = [
-		['切换仙境传说主程序的版本', 'menus.item_SwitchWorkshop()'],
+		['切换客户端到指定版本', 'menus.item_SwitchWorkshop()'],
 		['重置 LeeClient 客户端到干净状态', 'menus.item_ResetWorkshop()'],
-		['维护 - 更新客户端按钮的翻译数据库', 'menus.item_MaintenanceUpdateButtonTranslateDB()'],
-		['维护 - 执行对客户端按钮的汉化', 'menus.item_MaintenanceApplyButtonTranslate()'],
-		['维护 - 撤销对客户端按钮的汉化', 'menus.item_MaintenanceRevertButtonTranslate()'],
-		['维护 - 对客户端资源进行完整性校验', 'menus.item_MaintenanceRunClientResourceCheck()'],
-		['维护 - 根据对照表翻译全部 Iteminfo 文件', 'menus.item_MaintenanceApplyIteminfoTranslate()'],
-		['维护 - 根据对照表翻译全部 Towninfo 文件', 'menus.item_MaintenanceApplyTowninfoTranslate()'],
-		['维护 - 根据对照表翻译全部 SkillInfoList 文件', 'menus.item_MaintenanceApplySkillInfoListTranslate()'],
-		['维护 - 根据对照表翻译全部 SkillDescript 文件', 'menus.item_MaintenanceApplySkillDescriptTranslate()'],
+		['进行文件资源的完整性校验', 'menus.item_MaintenanceRunClientResourceCheck()'],
+		# ['维护 - 更新客户端按钮的翻译数据库', 'menus.item_MaintenanceUpdateButtonTranslateDB()'],
 		['退出程序', 'menus.item_End()']
 	]
 	title = 'LeeClient 控制台'

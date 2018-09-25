@@ -10,6 +10,7 @@ __pycache__
 /data/imf
 /Utility/Patches/Backup
 /Utility/Reports
+/Utility/Resources/Databases/RevertData/*.json
 
 /Utility/Patches/LastPatchesInfo.json
 /Utility/Patches/*/Resource/Translated/System/iteminfo.lub
