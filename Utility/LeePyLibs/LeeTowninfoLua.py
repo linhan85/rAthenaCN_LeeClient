@@ -20,12 +20,8 @@ class LeeTowninfoLua:
 		self.leeCommon = LeeCommon()
 		self.towninfoDict = {}
 
-		self.singleMapFormat = \
-'''	%s = {
-%s
-	}%s'''
-
-		self.singleInfoFormat = "\t\t{ name = \"%s\", X = %d, Y = %d, TYPE = %d }%s"
+		self.singleMapFormat = '\t%s = {\r\n%s\r\n\t}%s'
+		self.singleInfoFormat = '\t\t{ name = "%s", X = %d, Y = %d, TYPE = %d }%s'
 
 		self.townInfoFormat = \
 '''mapNPCInfoTable = {
@@ -43,7 +39,7 @@ main = function()
 	end
 	return true, "good"
 end
-'''
+'''.replace('\n', '\r\n').replace('\r\r', '\r')
 
 	def load(self, filepath):
 		self.towninfoDict.clear()
@@ -79,7 +75,7 @@ end
 					self.leeCommon.isLastReturn(self.towninfoDict[mapname], taginfo, '', ',')
 				)
 				singleItemText.append(infoText)
-
+			
 			singleMapText = self.singleMapFormat % (
 				mapname, '\r\n'.join(singleItemText), 
 				self.leeCommon.isLastReturn(sorted(self.towninfoDict), mapname, '', ',')
@@ -90,8 +86,8 @@ end
 
 		fullSavePath = os.path.abspath(savepath)
 		os.makedirs(os.path.dirname(fullSavePath), exist_ok = True)
-		luafile = open(fullSavePath, 'w', encoding = 'latin1')
-		luafile.write(luaContent)
+		luafile = open(fullSavePath, 'w', encoding = 'latin1', newline = '')
+		luafile.write(luaContent.replace('\r\r', '\r'))
 		luafile.close
 
 	def clear(self):

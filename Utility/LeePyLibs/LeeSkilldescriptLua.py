@@ -17,17 +17,8 @@ class LeeSkilldescriptLua:
 		self.leeCommon = LeeCommon()
 		self.skilldescriptDict = {}
 		self.SKID = []
-
-		self.singleSkilldescriptFormat = \
-'''	[SKID.%s] = {
-%s
-	}%s'''
-
-		self.skillDescriptFormat = \
-'''SKILL_DESCRIPT = {
-%s
-}
-'''
+		self.singleSkilldescriptFormat = '\t[SKID.%s] = {\r\n%s\r\n\t}%s'
+		self.skillDescriptFormat = 'SKILL_DESCRIPT = {\r\n%s\r\n}\r\n'
 	
 	def createLuaTable(self, luaContent, regex, pos, tableName):
 		matches = re.finditer(regex, luaContent, re.MULTILINE | re.IGNORECASE | re.DOTALL)
@@ -110,8 +101,8 @@ class LeeSkilldescriptLua:
 
 		fullSavePath = os.path.abspath(savepath)
 		os.makedirs(os.path.dirname(fullSavePath), exist_ok = True)
-		luafile = open(fullSavePath, 'w', encoding = 'latin1')
-		luafile.write(luaContent)
+		luafile = open(fullSavePath, 'w', encoding = 'latin1', newline = '')
+		luafile.write(luaContent.replace('\r\r', '\r'))
 		luafile.close
 
 	def clear(self):

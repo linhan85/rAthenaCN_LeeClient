@@ -462,11 +462,9 @@ class LeeVerifier:
 		savePath = '%s/Reports/VerifyRpt_%s.txt' % (self.leeCommon.getScriptDirectory(), reportTime)
 		savePath = self.leeCommon.normpath(savePath)
 		os.makedirs(os.path.dirname(savePath), exist_ok = True)
-
-		rptfile = open(savePath, 'w+', encoding = 'utf-8')
-		# 下面的换行处理在跨平台上的表现怪怪的, 应该有更正确的做法
-		reportInfoWarp = ['%s%s' % (line, '\r\n' if os.linesep == '\n' else '\n') for line in self.reportInfo]
-		rptfile.writelines(reportInfoWarp)
+		
+		rptfile = open(savePath, 'w+', encoding = 'utf-8', newline = '')
+		rptfile.write('\r\n'.join(self.reportInfo))
 		
 		print('校验结果已保存到 : %s' % os.path.relpath(savePath, leeClientDir))
 	

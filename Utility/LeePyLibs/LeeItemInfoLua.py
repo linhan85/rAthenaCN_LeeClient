@@ -36,7 +36,7 @@ class LeeIteminfoLua:
 		},
 		slotCount = %s,
 		ClassNum = %s
-	}%s'''
+	}%s'''.replace('\n', '\r\n').replace('\r\r', '\r')
 
 		self.itemInfoFormat = \
 '''tbl = {
@@ -64,7 +64,7 @@ main = function()
 	end
 	return true, "good"
 end
-'''
+'''.replace('\n', '\r\n').replace('\r\r', '\r')
 
 	def __normdesc(self, desc):
 		matches = re.finditer(r"(?<!\\)\"(.*?)(?<!\\)\"", desc, re.MULTILINE | re.IGNORECASE)
@@ -165,8 +165,8 @@ end
 		
 		fullSavePath = os.path.abspath(savepath)
 		os.makedirs(os.path.dirname(fullSavePath), exist_ok = True)
-		luafile = open(fullSavePath, 'w', encoding = 'latin1')
-		luafile.write(luaContent)
+		luafile = open(fullSavePath, 'w', encoding = 'latin1', newline = '')
+		luafile.write(luaContent.replace('\r\r', '\r'))
 		luafile.close
 
 	def items(self):

@@ -49,38 +49,15 @@ class LeeSkillinfolistLua:
 		SpAmount = { %s },
 		bSeperateLv = %s,
 		AttackRange = { %s }%s
-	}%s'''
+	}%s'''.replace('\n', '\r\n').replace('\r\r', '\r')
 
-		self._neeskillListFormat = \
-''',
-		_NeedSkillList = {
-%s
-		}'''
+		self._neeskillListFormat = ',\r\n\t\t_NeedSkillList = {\r\n%s\r\n\t\t}'
+		self.neeskillListFormat = ',\r\n\t\tNeedSkillList = {\r\n%s\r\n\t\t}'
+		self.jobDepentFormat = '\t\t\t[JOBID.%s] = {\r\n%s\r\n\t\t\t}%s'
 
-		self.jobDepentFormat = \
-'''			[JOBID.%s] = {
-%s
-			}%s'''
-
-		self.neeskillListFormat = \
-''',
-		NeedSkillList = {
-%s
-		}'''
-
-		self.skillScaleListFormat = \
-''',
-		SkillScale = {
-%s
-		}'''
-
-		self.skillScaleItemFormat = "\t\t\t[%s] = { x = %s, y = %s }%s"
-
-		self.skillinfoListFormat = \
-'''SKILL_INFO_LIST = {
-%s
-}
-'''
+		self.skillScaleListFormat = ',\r\n\t\tSkillScale = {\r\n%s\r\n\t\t}'
+		self.skillScaleItemFormat = '\t\t\t[%s] = { x = %s, y = %s }%s'
+		self.skillinfoListFormat = 'SKILL_INFO_LIST = {\r\n%s\r\n}\r\n'
 
 	def createLuaTable(self, luaContent, regex, pos, tableName):
 		matches = re.finditer(regex, luaContent, re.MULTILINE | re.IGNORECASE | re.DOTALL)
@@ -278,8 +255,8 @@ class LeeSkillinfolistLua:
 
 		fullSavePath = os.path.abspath(savepath)
 		os.makedirs(os.path.dirname(fullSavePath), exist_ok = True)
-		luafile = open(fullSavePath, 'w', encoding = 'latin1')
-		luafile.write(luaContent)
+		luafile = open(fullSavePath, 'w', encoding = 'latin1', newline = '')
+		luafile.write(luaContent.replace('\r\r', '\r'))
 		luafile.close
 
 	def clear(self):
