@@ -41,7 +41,7 @@ class LeeMenu:
 			print('正在重置 按钮汉化文件 ...')
 			self.buttonTranslator.doRevert('AllVersions')
 
-			print('正在重置 客户端环境 ...')
+			print('正在重置 其他客户端资源 ...')
 			self.patchManager.doRevertPatch()
 
 			print('已成功重置 LeeClient 客户端环境')
@@ -61,6 +61,7 @@ class LeeMenu:
 			title = '切换主程序版本到 %s' % clientver
 			prompt = '是否立刻执行重置操作?'
 			self.leeCommon.simpleConfirm(lines, title, prompt, self, 'menus.resetWorkshop()')
+			print('----------------------------------------------------------------')
 
 		# 先执行与此版本相关的汉化工作
 		print('正在汉化 iteminfo ...')

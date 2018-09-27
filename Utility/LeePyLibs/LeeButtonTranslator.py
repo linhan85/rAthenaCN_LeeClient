@@ -16,7 +16,6 @@ class LeeButtonTranslator(LeeBaseTranslator, LeeBaseRevert):
 	def __init__(self):
 		LeeBaseTranslator.__init__(self)
 		LeeBaseRevert.__init__(self)
-		self.leeCommon = LeeCommon()
 		self.leeFileIO = LeeButtonRender()
 		self.translateDefaultDBPath = 'Resources/Databases/ButtonTranslate.json'
 		self.specifiedClientVer = None
@@ -31,7 +30,7 @@ class LeeButtonTranslator(LeeBaseTranslator, LeeBaseRevert):
 		leeClientDir = self.leeCommon.getLeeClientDirectory()
 		scriptDir = self.leeCommon.getScriptDirectory()
 		patchesDir = os.path.normpath('%s/Patches/' % scriptDir)
-		rePathPattern = '^.*?/Patches/.*?/Resource/Original/data/texture/蜡历牢磐其捞胶'.replace('/', os.path.sep)
+		rePathPattern = self.leeCommon.normPattern(r'^.*?/Patches/.*?/Resource/Original/data/texture/蜡历牢磐其捞胶')
 		self.load()
 		self.clearRevert()
 
@@ -44,7 +43,7 @@ class LeeButtonTranslator(LeeBaseTranslator, LeeBaseRevert):
 				if not filename.lower().endswith('.bmp'): continue
 				if not re.match(rePathPattern, fullpath, re.I): continue
 				
-				relpath = re.search('Original/(.*)$'.replace('/', os.path.sep), fullpath).group(1)
+				relpath = re.search(self.leeCommon.normPattern(r'Original/(.*)$'), fullpath).group(1)
 				translateInfo = self.__getTranslateInfo(relpath)
 				if not (translateInfo and translateInfo['ButtonText'] and translateInfo['StyleFormat']): continue
 				
@@ -58,7 +57,7 @@ class LeeButtonTranslator(LeeBaseTranslator, LeeBaseRevert):
 		btnStateDefine = ['normal', 'hover', 'press', 'disabled']
 		for translateInfo in waitingToBuildTranslateInfolist:
 			if (specifiedClientVer is not None) and (specifiedClientVer not in translateInfo['FullPath']): continue
-			translatedDirPath = re.search('^(.*)Original/data/texture'.replace('/', os.path.sep), translateInfo['FullPath'], re.I).group(1) + 'Translated'
+			translatedDirPath = re.search(self.leeCommon.normPattern(r'^(.*)Original/data/texture'), translateInfo['FullPath'], re.I).group(1) + 'Translated'
 			textureDirPath = '%s/%s' % (translatedDirPath, os.path.dirname(translateInfo['RelativePath']))
 			os.makedirs(textureDirPath, exist_ok = True)
 
@@ -93,7 +92,7 @@ class LeeButtonTranslator(LeeBaseTranslator, LeeBaseRevert):
 				result, realBasename, referPostfix, filenameMode, withDisabled = self.__detectFilemode(fullpath)
 				if not result: continue
 
-				relpath = re.search('Original/(.*)$'.replace('/', os.path.sep), fullpath).group(1)
+				relpath = re.search(self.leeCommon.normPattern(r'Original/(.*)$'), fullpath).group(1)
 				fullNameMode = '%s#%s#%s' % (referPostfix, filenameMode, withDisabled)
 				translateKey = self.__generateKey(os.path.dirname(relpath).lower() + os.path.sep, '%s%s' % (realBasename, referPostfix))
 
@@ -121,7 +120,7 @@ class LeeButtonTranslator(LeeBaseTranslator, LeeBaseRevert):
 			LeeBaseRevert.doRevert(self)
 
 	def __generateKey(self, dirpath, filename):
-		hashstr = '%s%s' % (dirpath, filename)
+		hashstr = '%s%s' % (dirpath.replace('\\', '/'), filename)
 		return hashlib.md5(hashstr.lower().encode(encoding='utf-8')).hexdigest()
 
 	def __getTranslateInfo(self, relpath):

@@ -10,8 +10,8 @@ class LeeSkillinfolistTranslator(LeeBaseTranslator):
 		LeeBaseTranslator.__init__(self)
 		self.leeFileIO = LeeSkillinfolistLua()
 		self.translateDefaultDBPath = 'Resources/Databases/SkillDescriptTranslate.json'
-		self.reSrcPathPattern = r'^.*?/Patches/.*?/Resource/Original/data/luafiles514/lua files/skillinfoz/skillinfolist\.(lua|lub)'.replace('/', os.path.sep)
-		self.reDstPathPattern = r'(^.*?/Patches/.*?/Resource)/Original/(data/luafiles514/lua files/skillinfoz/skillinfolist\.(lua|lub))'.replace('/', os.path.sep)
+		self.reSrcPathPattern = self.leeCommon.normPattern(r'^.*?/Patches/.*?/Resource/Original/data/luafiles514/lua files/skillinfoz/skillinfolist\.(lua|lub)')
+		self.reDstPathPattern = self.leeCommon.normPattern(r'(^.*?/Patches/.*?/Resource)/Original/(data/luafiles514/lua files/skillinfoz/skillinfolist\.(lua|lub))')
 
 	def translate(self, srcFilepath, dstFilepath):
 		self.leeFileIO.load(srcFilepath)

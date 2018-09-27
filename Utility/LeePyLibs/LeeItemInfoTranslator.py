@@ -10,8 +10,8 @@ class LeeIteminfoTranslator(LeeBaseTranslator):
 		LeeBaseTranslator.__init__(self)
 		self.leeFileIO = LeeIteminfoLua()
 		self.translateDefaultDBPath = 'Resources/Databases/IteminfoTranslate.json'
-		self.reSrcPathPattern = r'^.*?/Patches/.*?/Resource/Original/System/iteminfo.*?\.(lua|lub)'.replace('/', os.path.sep)
-		self.reDstPathPattern = r'(^.*?/Patches/.*?/Resource)/Original/(System/iteminfo.*?\.(lua|lub))'.replace('/', os.path.sep)
+		self.reSrcPathPattern = self.leeCommon.normPattern(r'^.*?/Patches/.*?/Resource/Original/System/iteminfo.*?\.(lua|lub)')
+		self.reDstPathPattern = self.leeCommon.normPattern(r'(^.*?/Patches/.*?/Resource)/Original/(System/iteminfo.*?\.(lua|lub))')
 	
 	def create(self, srcIteminfoPath, translateDBPath = None):
 		if translateDBPath is None: translateDBPath = self.translateDefaultDBPath

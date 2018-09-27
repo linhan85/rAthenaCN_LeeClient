@@ -10,8 +10,8 @@ class LeeTowninfoTranslator(LeeBaseTranslator):
 		LeeBaseTranslator.__init__(self)
 		self.leeFileIO = LeeTowninfoLua()
 		self.translateDefaultDBPath = 'Resources/Databases/TowninfoTranslate.json'
-		self.reSrcPathPattern = r'^.*?/Patches/.*?/Resource/Original/System/Towninfo.*?\.(lua|lub)'.replace('/', os.path.sep)
-		self.reDstPathPattern = r'(^.*?/Patches/.*?/Resource)/Original/(System/Towninfo.*?\.(lua|lub))'.replace('/', os.path.sep)
+		self.reSrcPathPattern = self.leeCommon.normPattern(r'^.*?/Patches/.*?/Resource/Original/System/Towninfo.*?\.(lua|lub)')
+		self.reDstPathPattern = self.leeCommon.normPattern(r'(^.*?/Patches/.*?/Resource)/Original/(System/Towninfo.*?\.(lua|lub))')
 
 	def translate(self, srcFilepath, dstFilepath):
 		self.leeFileIO.load(srcFilepath)

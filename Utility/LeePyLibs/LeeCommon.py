@@ -221,6 +221,13 @@ class LeeCommon:
 			nelements += 1
 			return nelements
 	
+	def normPattern(self, rePattern):
+		'''
+		对用于描述一个路径的正则表达式中的斜杆进行处理
+		以便在 Linux 或者 Win 平台上都能兼容
+		'''
+		return rePattern.replace('/', r'\\' if os.path.sep == '\\' else '/')
+	
 	def strHexToRgb(self, val):
 		'''
 		将类似 #ffffff 的颜色代码转换成 (255, 255, 255)

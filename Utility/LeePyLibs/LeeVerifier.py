@@ -463,9 +463,10 @@ class LeeVerifier:
 		savePath = self.leeCommon.normpath(savePath)
 		os.makedirs(os.path.dirname(savePath), exist_ok = True)
 
-		with open(savePath, 'w+', encoding = 'utf-8') as rptfile:
-			for line in self.reportInfo:
-				rptfile.write('%s\r\n' % line)
+		rptfile = open(savePath, 'w+', encoding = 'utf-8')
+		# 下面的换行处理在跨平台上的表现怪怪的, 应该有更正确的做法
+		reportInfoWarp = ['%s%s' % (line, '\r\n' if os.linesep == '\n' else '\n') for line in self.reportInfo]
+		rptfile.writelines(reportInfoWarp)
 		
 		print('校验结果已保存到 : %s' % os.path.relpath(savePath, leeClientDir))
 	
@@ -520,7 +521,7 @@ class LeeVerifier:
 		# 校验 Iteminfo 文件中所需的贴图
 		scriptDir = self.leeCommon.getScriptDirectory()
 		patchesDir = os.path.normpath('%s/Patches/' % scriptDir)
-		rePathPattern = r'^.*?/Patches/.*?/Resource/Original/System/iteminfo.*?\.(lua|lub)'.replace('/', os.path.sep)
+		rePathPattern = self.leeCommon.normPattern(r'^.*?/Patches/.*?/Resource/Original/System/iteminfo.*?\.(lua|lub)')
 		
 		iteminfoFilePathList = []
 		for dirpath, _dirnames, filenames in os.walk(patchesDir):
