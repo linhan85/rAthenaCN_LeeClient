@@ -10,6 +10,11 @@ __pycache__
 /data/imf
 /Utility/Patches/Backup
 /Utility/Reports
+
+/Utility/Bin/GrfCL/msvcp100.dll
+/Utility/Bin/GrfCL/msvcr100.dll
+/Utility/Bin/GrfCL/Resources.*.dll
+/Utility/Bin/GrfCL/tmp
 /Utility/Resources/Databases/RevertData/*.json
 
 /Utility/Patches/LastPatchesInfo.json

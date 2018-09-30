@@ -2,8 +2,13 @@
 
 import os
 import sys
+import ctypes
 import platform
+
 from LeePyLibs import LeeConstant
+
+if platform.system() == 'Windows':
+	import winreg
 
 class LeeCommon:
 	'''
@@ -173,6 +178,38 @@ class LeeCommon:
 		判断指定的文件是否存在
 		'''
 		return os.path.exists(filepath) and os.path.isfile(filepath)
+
+	def isDotNetFrameworkInstalled(self, version):
+		'''
+		判断指定版本的 .Net framework 是否已安装
+		此函数仅用于 Windows 平台
+		'''
+		try:
+			if platform.system() != 'Windows':
+				self.exitWithMessage('很抱歉, %s 此函数目前只能在 Windows 平台上运行.' % __name__)
+			framework_key = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, 'SOFTWARE\\Microsoft\\NET Framework Setup\\NDP\\%s' % version)
+			_value, _value_type = winreg.QueryValueEx(framework_key, 'InstallPath')
+			return self.isDirectoryExists(_value)
+		except:
+			return False
+	
+	def getDiskFreeSpace(self, driver):
+		'''
+		获取指定盘符(比如 C:)的磁盘剩余空间字节数
+		此函数仅用于 Windows 平台
+		'''
+		if platform.system() != 'Windows':
+			self.exitWithMessage('很抱歉, %s 此函数目前只能在 Windows 平台上运行.' % __name__)
+
+		if driver.endswith(':'):
+			driver = driver.upper().split(':')[0]
+		
+		if not driver.upper().isalpha() or len(driver) > 1:
+			return None
+		
+		free_bytes = ctypes.c_ulonglong(0)
+		ctypes.windll.kernel32.GetDiskFreeSpaceExW(ctypes.c_wchar_p('%s:' % driver), None, None, ctypes.pointer(free_bytes))
+		return free_bytes.value
 	
 	def isLastElement(self, list_or_dict, val):
 		'''
@@ -274,9 +311,11 @@ class LeeCommon:
 		print('----------------------------------------------------------------')
 		
 		if user_select in ('N', 'n'):
-			menus.item_End()
+			if menus != None: menus.item_End()
+			elif evalcmd is None: return False
 		elif user_select in ('Y', 'y'):
-			eval(evalcmd)
+			if evalcmd != None: exec(evalcmd)
+			elif evalcmd is None: return True
 		else:
 			self.exitWithMessage('请填写 Y 或者 N 之后回车确认, 请不要输入其他字符')
 
@@ -308,12 +347,12 @@ class LeeCommon:
 		userSelect = self.atoi(userSelect)
 
 		if (userSelect == len(items) and withcancel):
-			eval('menus.item_Main()')
+			exec('menus.item_Main()')
 			return
 		
 		if (userSelect >= len(items) or items[userSelect] is None):
 			self.exitWithMessage('请填写正确的菜单编号(纯数字), 不要超出范围')
 		elif (items[userSelect][1] is not None):
-			eval(items[userSelect][1])
+			exec(items[userSelect][1])
 		
 		return self.atoi(userSelect)
