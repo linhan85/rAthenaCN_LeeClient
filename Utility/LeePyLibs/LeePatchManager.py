@@ -37,7 +37,7 @@ class LeePatchManager:
 		scriptDir = self.leeCommon.getScriptDirectory()
 		revertDir = os.path.abspath('%s/Resources/Databases/RevertData' % scriptDir)
 		os.makedirs(revertDir, exist_ok = True)
-		sessionInfoFile = os.path.abspath('%s/PatchesInfo.json' % revertDir)
+		sessionInfoFile = os.path.abspath('%s/LeeClientRevert.json' % revertDir)
 		return sessionInfoFile
 
 	def __createSession(self):

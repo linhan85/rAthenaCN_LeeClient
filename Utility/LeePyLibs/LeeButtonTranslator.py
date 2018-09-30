@@ -112,7 +112,7 @@ class LeeButtonTranslator(LeeBaseTranslator, LeeBaseRevert):
 	def doRevert(self, specifiedClientVer = None):
 		if specifiedClientVer == 'AllVersions':
 			scriptDir = self.leeCommon.getScriptDirectory()
-			for filepath in glob.glob('%sResources/Databases/RevertData/ButtonTranslate*.json' % scriptDir):
+			for filepath in glob.glob('%sResources/Databases/RevertData/LeeButtonRevert*.json' % scriptDir):
 				relpath = os.path.relpath(filepath, scriptDir)
 				LeeBaseRevert.doRevert(self, relpath)
 		else:
@@ -133,7 +133,7 @@ class LeeButtonTranslator(LeeBaseTranslator, LeeBaseRevert):
 
 	def __updateRevertDefaultDBPath(self, specifiedClientVer = None):
 		if specifiedClientVer is not None: self.specifiedClientVer = specifiedClientVer
-		self.revertDefaultDBPath = 'Resources/Databases/RevertData/ButtonTranslate%s.json' % ('' if self.specifiedClientVer is None else '_%s' % self.specifiedClientVer)
+		self.revertDefaultDBPath = 'Resources/Databases/RevertData/LeeButtonRevert%s.json' % ('' if self.specifiedClientVer is None else '_%s' % self.specifiedClientVer)
 	
 	def __detectFilemode(self, filepath):
 		if not filepath.lower().endswith('.bmp'):
