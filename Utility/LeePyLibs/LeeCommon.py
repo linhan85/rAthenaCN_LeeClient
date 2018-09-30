@@ -128,7 +128,7 @@ class LeeCommon:
 			return None
 		
 		for dname in list:
-			if dname.lower() in ['common']: continue
+			if dname.lower() in ['common', 'backup']: continue
 			if os.path.isdir(os.path.normpath(dirpath) + os.path.sep + dname):
 				dirlist.append(dname)
 		

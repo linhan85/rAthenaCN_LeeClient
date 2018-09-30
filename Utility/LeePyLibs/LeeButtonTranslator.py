@@ -73,7 +73,7 @@ class LeeButtonTranslator(LeeBaseTranslator, LeeBaseRevert):
 					translateInfo['ButtonWidth'], 
 					btnSavePath
 				)
-				self.insertRecord(btnSavePath)
+				self.rememberRevert(btnSavePath)
 				print('汉化完毕, 保存到: %s\r\n' % os.path.relpath(btnSavePath, leeClientDir))
 		
 		self.saveRevert()

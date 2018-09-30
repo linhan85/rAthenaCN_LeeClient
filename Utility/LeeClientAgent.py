@@ -52,7 +52,7 @@ class LeeMenu:
 		'''
 		重置工作区, 并切换 LeeClient 到指定的客户端版本
 		'''
-		if self.patchManager.hasSomethingCanBeRevert():
+		if self.patchManager.canRevert():
 			lines = [
 				'在切换版本之前, 需要将 LeeClient 客户端恢复到干净状态',
 				'请将自己添加的额外重要文件移出 LeeClient 目录, 避免被程序误删'
@@ -137,7 +137,7 @@ class LeeMenu:
 		'''
 		self.leeCommon.cleanScreen()
 		
-		if self.patchManager.hasSomethingCanBeRevert():
+		if self.patchManager.canRevert():
 			lines = [
 				'此操作可以将 LeeClient 客户端恢复到干净状态',
 				'请将自己添加的额外重要文件移出 LeeClient 目录, 避免被程序误删',

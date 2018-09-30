@@ -45,6 +45,24 @@ class LeePatchManager:
 		self.backupFiles.clear()
 		self.patchesFiles.clear()
 	
+	def __pathrestore(self, dictobj):
+		'''
+		用于处理 dictobj 字典对象中存储的路径
+		把反斜杠转换回当前系统的路径分隔符
+		'''
+		dictobj['src'] = dictobj['src'].replace('\\', os.path.sep)
+		dictobj['dst'] = dictobj['dst'].replace('\\', os.path.sep)
+		return dictobj
+
+	def __pathnorm(self, dictobj):
+		'''
+		用于处理 dictobj 字典对象中存储的路径
+		把斜杠转换回统一的反斜杠
+		'''
+		dictobj['src'] = dictobj['src'].replace('/', '\\')
+		dictobj['dst'] = dictobj['dst'].replace('/', '\\')
+		return dictobj
+
 	def __loadSession(self):
 		sessionInfoFile = self.__getSessionPath()
 		if os.path.exists(sessionInfoFile) and os.path.isfile(sessionInfoFile):
@@ -54,6 +72,11 @@ class LeePatchManager:
 			patchesInfo = json.load(open(sessionInfoFile, 'r', encoding = 'utf-8'))
 			self.backupFiles = patchesInfo['backuplist']
 			self.patchesFiles = patchesInfo['patchlist']
+
+			# 标准化处理一下反斜杠, 以便在跨平台备份恢复时可以顺利找到文件
+			self.backupFiles = [filepath.replace('\\', os.path.sep) for filepath in self.backupFiles]
+			self.patchesFiles = [self.__pathrestore(item) for item in self.patchesFiles]
+
 			return True
 		return False
 
@@ -123,15 +146,20 @@ class LeePatchManager:
 		# 记录备份和成功替换的文件信息
 		sessionInfoFile = self.__getSessionPath()
 		if os.path.exists(sessionInfoFile): os.remove(sessionInfoFile)
+
+		# 标准化处理一下反斜杠, 以便在跨平台备份恢复时可以顺利找到文件
+		self.backupFiles = [filepath.replace('/', '\\') for filepath in self.backupFiles]
+		self.patchesFiles = [self.__pathnorm(item) for item in self.patchesFiles]
+		
 		json.dump({
 			'patchtime' : time.strftime('%Y-%m-%d %H:%M:%S',time.localtime()),
 			'backuplist' : self.backupFiles,
 			'patchlist' : self.patchesFiles
-		}, open(sessionInfoFile, 'w', encoding = 'utf-8'), indent = 4)
+		}, open(sessionInfoFile, 'w', encoding = 'utf-8'), ensure_ascii = False, indent = 4)
 		
 		return True
 	
-	def hasSomethingCanBeRevert(self):
+	def canRevert(self):
 		self.__loadSession()
 		leeClientDir = self.leeCommon.getLeeClientDirectory()
 

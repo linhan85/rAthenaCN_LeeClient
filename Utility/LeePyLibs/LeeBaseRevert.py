@@ -22,11 +22,14 @@ class LeeBaseRevert:
 		self.revertFiles.clear()
 		revertContent = json.load(open(revertDatabaseLoadpath, 'r', encoding = 'utf-8'))
 		self.revertFiles = revertContent['files']
+
+		# 标准化处理一下反斜杠, 以便在跨平台备份恢复时可以顺利找到文件
+		self.revertFiles = [item.replace('\\', os.path.sep) for item in self.revertFiles]
 		return True
 	
-	def insertRecord(self, filepath):
+	def rememberRevert(self, filepath):
 		patchesDir = os.path.normpath('%s/Patches/' % self.leeCommon.getScriptDirectory())
-		self.revertFiles.append(os.path.relpath(filepath, patchesDir))
+		self.revertFiles.append(os.path.relpath(filepath, patchesDir).replace('/', '\\'))
 	
 	def saveRevert(self, revertDatabaseSavepath = None):
 		if revertDatabaseSavepath is None: revertDatabaseSavepath = self.revertDefaultDBPath
@@ -34,11 +37,14 @@ class LeeBaseRevert:
 		if self.leeCommon.isFileExists(revertDatabaseSavepath): os.remove(revertDatabaseSavepath)
 		os.makedirs(os.path.dirname(revertDatabaseSavepath), exist_ok = True)
 
+		# 标准化处理一下反斜杠, 以便在跨平台备份恢复时可以顺利找到文件
+		self.revertFiles = [item.replace('/', '\\') for item in self.revertFiles]
+
 		json.dump({
 			'files' : self.revertFiles
 		}, open(revertDatabaseSavepath, 'w', encoding = 'utf-8'), indent = 4, ensure_ascii = False)
 	
-	def hasRevertInfo(self, revertDatabaseLoadpath = None):
+	def canRevert(self, revertDatabaseLoadpath = None):
 		if revertDatabaseLoadpath is None: revertDatabaseLoadpath = self.revertDefaultDBPath
 		self.loadRevert(revertDatabaseLoadpath)
 		return len(self.revertFiles) > 0
@@ -51,7 +57,8 @@ class LeeBaseRevert:
 		patchesDir = os.path.normpath('%s/Patches/' % scriptDir)
 
 		for relpath in self.revertFiles:
-			fullpath = os.path.abspath('%s/%s' % (patchesDir, relpath))
+			# replace('\\', os.path.sep) 标准化处理一下反斜杠
+			fullpath = os.path.abspath('%s/%s' % (patchesDir, relpath.replace('\\', os.path.sep)))
 			if self.leeCommon.isFileExists(fullpath):
 				os.remove(fullpath)
 
