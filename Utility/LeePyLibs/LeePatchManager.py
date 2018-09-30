@@ -35,9 +35,9 @@ class LeePatchManager:
 		获取最后一次应用补丁时，路径信息数据库的存储路径
 		'''
 		scriptDir = self.leeCommon.getScriptDirectory()
-		patchesDir = os.path.abspath('%s/Patches/' % scriptDir)
-		os.makedirs(patchesDir, exist_ok = True)
-		sessionInfoFile = os.path.abspath('%s/LastPatchesInfo.json' % patchesDir)
+		revertDir = os.path.abspath('%s/Resources/Databases/RevertData' % scriptDir)
+		os.makedirs(revertDir, exist_ok = True)
+		sessionInfoFile = os.path.abspath('%s/PatchesInfo.json' % revertDir)
 		return sessionInfoFile
 
 	def __createSession(self):
