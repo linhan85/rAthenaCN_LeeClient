@@ -36,7 +36,7 @@ class LeeGrf:
 
 		# 确认 GrfCL 文件存在
 		scriptDir = self.leeCommon.getScriptDirectory()
-		grfCLFilePath = '%s/Bin/GrfCL/GrfCL.exe' % scriptDir
+		grfCLFilePath = ('%sBin/GrfCL/GrfCL.exe' % scriptDir).replace('/', os.path.sep)
 		if not self.leeCommon.isFileExists(grfCLFilePath):
 			self.leeCommon.exitWithMessage('制作 grf 文件所需的 GrfCL.exe 程序不存在, 无法执行压缩.')
 
@@ -56,10 +56,9 @@ class LeeGrf:
 		self.leeCommon.cleanScreen()
 		grfCLProc = subprocess.Popen('%s %s' % (
 			grfCLFilePath,
-			'-breakOnExceptions true -makeGrf %s "%s" -shellOpen %s -break' % (
-				grfOutputPath,
-				dataDirPath,
-				grfOutputPath
+			'-breakOnExceptions true -makeGrf "%s" "%s"' % (
+				os.path.relpath(grfOutputPath, os.path.dirname(grfCLFilePath)),
+				os.path.relpath(dataDirPath, os.path.dirname(grfCLFilePath))
 			)
 		), stdout = sys.stdout, cwd = os.path.dirname(grfCLFilePath))
 		grfCLProc.wait()
