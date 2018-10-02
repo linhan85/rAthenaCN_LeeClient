@@ -16,6 +16,7 @@ from LeePyLibs import LeeIteminfoTranslator
 from LeePyLibs import LeeTowninfoTranslator
 from LeePyLibs import LeeSkillinfolistTranslator
 from LeePyLibs import LeeSkilldescriptTranslator
+from LeePyLibs import LeePublisher
 
 # pip3 install pygame -i https://pypi.douban.com/simple --trusted-host=pypi.douban.com
 # pip3 install pillow -i https://pypi.douban.com/simple --trusted-host=pypi.douban.com
@@ -122,7 +123,13 @@ class LeeMenu:
 		将客户端的 data 目录压缩为 data.grf 文件
 		'''
 		leeClientDir = self.leeCommon.getLeeClientDirectory()
-		LeeGrf().makeGrf('%sdata/' % leeClientDir, '%sdata.grf' % leeClientDir)
+		LeeGrf().makeGrf('%sdata%s' % (leeClientDir, os.path.sep), '%sdata.grf' % leeClientDir)
+	
+	def maintenanceMakePackageSource(self):
+		'''
+		生成客户端打包源
+		'''
+		LeePublisher().makeSource()
 			
 	def item_SwitchWorkshop(self):
 		'''
@@ -214,6 +221,13 @@ class LeeMenu:
 		prompt = '是否已经清楚以上事项?'
 		self.leeCommon.simpleConfirm(lines, title, prompt, self, 'menus.maintenanceMakeDataToGrf()')
 
+	def item_MaintenanceMakePackageSource(self):
+		'''
+		菜单处理函数
+		当选择“维护 - 生成客户端打包源”时执行
+		'''
+		self.maintenanceMakePackageSource()
+
 	def item_End(self):
 		'''
 		菜单处理函数
@@ -238,6 +252,7 @@ def main():
 		['重置 LeeClient 客户端到干净状态', 'menus.item_ResetWorkshop()'],
 		['进行文件资源的完整性校验', 'menus.item_MaintenanceRunClientResourceCheck()'],
 		['维护 - 将 data 目录打包为标准 grf 文件', 'menus.item_MaintenanceMakeDataToGrf()'],
+		['维护 - 生成客户端打包源', 'menus.item_MaintenanceMakePackageSource()'],
 		# ['维护 - 更新客户端按钮的翻译数据库', 'menus.item_MaintenanceUpdateButtonTranslateDB()'],
 		['退出程序', 'menus.item_End()']
 	]
