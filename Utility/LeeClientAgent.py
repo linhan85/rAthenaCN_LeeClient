@@ -94,6 +94,19 @@ class LeeMenu:
 			print('很抱歉, 切换仙境传说的主程序到 %s 版本的时发生错误, 请检查结果' % clientver)
 		else:
 			print('已切换仙境传说的主程序到 %s 版本\r\n' % clientver)
+
+	def makePackageSourceToZipfile(self, packageSourceDirname):
+		'''
+		将指定的打包源压缩成一个 ZIP 文件
+		'''
+		leeClientParantDir = os.path.abspath('%s..%s' % (self.leeCommon.getLeeClientDirectory(), os.path.sep))
+		packageSourceDirPath = '%s%s%s' % (leeClientParantDir, os.path.sep, packageSourceDirname)
+
+		zipFilename = LeePublisher().getZipFilename(packageSourceDirPath)
+		if not LeePublisher().makeZip(packageSourceDirPath, zipFilename):
+			print('很抱歉, 压缩 ZIP 文件的时发生错误, 请检查结果')
+		else:
+			print('已压缩为 ZIP 文件: %s\r\n' % (zipFilename))
 	
 	def maintenanceUpdateButtonTranslateDB(self):
 		'''
@@ -130,7 +143,28 @@ class LeeMenu:
 		生成客户端打包源
 		'''
 		LeePublisher().makeSource()
-			
+	
+	def maintenanceMakePackageSourceToZipfile(self):
+		'''
+		用于将指定的打包源压缩成一个 ZIP 文件
+		这了会将可用的打包源列出来, 让用户可以进行选择
+		'''
+		self.leeCommon.cleanScreen()
+		
+		leeClientDir = self.leeCommon.getLeeClientDirectory()
+		packageSourceDirnameList = LeePublisher().getPackageSourceList(os.path.abspath(leeClientDir + '..\\') + os.sep)
+		if packageSourceDirnameList is None:
+			self.leeCommon.exitWithMessage('很抱歉, 无法获取打包源列表, 程序终止')
+		
+		if len(packageSourceDirnameList) <= 0:
+			self.leeCommon.exitWithMessage('没有发现任何可用的打包源, 请先生成一个吧')
+
+		menus = []
+		for packageSourceDirname in packageSourceDirnameList:
+			menuItem = [packageSourceDirname, 'menus.makePackageSourceToZipfile(\'%s\')' % packageSourceDirname]
+			menus.append(menuItem)
+		self.leeCommon.simpleMenu(menus, '将指定的打包源压缩成 ZIP 文件', '请选择你想压缩的打包源目录', self, withcancel = True)
+		
 	def item_SwitchWorkshop(self):
 		'''
 		菜单处理函数
@@ -227,6 +261,13 @@ class LeeMenu:
 		当选择“维护 - 生成客户端打包源”时执行
 		'''
 		self.maintenanceMakePackageSource()
+	
+	def item_MaintenanceMakePackageSourceToZipfile(self):
+		'''
+		菜单处理函数
+		当选择“维护 - 将指定的打包源压缩成 ZIP 文件”时执行
+		'''
+		self.maintenanceMakePackageSourceToZipfile()
 
 	def item_End(self):
 		'''
@@ -253,6 +294,7 @@ def main():
 		['进行文件资源的完整性校验', 'menus.item_MaintenanceRunClientResourceCheck()'],
 		['维护 - 将 data 目录打包为标准 grf 文件', 'menus.item_MaintenanceMakeDataToGrf()'],
 		['维护 - 生成客户端打包源', 'menus.item_MaintenanceMakePackageSource()'],
+		['维护 - 将指定的打包源压缩成 ZIP 文件', 'menus.item_MaintenanceMakePackageSourceToZipfile()'],
 		# ['维护 - 更新客户端按钮的翻译数据库', 'menus.item_MaintenanceUpdateButtonTranslateDB()'],
 		['退出程序', 'menus.item_End()']
 	]

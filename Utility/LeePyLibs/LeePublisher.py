@@ -8,6 +8,7 @@ import subprocess
 import shutil
 
 from LeePyLibs import LeeCommon
+from LeePyLibs import LeeZipfile
 from LeePyLibs import LeePatchManager
 
 class LeePublisher:
@@ -71,7 +72,9 @@ class LeePublisher:
 				# 记录到 copyFileList 表示需要复制此文件到打包源
 				copyFileList.append(fullpath)
 		
-		# 把文件拷贝到打包源（最好能大概显示进度）
+		# 把文件拷贝到打包源
+		# TODO: 最好能够显示文件的复制进度
+		# http://zzq635.blog.163.com/blog/static/1952644862013125112025129/
 		for srcFilePath in copyFileList:
 			relFilePath = os.path.relpath(srcFilePath, leeClientDir)
 			dstFilePath = '%s%s' % (releaseDirPath, relFilePath)
@@ -82,13 +85,39 @@ class LeePublisher:
 		# 把最终发布源所在的目录当做参数返回值回传
 		return releaseDirPath
 	
+	def getZipFilename(self, sourceDir):
+		if sourceDir.endswith('\\') or sourceDir.endswith('/'):
+			sourceDir = sourceDir[:-1]
+		return '%s.zip' % sourceDir
+	
+	def getPackageSourceList(self, dirpath):
+		'''
+		根据指定的 dir 中枚举出子目录的名字 (即打包源的目录名)
+		返回: Array 保存着每个子目录名称的数组
+		'''
+		dirlist = []
+		
+		try:
+			list = os.listdir(dirpath)
+		except:
+			print('getPackageSourceList Access Deny')
+			return None
+		
+		for dname in list:
+			if not dname.lower().startswith('leeclient_release_'): continue
+			if os.path.isdir(os.path.normpath(dirpath) + os.path.sep + dname):
+				dirlist.append(dname)
+		
+		dirlist.sort()
+		return dirlist
+
 	def makeZip(self, sourceDir, zipSavePath):
 		'''
 		将打包源目录直接压缩成一个 zip 文件
 		'''
 		# https://blog.csdn.net/dou_being/article/details/81546172
 		# https://blog.csdn.net/zhd199500423/article/details/80853405
-		pass
+		return LeeZipfile().zip(sourceDir, zipSavePath)
 	
 	def makeSetup(self, sourceDir, setupSavePath):
 		'''
