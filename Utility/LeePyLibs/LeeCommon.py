@@ -4,6 +4,7 @@ import os
 import sys
 import ctypes
 import platform
+import hashlib
 
 from LeePyLibs import LeeConstant
 
@@ -139,6 +140,18 @@ class LeeCommon:
 		
 		dirlist.sort()
 		return dirlist
+	
+	def getMD5ForString(self, strContent):
+		'''
+		获取一段字符串内容的 MD5 值
+		'''
+		return hashlib.md5(strContent.encode(encoding = 'utf8')).hexdigest()
+	
+	def getMD5ForSmallFile(self, filepath):
+		'''
+		获取一个小文件的 MD5 值
+		'''
+		return hashlib.md5(open(filepath, 'rb').read()).hexdigest()
 
 	def cleanScreen(self):
 		'''
@@ -319,7 +332,7 @@ class LeeCommon:
 		else:
 			self.exitWithMessage('请填写 Y 或者 N 之后回车确认, 请不要输入其他字符')
 
-	def simpleMenu(self, items, title, prompt, menus, withcancel = False):
+	def simpleMenu(self, items, title, prompt, withCancel = False, injectClass = None, cancelExec = None, resultMap = None):
 		'''
 		简易的选择菜单
 		'''
@@ -331,11 +344,14 @@ class LeeCommon:
 			print('================================================================')
 		
 		print('')
+
 		index = 0
+		menuIndexAndResultIndexDict = {}
 		for item in items:
 			print('%d - %s' % (index, item[0]))
+			menuIndexAndResultIndexDict[index] = None if item[2] is None else item[2]
 			index = index + 1
-		if withcancel:
+		if withCancel:
 			print('%d - %s' % (index, '取消'))
 		print('')
 		userSelect = input('%s (%d - %d): ' % (prompt, 0, len(items) - 1))
@@ -346,13 +362,22 @@ class LeeCommon:
 			
 		userSelect = self.atoi(userSelect)
 
-		if (userSelect == len(items) and withcancel):
-			exec('menus.item_Main()')
-			return
+		if (userSelect == len(items) and withCancel):
+			if cancelExec is not None:
+				exec(cancelExec)
+			return None
 		
 		if (userSelect >= len(items) or items[userSelect] is None):
 			self.exitWithMessage('请填写正确的菜单编号(纯数字), 不要超出范围')
 		elif (items[userSelect][1] is not None):
 			exec(items[userSelect][1])
-		
-		return self.atoi(userSelect)
+
+		if resultMap is None:
+			return self.atoi(userSelect)
+		elif (isinstance(resultMap, list) and 
+			userSelect in menuIndexAndResultIndexDict and 
+			menuIndexAndResultIndexDict[userSelect] is not None and
+			len(resultMap) > menuIndexAndResultIndexDict[userSelect]):
+			return resultMap[menuIndexAndResultIndexDict[userSelect]]
+		else:
+			return None

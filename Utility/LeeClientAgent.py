@@ -21,6 +21,7 @@ from LeePyLibs import LeePublisher
 # pip3 install pygame -i https://pypi.douban.com/simple --trusted-host=pypi.douban.com
 # pip3 install pillow -i https://pypi.douban.com/simple --trusted-host=pypi.douban.com
 # pip3 install lupa -i https://pypi.douban.com/simple --trusted-host=pypi.douban.com
+# pip3 install pyyaml -i https://pypi.douban.com/simple --trusted-host=pypi.douban.com
 
 LeeConstant().Environment = 'develop'
 LeeConstant().EncodingForSaveFile = 'utf-8'
@@ -104,9 +105,22 @@ class LeeMenu:
 
 		zipFilename = LeePublisher().getZipFilename(packageSourceDirPath)
 		if not LeePublisher().makeZip(packageSourceDirPath, zipFilename):
-			print('很抱歉, 压缩 ZIP 文件的时发生错误, 请检查结果')
+			print('很抱歉, 压缩 ZIP 文件时发生错误, 请检查结果')
 		else:
 			print('已压缩为 ZIP 文件: %s\r\n' % (zipFilename))
+	
+	def makePackageSourceToSetup(self, packageSourceDirname):
+		'''
+		将指定的打包源制作成一个 Setup 安装程序
+		'''
+		leeClientParantDir = os.path.abspath('%s..%s' % (self.leeCommon.getLeeClientDirectory(), os.path.sep))
+		packageSourceDirPath = '%s%s%s' % (leeClientParantDir, os.path.sep, packageSourceDirname)
+		outputDirPath = './Output/%s' % packageSourceDirname
+
+		if not LeePublisher().makeSetup(packageSourceDirPath, outputDirPath):
+			print('很抱歉, 制作 Setup 安装程序时发生错误, 请检查结果')
+		else:
+			print('\r\n已制作完毕的 Setup 安装程序存放在: %s 目录中, 请确认.\r\n' % (os.path.abspath(outputDirPath)))
 	
 	def maintenanceUpdateButtonTranslateDB(self):
 		'''
@@ -161,9 +175,46 @@ class LeeMenu:
 
 		menus = []
 		for packageSourceDirname in packageSourceDirnameList:
-			menuItem = [packageSourceDirname, 'menus.makePackageSourceToZipfile(\'%s\')' % packageSourceDirname]
+			menuItem = [packageSourceDirname, 'injectClass.makePackageSourceToZipfile(\'%s\')' % packageSourceDirname, None]
 			menus.append(menuItem)
-		self.leeCommon.simpleMenu(menus, '将指定的打包源压缩成 ZIP 文件', '请选择你想压缩的打包源目录', self, withcancel = True)
+		
+		self.leeCommon.simpleMenu(
+			items = menus,
+			title = '将指定的打包源压缩成 ZIP 文件',
+			prompt = '请选择你想压缩的打包源目录',
+			injectClass = self,
+			cancelExec = 'injectClass.item_Main()',
+			withCancel = True
+		)
+	
+	def maintenanceMakePackageSourceToSetup(self):
+		'''
+		用于将指定的打包源制作成一个 Setup 安装程序
+		这了会将可用的打包源列出来, 让用户可以进行选择
+		'''
+		self.leeCommon.cleanScreen()
+		
+		leeClientDir = self.leeCommon.getLeeClientDirectory()
+		packageSourceDirnameList = LeePublisher().getPackageSourceList(os.path.abspath(leeClientDir + '..\\') + os.sep)
+		if packageSourceDirnameList is None:
+			self.leeCommon.exitWithMessage('很抱歉, 无法获取打包源列表, 程序终止')
+		
+		if len(packageSourceDirnameList) <= 0:
+			self.leeCommon.exitWithMessage('没有发现任何可用的打包源, 请先生成一个吧')
+
+		menus = []
+		for packageSourceDirname in packageSourceDirnameList:
+			menuItem = [packageSourceDirname, 'injectClass.makePackageSourceToSetup(\'%s\')' % packageSourceDirname, None]
+			menus.append(menuItem)
+
+		self.leeCommon.simpleMenu(
+			items = menus,
+			title = '将指定的打包源制作成安装程序',
+			prompt = '请选择你想制作的打包源目录',
+			injectClass = self,
+			cancelExec = 'injectClass.item_Main()',
+			withCancel = True
+		)
 		
 	def item_SwitchWorkshop(self):
 		'''
@@ -179,9 +230,17 @@ class LeeMenu:
 
 		menus = []
 		for client in clientList:
-			menuItem = [client, 'menus.switchWorkshop(\'%s\')' % client]
+			menuItem = [client, 'injectClass.switchWorkshop(\'%s\')' % client, None]
 			menus.append(menuItem)
-		self.leeCommon.simpleMenu(menus, '切换仙境传说主程序的版本', '请选择你想切换到的版本', self, withcancel = True)
+
+		self.leeCommon.simpleMenu(
+			items = menus,
+			title = '切换仙境传说主程序的版本',
+			prompt = '请选择你想切换到的版本',
+			injectClass = self,
+			cancelExec = 'injectClass.item_Main()',
+			withCancel = True
+		)
 		
 		return
 
@@ -268,6 +327,13 @@ class LeeMenu:
 		当选择“维护 - 将指定的打包源压缩成 ZIP 文件”时执行
 		'''
 		self.maintenanceMakePackageSourceToZipfile()
+	
+	def item_MaintenanceMakePackageSourceToSetup(self):
+		'''
+		菜单处理函数
+		当选择“维护 - 将指定的打包源制作 Setup 安装程序”时执行
+		'''
+		self.maintenanceMakePackageSourceToSetup()
 
 	def item_End(self):
 		'''
@@ -289,18 +355,23 @@ def main():
 	
 	# 选择操作
 	menus = [
-		['切换客户端到指定版本', 'menus.item_SwitchWorkshop()'],
-		['重置 LeeClient 客户端到干净状态', 'menus.item_ResetWorkshop()'],
-		['进行文件资源的完整性校验', 'menus.item_MaintenanceRunClientResourceCheck()'],
-		['维护 - 将 data 目录打包为标准 grf 文件', 'menus.item_MaintenanceMakeDataToGrf()'],
-		['维护 - 生成客户端打包源', 'menus.item_MaintenanceMakePackageSource()'],
-		['维护 - 将指定的打包源压缩成 ZIP 文件', 'menus.item_MaintenanceMakePackageSourceToZipfile()'],
-		# ['维护 - 更新客户端按钮的翻译数据库', 'menus.item_MaintenanceUpdateButtonTranslateDB()'],
-		['退出程序', 'menus.item_End()']
+		['切换客户端到指定版本', 'injectClass.item_SwitchWorkshop()', None],
+		['重置 LeeClient 客户端到干净状态', 'injectClass.item_ResetWorkshop()', None],
+		['进行文件资源的完整性校验', 'injectClass.item_MaintenanceRunClientResourceCheck()', None],
+		['维护 - 将 data 目录打包为标准 grf 文件', 'injectClass.item_MaintenanceMakeDataToGrf()', None],
+		['维护 - 生成客户端打包源', 'injectClass.item_MaintenanceMakePackageSource()', None],
+		['维护 - 将指定的打包源压缩成 ZIP 文件', 'injectClass.item_MaintenanceMakePackageSourceToZipfile()', None],
+		['维护 - 将指定的打包源制作 Setup 安装程序', 'injectClass.item_MaintenanceMakePackageSourceToSetup()', None],
+		# ['维护 - 更新客户端按钮的翻译数据库', 'injectClass.item_MaintenanceUpdateButtonTranslateDB()', None],
+		['退出程序', 'injectClass.item_End()', None]
 	]
-	title = 'LeeClient 控制台'
-	prompt = '请填写想要执行的任务的菜单编号'
-	leeCommon.simpleMenu(menus, title, prompt, LeeMenu(main))
+
+	leeCommon.simpleMenu(
+		items = menus,
+		title = 'LeeClient 控制台',
+		prompt = '请填写想要执行的任务的菜单编号',
+		injectClass = LeeMenu(main)
+	)
 	
 	# 若在 Win 环境下则输出 pause 指令, 暂停等待用户确认退出
 	leeCommon.pauseScreen()
