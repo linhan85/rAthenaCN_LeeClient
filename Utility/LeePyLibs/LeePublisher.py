@@ -367,7 +367,7 @@ class LeePublisher:
 		scriptTemplateFilePath = ('%sBin/InnoSetup/Resources/Scripts/Scripts_Template.iss' % scriptDir).replace('/', os.path.sep)
 
 		if not self.leeCommon.isFileExists(scriptTemplateFilePath): return None
-		return open(scriptTemplateFilePath, 'r', encoding = 'utf8').read()
+		return open(scriptTemplateFilePath, 'r', encoding = 'utf-8').read()
 
 	def __generateFinallyScript(self, templateContent, configure):
 		'''
@@ -398,10 +398,10 @@ class LeePublisher:
 		if self.leeCommon.isFileExists(scriptCachePath):
 			os.remove(scriptCachePath)
 
-		# TODO: 这里的编码可能需要处理一下, 不能使用 utf8 编码
-		# 开始菜单中的游戏设置快捷方式名称设置为 utf8 编码后, 实际上写入系统时被解读为 gbk 编码了 
-		# 可能与现在用的 Inno Setup 默认语言文件的 Codepage 有一定关系, 需要研究一下
-		cfile = open(scriptCachePath, 'w+', encoding = 'utf8')
+		# 这里保存脚本文件的时候必须用 UTF8 with BOM (对应的 encoding 为 utf-8-sig)
+		# 否则 Inno Setup 引擎将无法识别出这是 UTF8 编码, 从而改用 ANSI 去解读脚本文件
+		# 最后导致的结果就是中文快捷方式的名称直接变成了乱码
+		cfile = open(scriptCachePath, 'w+', encoding = 'utf-8-sig')
 		cfile.write(finallyContent)
 		cfile.close()
 

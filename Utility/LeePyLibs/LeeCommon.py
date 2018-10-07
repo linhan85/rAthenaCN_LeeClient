@@ -145,7 +145,7 @@ class LeeCommon:
 		'''
 		获取一段字符串内容的 MD5 值
 		'''
-		return hashlib.md5(strContent.encode(encoding = 'utf8')).hexdigest()
+		return hashlib.md5(strContent.encode(encoding = 'utf-8')).hexdigest()
 	
 	def getMD5ForSmallFile(self, filepath):
 		'''
