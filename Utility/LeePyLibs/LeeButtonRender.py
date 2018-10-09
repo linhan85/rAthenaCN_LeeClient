@@ -4,6 +4,8 @@ import os
 import sys
 import json
 import contextlib
+import tempfile
+import shutil
 from LeePyLibs import LeeCommon
 from PIL import Image, ImageChops, ImageDraw, ImageFont
 
@@ -14,6 +16,7 @@ class LeeButtonRender:
 	def __init__(self):
 		self.leeCommon = LeeCommon()
 		self.btnConfigure = {}
+		self.fontPathMap = {}
 		pygame.font.init()
 
 	def autoCrop(self, image, backgroundColor = None):
@@ -237,10 +240,21 @@ class LeeButtonRender:
 		))
 	
 	def getFontPath(self, fontFilename):
+		if (fontFilename in self.fontPathMap):
+			return self.fontPathMap[fontFilename]
+		
 		scriptDir = self.leeCommon.getScriptDirectory()
-		return os.path.abspath('%s/Resources/Fonts/%s' % (
+		fontOriginPath = os.path.abspath('%s/Resources/Fonts/%s' % (
 			scriptDir, fontFilename
 		))
+
+		# 把字体文件复制到系统临时目录, 以便确保路径没有任何中文
+		fontTempPath = tempfile.mktemp(prefix = 'leefont_', suffix = '.ttc')
+		shutil.copyfile(fontOriginPath, fontTempPath)
+
+		# 记住临时字体文件的路径避免重复复制
+		self.fontPathMap[fontFilename] = fontTempPath
+		return fontTempPath
 	
 	def getImageSizeByFilePath(self, filepath):
 		img = Image.open(filepath)
