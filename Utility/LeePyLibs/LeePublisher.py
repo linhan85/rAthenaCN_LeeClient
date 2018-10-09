@@ -45,7 +45,7 @@ class LeePublisher:
 		# 生成一个 LeeClient 平级的发布目录
 		nowTime = time.strftime("%Y%m%d_%H%M%S", time.localtime())
 		releaseDirName = 'LeeClient_Release_%s' % nowTime
-		releaseDirPath = '%s%s%s%s' % (
+		releaseDirpath = '%s%s%s%s' % (
 			os.path.abspath('%s../' % leeClientDir), os.path.sep,
 			releaseDirName, os.path.sep
 		)
@@ -81,15 +81,15 @@ class LeePublisher:
 		# 把文件拷贝到打包源
 		# TODO: 最好能够显示文件的复制进度
 		# http://zzq635.blog.163.com/blog/static/1952644862013125112025129/
-		for srcFilePath in copyFileList:
-			relFilePath = os.path.relpath(srcFilePath, leeClientDir)
-			dstFilePath = '%s%s' % (releaseDirPath, relFilePath)
-			print('正在复制: %s' % relFilePath)
-			os.makedirs(os.path.dirname(dstFilePath), exist_ok = True)
-			shutil.copyfile(srcFilePath, dstFilePath)
+		for srcFilepath in copyFileList:
+			relFilepath = os.path.relpath(srcFilepath, leeClientDir)
+			dstFilepath = '%s%s' % (releaseDirpath, relFilepath)
+			print('正在复制: %s' % relFilepath)
+			os.makedirs(os.path.dirname(dstFilepath), exist_ok = True)
+			shutil.copyfile(srcFilepath, dstFilepath)
 
 		# 把最终发布源所在的目录当做参数返回值回传
-		return releaseDirPath
+		return releaseDirpath
 	
 	def getZipFilename(self, sourceDir):
 		if sourceDir.endswith('\\') or sourceDir.endswith('/'):
@@ -168,7 +168,7 @@ class LeePublisher:
 			sys.exit(0)
 
 		# 在 configure 中补充其他参数
-		configure['LeePackageSourceDirPath'] = sourceDir
+		configure['LeePackageSourceDirpath'] = sourceDir
 		configure['LeeOutputDir'] = setupOutputDir
 		configure['LeeAppId'] = (r'{{%s}' % configure['LeeAppId']).upper()
 
@@ -240,16 +240,16 @@ class LeePublisher:
 
 		if innoSetupDir is None: return False
 
-		srcFilePath = ('%sBin/InnoSetup/Resources/Installer/SetupLdr.e32' % scriptDir).replace('/', os.path.sep)
-		dstFilePath = ('%sSetupLdr.e32' % innoSetupDir)
-		bakFilePath = ('%sSetupLdr.e32.bak' % innoSetupDir)
+		srcFilepath = ('%sBin/InnoSetup/Resources/Installer/SetupLdr.e32' % scriptDir).replace('/', os.path.sep)
+		dstFilepath = ('%sSetupLdr.e32' % innoSetupDir)
+		bakFilepath = ('%sSetupLdr.e32.bak' % innoSetupDir)
 
-		if (not self.leeCommon.isFileExists(bakFilePath)) and self.leeCommon.isFileExists(dstFilePath):
-			shutil.copyfile(dstFilePath, bakFilePath)
+		if (not self.leeCommon.isFileExists(bakFilepath)) and self.leeCommon.isFileExists(dstFilepath):
+			shutil.copyfile(dstFilepath, bakFilepath)
 		
-		if not self.leeCommon.isFileExists(srcFilePath): return False
-		os.remove(dstFilePath)
-		shutil.copyfile(srcFilePath, dstFilePath)
+		if not self.leeCommon.isFileExists(srcFilepath): return False
+		os.remove(dstFilepath)
+		shutil.copyfile(srcFilepath, dstFilepath)
 
 		return True
 	
@@ -280,13 +280,13 @@ class LeePublisher:
 
 		# 先确认 Inno Setup 的安装程序是否存在
 		scriptDir = self.leeCommon.getScriptDirectory()
-		installerFilePath = ('%sBin/InnoSetup/Resources/Installer/innosetup-5.6.1-unicode.exe' % scriptDir).replace('/', os.path.sep)
-		if not self.leeCommon.isFileExists(installerFilePath):
+		installerFilepath = ('%sBin/InnoSetup/Resources/Installer/innosetup-5.6.1-unicode.exe' % scriptDir).replace('/', os.path.sep)
+		if not self.leeCommon.isFileExists(installerFilepath):
 			return False
 		
 		# 执行静默安装过程
-		setupProc = subprocess.Popen('%s /VERYSILENT' % installerFilePath, 
-			stdout = sys.stdout, cwd = os.path.dirname(installerFilePath)
+		setupProc = subprocess.Popen('%s /VERYSILENT' % installerFilepath, 
+			stdout = sys.stdout, cwd = os.path.dirname(installerFilepath)
 		)
 		setupProc.wait()
 
@@ -364,10 +364,10 @@ class LeePublisher:
 		获取 Inno Setup 的脚本模板并作为字符串返回
 		'''
 		scriptDir = self.leeCommon.getScriptDirectory()
-		scriptTemplateFilePath = ('%sBin/InnoSetup/Resources/Scripts/Scripts_Template.iss' % scriptDir).replace('/', os.path.sep)
+		scriptTemplateFilepath = ('%sBin/InnoSetup/Resources/Scripts/Scripts_Template.iss' % scriptDir).replace('/', os.path.sep)
 
-		if not self.leeCommon.isFileExists(scriptTemplateFilePath): return None
-		return open(scriptTemplateFilePath, 'r', encoding = 'utf-8').read()
+		if not self.leeCommon.isFileExists(scriptTemplateFilepath): return None
+		return open(scriptTemplateFilepath, 'r', encoding = 'utf-8').read()
 
 	def __generateFinallyScript(self, templateContent, configure):
 		'''

@@ -6,6 +6,7 @@ import json
 import contextlib
 import tempfile
 import shutil
+
 from LeePyLibs import LeeCommon
 from PIL import Image, ImageChops, ImageDraw, ImageFont
 
@@ -256,7 +257,7 @@ class LeeButtonRender:
 		self.fontPathMap[fontFilename] = fontTempPath
 		return fontTempPath
 	
-	def getImageSizeByFilePath(self, filepath):
+	def getImageSizeByFilepath(self, filepath):
 		img = Image.open(filepath)
 		imgsize = img.size
 		img.close()
@@ -280,4 +281,3 @@ class LeeButtonRender:
 		else:
 			self.leeCommon.exitWithMessage('__getButtonConfigureValue: 无法加载字体的配置信息')
 			return None, None
-

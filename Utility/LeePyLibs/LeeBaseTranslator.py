@@ -46,23 +46,23 @@ class LeeBaseTranslator:
 		if self.reSrcPathPattern is None: return False
 		if self.reDstPathPattern is None: return False
 
-		sourceFilePathList = []
+		sourceFilepathList = []
 		for dirpath, _dirnames, filenames in os.walk(patchesDir):
 			for filename in filenames:
 				fullpath = os.path.normpath('%s/%s' % (dirpath, filename))
 				if not re.match(self.reSrcPathPattern, fullpath, re.I): continue
-				sourceFilePathList.append(fullpath)
+				sourceFilepathList.append(fullpath)
 
 		self.load()
 		
-		for sourceFilePath in sourceFilePathList:
-			if (specifiedClientVer is not None) and (specifiedClientVer not in sourceFilePath): continue
-			print('正在汉化, 请稍候: %s' % os.path.relpath(sourceFilePath, leeClientDir))
-			match = re.search(self.reDstPathPattern, sourceFilePath, re.MULTILINE | re.IGNORECASE | re.DOTALL)
+		for sourceFilepath in sourceFilepathList:
+			if (specifiedClientVer is not None) and (specifiedClientVer not in sourceFilepath): continue
+			print('正在汉化, 请稍候: %s' % os.path.relpath(sourceFilepath, leeClientDir))
+			match = re.search(self.reDstPathPattern, sourceFilepath, re.MULTILINE | re.IGNORECASE | re.DOTALL)
 			if match is None:
 				self.leeCommon.exitWithMessage('无法确定翻译后的文件的存放位置, 程序终止')
 			destinationPath = '%s/Translated/%s' % (match.group(1), match.group(2))
-			self.translate(sourceFilePath, destinationPath)
+			self.translate(sourceFilepath, destinationPath)
 			print('汉化完毕, 保存到: %s\r\n' % os.path.relpath(destinationPath, leeClientDir))
 		
 		return True

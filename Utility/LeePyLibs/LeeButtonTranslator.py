@@ -49,7 +49,7 @@ class LeeButtonTranslator(LeeBaseTranslator, LeeBaseRevert):
 				
 				translateInfo['RelativePath'] = relpath
 				translateInfo['FullPath'] = fullpath
-				translateInfo['ButtonWidth'], translateInfo['ButtonHeight'] = self.leeFileIO.getImageSizeByFilePath(fullpath)
+				translateInfo['ButtonWidth'], translateInfo['ButtonHeight'] = self.leeFileIO.getImageSizeByFilepath(fullpath)
 				deepTranslateInfo = copy.deepcopy(translateInfo)
 				waitingToBuildTranslateInfolist.append(deepTranslateInfo)
 
@@ -57,14 +57,14 @@ class LeeButtonTranslator(LeeBaseTranslator, LeeBaseRevert):
 		btnStateDefine = ['normal', 'hover', 'press', 'disabled']
 		for translateInfo in waitingToBuildTranslateInfolist:
 			if (specifiedClientVer is not None) and (specifiedClientVer not in translateInfo['FullPath']): continue
-			translatedDirPath = re.search(self.leeCommon.normPattern(r'^(.*)Original/data/texture'), translateInfo['FullPath'], re.I).group(1) + 'Translated'
-			textureDirPath = '%s/%s' % (translatedDirPath, os.path.dirname(translateInfo['RelativePath']))
-			os.makedirs(textureDirPath, exist_ok = True)
+			translatedDirpath = re.search(self.leeCommon.normPattern(r'^(.*)Original/data/texture'), translateInfo['FullPath'], re.I).group(1) + 'Translated'
+			textureDirpath = '%s/%s' % (translatedDirpath, os.path.dirname(translateInfo['RelativePath']))
+			os.makedirs(textureDirpath, exist_ok = True)
 
 			_referPostfix, filenameMode, _withDisabled = translateInfo['FilenameMode'].split('#')
 
 			for btnStateIndex, postfix in enumerate(filenameMode.split('|')):
-				btnSavePath = '%s/%s%s.bmp' % (textureDirPath, translateInfo['Basename'], postfix)
+				btnSavePath = '%s/%s%s.bmp' % (textureDirpath, translateInfo['Basename'], postfix)
 				print('正在汉化, 请稍候: %s' % os.path.relpath(btnSavePath, leeClientDir).replace('Translated', 'Original'))
 				self.leeFileIO.createButtonBmpFile(
 					translateInfo['StyleFormat'], 

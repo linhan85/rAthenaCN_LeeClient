@@ -502,16 +502,16 @@ class LeeVerifier:
 		self.__appendReportMessage('footer', '')
 
 		# 校验动画效果索引文件 str 中所需的贴图
-		strFilePathList = []
+		strFilepathList = []
 		for dirpath, _dirnames, filenames in os.walk(('%s/data' % leeClientDir)): 
 			for filename in filenames:
 				fullpath = os.path.join(dirpath, filename)
 				if fullpath.lower().endswith('.str'):
-					strFilePathList.append(fullpath)
+					strFilepathList.append(fullpath)
 		
-		self.__appendReportMessage('header', '校验 str 动画描述文件共 %d 个' % len(strFilePathList))
-		print('正在校验 str 动画描述文件共 %d 个' % len(strFilePathList))
-		for strfilepath in strFilePathList:
+		self.__appendReportMessage('header', '校验 str 动画描述文件共 %d 个' % len(strFilepathList))
+		print('正在校验 str 动画描述文件共 %d 个' % len(strFilepathList))
+		for strfilepath in strFilepathList:
 			_missTexturePathList = self.__verifyStr(strfilepath)
 			self.__appendReportData(strfilepath, _missTexturePathList)
 		self.__appendReportMessage('footer', '')
@@ -521,17 +521,17 @@ class LeeVerifier:
 		patchesDir = os.path.normpath('%s/Patches/' % scriptDir)
 		rePathPattern = self.leeCommon.normPattern(r'^.*?/Patches/.*?/Resource/Original/System/iteminfo.*?\.(lua|lub)')
 		
-		iteminfoFilePathList = []
+		iteminfoFilepathList = []
 		for dirpath, _dirnames, filenames in os.walk(patchesDir):
 			for filename in filenames:
 				fullpath = os.path.normpath('%s/%s' % (dirpath, filename))
 				if not (filename.lower().startswith('iteminfo')): continue
 				if not re.match(rePathPattern, fullpath, re.I): continue
-				iteminfoFilePathList.append(fullpath)
+				iteminfoFilepathList.append(fullpath)
 		
-		self.__appendReportMessage('header', '校验 Iteminfo 道具描述文件共 %d 个' % len(iteminfoFilePathList))
-		print('正在校验 Iteminfo 道具描述文件共 %d 个' % len(iteminfoFilePathList))
-		for iteminfofilepath in iteminfoFilePathList:
+		self.__appendReportMessage('header', '校验 Iteminfo 道具描述文件共 %d 个' % len(iteminfoFilepathList))
+		print('正在校验 Iteminfo 道具描述文件共 %d 个' % len(iteminfoFilepathList))
+		for iteminfofilepath in iteminfoFilepathList:
 			_missTexturePathList, _missSpritePathList = self.__verifyIteminfo(iteminfofilepath)
 			self.__appendReportData(iteminfofilepath, _missTexturePathList, _missSpritePathList)
 		self.__appendReportMessage('footer', '')

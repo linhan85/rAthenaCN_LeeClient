@@ -6,14 +6,14 @@
 #define LeeAppPublisher "rAthenaCN, Inc."
 #define LeeAppURL "https://rathena.cn/"
 #define LeeAppExeName "2017-06-14bRagexeRE_patched.exe"
-#define LeePackageSourceDirPath "..\..\..\..\LeeClient_Release_20181003_234134"
+#define LeePackageSourceDirpath "..\..\..\..\LeeClient_Release_20181003_234134"
 #define LeeDefaultGroupName "LeeClient StartMenu Group"
 #define LeeOutputBaseFilename "Setup"
 #define LeeGameSetupName "GameSetup"  
 #define LeeGameSetupExeName "setup.exe"
 #define LeeDefaultDirName "LeeClient"
 #define LeeAppId "{{55A9D5FA-FA24-4AF1-B9A5-B65542662632}"
-#define LeeResourceDirPath "..\Resources"
+#define LeeResourceDirpath "..\Resources"
 #define LeeOutputDir ".\Output"
 
 [Setup]
@@ -38,28 +38,28 @@ SolidCompression=no
 ; SolidCompression=yes
 DiskSpanning=yes
 DiskSliceSize=736000000
-LicenseFile={#LeeResourceDirPath}\Licences\SetupLicence.txt
+LicenseFile={#LeeResourceDirpath}\Licences\SetupLicence.txt
 OutputDir={#LeeOutputDir}
 
 [Languages]
-Name: "ChineseSimplified"; MessagesFile: "{#LeeResourceDirPath}\Languages\ChineseSimplified.isl"
-Name: "ChineseTraditional"; MessagesFile: "{#LeeResourceDirPath}\Languages\ChineseTraditional.isl"
-Name: "English"; MessagesFile: "{#LeeResourceDirPath}\Languages\English.isl"
+Name: "ChineseSimplified"; MessagesFile: "{#LeeResourceDirpath}\Languages\ChineseSimplified.isl"
+Name: "ChineseTraditional"; MessagesFile: "{#LeeResourceDirpath}\Languages\ChineseTraditional.isl"
+Name: "English"; MessagesFile: "{#LeeResourceDirpath}\Languages\English.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}";
 
 [Files]
-Source: "{#LeePackageSourceDirPath}\AI\*"; DestDir: "{app}\AI\"; Flags: ignoreversion skipifsourcedoesntexist 
-Source: "{#LeePackageSourceDirPath}\AI\USER_AI\*"; DestDir: "{app}\AI\USER_AI\"; Flags: ignoreversion skipifsourcedoesntexist
-Source: "{#LeePackageSourceDirPath}\AI_sakray\*"; DestDir: "{app}\AI_sakray\"; Flags: ignoreversion skipifsourcedoesntexist 
-Source: "{#LeePackageSourceDirPath}\AI_sakray\USER_AI\*"; DestDir: "{app}\AI_sakray\USER_AI\"; Flags: ignoreversion skipifsourcedoesntexist
-Source: "{#LeePackageSourceDirPath}\BGM\*"; DestDir: "{app}\BGM\"; Flags: ignoreversion 
-Source: "{#LeePackageSourceDirPath}\SaveData\*"; DestDir: "{app}\SaveData\"; Flags: ignoreversion  
-Source: "{#LeePackageSourceDirPath}\System\*"; DestDir: "{app}\System\"; Flags: ignoreversion 
-Source: "{#LeePackageSourceDirPath}\System\Font\*"; DestDir: "{app}\System\Font\"; Flags: ignoreversion
-Source: "{#LeePackageSourceDirPath}\System\LuaFiles514\*"; DestDir: "{app}\System\LuaFiles514\"; Flags: ignoreversion
-Source: "{#LeePackageSourceDirPath}\*"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#LeePackageSourceDirpath}\AI\*"; DestDir: "{app}\AI\"; Flags: ignoreversion skipifsourcedoesntexist 
+Source: "{#LeePackageSourceDirpath}\AI\USER_AI\*"; DestDir: "{app}\AI\USER_AI\"; Flags: ignoreversion skipifsourcedoesntexist
+Source: "{#LeePackageSourceDirpath}\AI_sakray\*"; DestDir: "{app}\AI_sakray\"; Flags: ignoreversion skipifsourcedoesntexist 
+Source: "{#LeePackageSourceDirpath}\AI_sakray\USER_AI\*"; DestDir: "{app}\AI_sakray\USER_AI\"; Flags: ignoreversion skipifsourcedoesntexist
+Source: "{#LeePackageSourceDirpath}\BGM\*"; DestDir: "{app}\BGM\"; Flags: ignoreversion 
+Source: "{#LeePackageSourceDirpath}\SaveData\*"; DestDir: "{app}\SaveData\"; Flags: ignoreversion  
+Source: "{#LeePackageSourceDirpath}\System\*"; DestDir: "{app}\System\"; Flags: ignoreversion 
+Source: "{#LeePackageSourceDirpath}\System\Font\*"; DestDir: "{app}\System\Font\"; Flags: ignoreversion
+Source: "{#LeePackageSourceDirpath}\System\LuaFiles514\*"; DestDir: "{app}\System\LuaFiles514\"; Flags: ignoreversion
+Source: "{#LeePackageSourceDirpath}\*"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [UninstallDelete]

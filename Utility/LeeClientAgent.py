@@ -101,10 +101,10 @@ class LeeMenu:
 		将指定的打包源压缩成一个 ZIP 文件
 		'''
 		leeClientParantDir = os.path.abspath('%s..%s' % (self.leeCommon.getLeeClientDirectory(), os.path.sep))
-		packageSourceDirPath = '%s%s%s' % (leeClientParantDir, os.path.sep, packageSourceDirname)
+		packageSourceDirpath = '%s%s%s' % (leeClientParantDir, os.path.sep, packageSourceDirname)
 
-		zipFilename = LeePublisher().getZipFilename(packageSourceDirPath)
-		if not LeePublisher().makeZip(packageSourceDirPath, zipFilename):
+		zipFilename = LeePublisher().getZipFilename(packageSourceDirpath)
+		if not LeePublisher().makeZip(packageSourceDirpath, zipFilename):
 			print('很抱歉, 压缩 ZIP 文件时发生错误, 请检查结果')
 		else:
 			print('已压缩为 ZIP 文件: %s\r\n' % (zipFilename))
@@ -114,13 +114,13 @@ class LeeMenu:
 		将指定的打包源制作成一个 Setup 安装程序
 		'''
 		leeClientParantDir = os.path.abspath('%s..%s' % (self.leeCommon.getLeeClientDirectory(), os.path.sep))
-		packageSourceDirPath = '%s%s%s' % (leeClientParantDir, os.path.sep, packageSourceDirname)
-		outputDirPath = './Output/%s' % packageSourceDirname
+		packageSourceDirpath = '%s%s%s' % (leeClientParantDir, os.path.sep, packageSourceDirname)
+		outputDirpath = './Output/%s' % packageSourceDirname
 
-		if not LeePublisher().makeSetup(packageSourceDirPath, outputDirPath):
+		if not LeePublisher().makeSetup(packageSourceDirpath, outputDirpath):
 			print('很抱歉, 制作 Setup 安装程序时发生错误, 请检查结果')
 		else:
-			print('\r\n已制作完毕的 Setup 安装程序存放在: %s 目录中, 请确认.\r\n' % (os.path.abspath(outputDirPath)))
+			print('\r\n已制作完毕的 Setup 安装程序存放在: %s 目录中, 请确认.\r\n' % (os.path.abspath(outputDirpath)))
 	
 	def maintenanceUpdateButtonTranslateDB(self):
 		'''

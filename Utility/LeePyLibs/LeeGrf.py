@@ -14,7 +14,7 @@ class LeeGrf:
 		self.patchManager = LeePatchManager()
 		pass
 	
-	def makeGrf(self, dataDirPath, grfOutputPath):
+	def makeGrf(self, dataDirpath, grfOutputPath):
 		# 确认操作系统平台
 		if platform.system() != 'Windows':
 			self.leeCommon.exitWithMessage('很抱歉, 此功能目前只能在 Windows 平台上运行.')
@@ -36,8 +36,8 @@ class LeeGrf:
 
 		# 确认 GrfCL 文件存在
 		scriptDir = self.leeCommon.getScriptDirectory()
-		grfCLFilePath = ('%sBin/GrfCL/GrfCL.exe' % scriptDir).replace('/', os.path.sep)
-		if not self.leeCommon.isFileExists(grfCLFilePath):
+		grfCLFilepath = ('%sBin/GrfCL/GrfCL.exe' % scriptDir).replace('/', os.path.sep)
+		if not self.leeCommon.isFileExists(grfCLFilepath):
 			self.leeCommon.exitWithMessage('制作 grf 文件所需的 GrfCL.exe 程序不存在, 无法执行压缩.')
 
 		# data.grf 文件若存在则进行覆盖确认
@@ -55,12 +55,12 @@ class LeeGrf:
 		# 执行压缩工作（同步等待）
 		self.leeCommon.cleanScreen()
 		grfCLProc = subprocess.Popen('%s %s' % (
-			grfCLFilePath,
+			grfCLFilepath,
 			'-breakOnExceptions true -makeGrf "%s" "%s"' % (
-				os.path.relpath(grfOutputPath, os.path.dirname(grfCLFilePath)),
-				os.path.relpath(dataDirPath, os.path.dirname(grfCLFilePath))
+				os.path.relpath(grfOutputPath, os.path.dirname(grfCLFilepath)),
+				os.path.relpath(dataDirpath, os.path.dirname(grfCLFilepath))
 			)
-		), stdout = sys.stdout, cwd = os.path.dirname(grfCLFilePath))
+		), stdout = sys.stdout, cwd = os.path.dirname(grfCLFilepath))
 		grfCLProc.wait()
 
 		# 确认结果并输出提示信息表示压缩结束
