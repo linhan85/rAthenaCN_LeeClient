@@ -235,7 +235,7 @@ class LeeButtonRender:
 
 	def getButtonTemplatePath(self, tplName, btnState, piece):
 		scriptDir = self.leeCommon.getScriptDirectory()
-		return os.path.abspath('%s/Resources/ButtonTexture/Style_%s/%s_%s.png' % (
+		return os.path.abspath('%s/Resources/Texture/Button/Style_%s/%s_%s.png' % (
 			scriptDir, tplName, btnState, piece
 		))
 	
@@ -264,7 +264,7 @@ class LeeButtonRender:
 
 	def __loadButtonConfigure(self, tplName):
 		scriptDir = self.leeCommon.getScriptDirectory()
-		configurePath = '%s/Resources/ButtonTexture/Style_%s/configure.json' % (scriptDir, tplName)
+		configurePath = '%s/Resources/Texture/Button/Style_%s/configure.json' % (scriptDir, tplName)
 		return json.load(open(configurePath, 'r')) if self.leeCommon.isFileExists(configurePath) else None
 	
 	def __getButtonFontInfomation(self):
