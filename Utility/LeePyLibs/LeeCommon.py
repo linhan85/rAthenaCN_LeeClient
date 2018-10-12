@@ -199,7 +199,7 @@ class LeeCommon:
 		'''
 		try:
 			if platform.system() != 'Windows':
-				self.exitWithMessage('很抱歉, %s 此函数目前只能在 Windows 平台上运行.' % __name__)
+				self.exitWithMessage('很抱歉, %s 此函数目前只能在 Windows 平台上运行.' % sys._getframe().f_code.co_name)
 			framework_key = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, 'SOFTWARE\\Microsoft\\NET Framework Setup\\NDP\\%s' % version)
 			_value, _value_type = winreg.QueryValueEx(framework_key, 'InstallPath')
 			return self.isDirectoryExists(_value)
@@ -212,7 +212,7 @@ class LeeCommon:
 		此函数仅用于 Windows 平台
 		'''
 		if platform.system() != 'Windows':
-			self.exitWithMessage('很抱歉, %s 此函数目前只能在 Windows 平台上运行.' % __name__)
+			self.exitWithMessage('很抱歉, %s 此函数目前只能在 Windows 平台上运行.' % sys._getframe().f_code.co_name)
 
 		if driver.endswith(':'):
 			driver = driver.upper().split(':')[0]

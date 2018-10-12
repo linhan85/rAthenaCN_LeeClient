@@ -1,4 +1,8 @@
 
+ZipConfigure:
+  # 当选择把打包源制作成 zip 压缩包时, 可以使用此选项调整压缩包内的顶级目录名称
+  TopLevelDirName: LeeClient
+
 SetupConfigure: [
   {
     # 配置名称, 方便在拥有多套配置时选择使用

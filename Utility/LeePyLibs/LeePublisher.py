@@ -102,12 +102,7 @@ class LeePublisher:
 		返回: Array 保存着每个子目录名称的数组
 		'''
 		dirlist = []
-		
-		try:
-			list = os.listdir(dirpath)
-		except:
-			print('getPackageSourceList Access Deny')
-			return None
+		list = os.listdir(dirpath)
 		
 		for dname in list:
 			if not dname.lower().startswith('leeclient_release_'): continue
@@ -123,7 +118,9 @@ class LeePublisher:
 		'''
 		# https://blog.csdn.net/dou_being/article/details/81546172
 		# https://blog.csdn.net/zhd199500423/article/details/80853405
-		return LeeZipfile().zip(sourceDir, zipSavePath)
+
+		zipConfigure = LeeConfigure().get('ZipConfigure')
+		return LeeZipfile().zip(sourceDir, zipSavePath, zipConfigure['TopLevelDirName'])
 	
 	def makeSetup(self, sourceDir, setupOutputDir = None):
 		'''
@@ -206,7 +203,7 @@ class LeePublisher:
 		'''
 		try:
 			if platform.system() != 'Windows':
-				self.leeCommon.exitWithMessage('很抱歉, %s 此函数目前只能在 Windows 平台上运行.' % __name__)
+				self.leeCommon.exitWithMessage('很抱歉, %s 此函数目前只能在 Windows 平台上运行.' % sys._getframe().f_code.co_name)
 			
 			# 根据不同的平台切换注册表路径
 			if platform.machine() == 'AMD64':

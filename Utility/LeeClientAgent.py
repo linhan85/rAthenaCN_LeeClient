@@ -166,7 +166,7 @@ class LeeMenu:
 		self.leeCommon.cleanScreen()
 		
 		leeClientDir = self.leeCommon.getLeeClientDirectory()
-		packageSourceDirnameList = LeePublisher().getPackageSourceList(os.path.abspath(leeClientDir + '..\\') + os.sep)
+		packageSourceDirnameList = LeePublisher().getPackageSourceList(os.path.abspath(leeClientDir + '..' + os.path.sep) + os.sep)
 		if packageSourceDirnameList is None:
 			self.leeCommon.exitWithMessage('很抱歉, 无法获取打包源列表, 程序终止')
 		
