@@ -41,15 +41,18 @@ class LeeMenu:
         为接下来切换其他版本的客户端做好准备
         '''
         try:
-            print('正在重置 按钮汉化文件 ...')
+            print('正在重置按钮汉化文件 ...')
             self.buttonTranslator.doRevert('AllVersions')
 
-            print('正在重置 其他客户端资源 ...')
+            print('正在重置其他客户端资源 ...')
             self.patchManager.doRevertPatch()
 
             leeClientDir = self.leeCommon.getLeeClientDirectory()
             if self.leeCommon.isFileExists('%sdata.grf' % leeClientDir):
                 os.remove('%sdata.grf' % leeClientDir)
+
+            print('正在删除空目录 ...')
+            self.leeCommon.removeEmptyDirectorys(leeClientDir)
 
             print('已成功重置 LeeClient 客户端环境')
         except:
