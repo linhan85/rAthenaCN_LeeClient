@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 
-import re
 import os
 from dataclasses import dataclass
+
+from lupa import LuaRuntime
+
 from LeePyLibs import LeeCommon
+
 
 @dataclass
 class LeeIteminfoSingleItem:
@@ -67,18 +70,19 @@ end
 '''.replace('\n', '\r\n').replace('\r\r', '\r')
 
     def __normdesc(self, desc):
-        matches = re.finditer(r"(?<!\\)\"(.*?)(?<!\\)\"", desc, re.MULTILINE | re.IGNORECASE)
         descLines = []
-        for match in matches:
-            descLines.append(match.group(1))
-        return None if len(descLines) <= 0 else '\r\n'.join(descLines)
-    
+        for lineNo in desc:
+            descLines.append(desc[lineNo])
+        return None if not descLines else '\r\n'.join(descLines)
+
     def __quotedesc(self, descLines):
-        if descLines is None: return ''
+        if descLines is None:
+            return ''
         descLines = descLines.replace('\r\n', '\n').split('\n')
         for index, line in enumerate(descLines):
+            line = line.replace('"', r'\"').replace(r'\\', '\\')
             descLines[index] = '\t\t\t"%s"%s' % (line, ',' if (index + 1) < len(descLines) else '')
-        return '' if len(descLines) <= 0 else '\r\n'.join(descLines)
+        return '' if not descLines else '\r\n'.join(descLines)
 
     def load(self, filepath):
         self.itemInfoDict.clear()
@@ -87,61 +91,28 @@ end
         content = luafile.read()
         luafile.close()
 
-        # 已经读取到了 lua 文件的内容, 接下来开始解析
-        # 先解析出每个不同的的物品信息, 如下面注释所示的样子
+        lua = LuaRuntime(unpack_returned_tuples=True)
+        lua.execute(content)
+        g = lua.globals()
 
-        # [501] = {
-        # 	unidentifiedDisplayName = "红色药水",
-        # 	unidentifiedResourceName = "弧埃器记",
-        # 	unidentifiedDescriptionName = {
-        # 		"将红色药草捣碎，制成的体力恢复剂。",
-        # 		"恢复^00008845～65^000000的HP",
-        # 		"依^000088(VITx2)%^000000增加恢复量",
-        # 		"^ffffff_^000000",
-        # 		"重量：7",
-        # 	},
-        # 	identifiedDisplayName = "红色药水",
-        # 	identifiedResourceName = "弧埃器记",
-        # 	identifiedDescriptionName = {
-        # 		"将红色药草捣碎，制成的体力恢复剂。",
-        # 		"恢复^00008845～65^000000的HP",
-        # 		"依^000088(VITx2)%^000000增加恢复量",
-        # 		"^ffffff_^000000",
-        # 		"重量：7",
-        # 	},
-        # 	slotCount = 0,
-        # 	ClassNum = 0
-        # }
-        
-        regex = r"(\[\d+\]\s*=\s*{.*?{.*?}.*?{.*?}.*?ClassNum.*?}\s*)"
-        matches = re.finditer(regex, content, re.MULTILINE | re.IGNORECASE | re.DOTALL)
-        itemInfoTextList = []
-        for match in matches:
-            itemInfoTextList.append(match.group(1))
-        
-        # 接下来挨个拆解出字段的值, 存入到 self.itemInfoList 中
-        
-        regex = r"\[\s*?(\d*)\s*?\]\s*?=\s*?{\s*?unidentifiedDisplayName\s*?=\s*?\"(.*?)\"\s*?,\s*?unidentifiedResourceName\s*?=\s*?\"(.*?)\"\s*?,\s*?unidentifiedDescriptionName\s*?=\s*?{\s*(.*?)\s*?}\s*?,\s*?identifiedDisplayName\s*?=\s*?\"(.*?)\"\s*?,\s*?identifiedResourceName\s*?=\s*?\"(.*?)\"\s*?,\s*?identifiedDescriptionName\s*?=\s*?{\s*(.*?)\s*?}\s*?,\s*?slotCount\s*?=\s*?(\d*)\s*?,\s*?ClassNum\s*?=\s*?(\d*)\s*?}"
-        
-        for iteminfoText in itemInfoTextList:
+        for itemID in list(g.tbl):
             try:
-                match = re.search(regex, iteminfoText, re.MULTILINE | re.IGNORECASE | re.DOTALL)
                 singleItem = LeeIteminfoSingleItem(
-                    itemID = self.leeCommon.atoi(match.group(1)),        # 物品编号
-                    unidentifiedDisplayName = match.group(2),            # 物品未鉴定时候的道具名称
-                    unidentifiedResourceName = match.group(3),            # 物品未鉴定时候的图档资源名称
-                    unidentifiedDescriptionName = self.__normdesc(match.group(4)),        # 物品未鉴定时候的道具描述信息
-                    identifiedDisplayName = match.group(5),                # 物品已鉴定时候的道具名称
-                    identifiedResourceName = match.group(6),            # 物品已鉴定时候的图档资源名称
-                    identifiedDescriptionName = self.__normdesc(match.group(7)),        # 物品已鉴定时候的道具描述信息
-                    slotCount = self.leeCommon.atoi(match.group(8)),    # 物品的卡槽数量
-                    ClassNum = self.leeCommon.atoi(match.group(9))        # 物品的外观类别代码
+                    itemID = itemID,
+                    unidentifiedDisplayName = g.tbl[itemID]['unidentifiedDisplayName'],
+                    unidentifiedResourceName = g.tbl[itemID]['unidentifiedResourceName'],
+                    unidentifiedDescriptionName = self.__normdesc(g.tbl[itemID]['unidentifiedDescriptionName']),
+                    identifiedDisplayName = g.tbl[itemID]['identifiedDisplayName'],
+                    identifiedResourceName = g.tbl[itemID]['identifiedResourceName'],
+                    identifiedDescriptionName = self.__normdesc(g.tbl[itemID]['identifiedDescriptionName']),
+                    slotCount = g.tbl[itemID]['slotCount'],
+                    ClassNum = g.tbl[itemID]['ClassNum'],
                 )
-                self.itemInfoDict[self.leeCommon.atoi(match.group(1))] = singleItem
-            except:
-                print(iteminfoText)
+                self.itemInfoDict[self.leeCommon.atoi(itemID)] = singleItem
+            except Exception as _err:
+                print('Error Item ID = %d' % itemID)
                 raise
-    
+
     def save(self, savepath):
         # 构建表格主体部分, 先定义一下格式部分
         fullItemText = []    # 保存每一个道具完整的文本段
@@ -160,27 +131,29 @@ end
                 self.leeCommon.isLastReturn(sorted(self.itemInfoDict), itemID, '', ',')
             )
             fullItemText.append(singleItemText)
-        
+
         luaContent = self.itemInfoFormat % ('\r\n'.join(fullItemText))
-        
+
         fullSavePath = os.path.abspath(savepath)
         os.makedirs(os.path.dirname(fullSavePath), exist_ok = True)
         luafile = open(fullSavePath, 'w', encoding = 'latin1', newline = '')
         luafile.write(luaContent.replace('\r\r', '\r'))
-        luafile.close
+        luafile.close()
 
     def items(self):
         return self.itemInfoDict
 
     def getIteminfo(self, itemID):
         return None if itemID not in self.itemInfoDict else self.itemInfoDict[itemID]
-    
+
     def getItemAttribute(self, itemID, attribname, dstEncode = 'gbk'):
         try:
             itemdata = self.getIteminfo(itemID)
-            if itemdata == None: return None
+            if itemdata is None:
+                return None
             value = getattr(itemdata, attribname, None)
-            if value == None: return None
+            if value is None:
+                return None
             if isinstance(value, list):
                 for index, val in enumerate(value):
                     value[index] = val.encode('latin1').decode(dstEncode)
@@ -194,7 +167,8 @@ end
     def setItemAttribute(self, itemID, attribname, value, srcEncode = 'gbk'):
         try:
             itemdata = self.getIteminfo(itemID)
-            if itemdata == None: return False
+            if itemdata is None:
+                return False
             if isinstance(value, list):
                 for index, val in enumerate(value):
                     value[index] = val.encode(srcEncode).decode('latin1')
@@ -204,6 +178,6 @@ end
         except:
             print('setItemAttribute: 处理 %d 的 %s 字段时出问题, 内容为: \r\n%s', (itemID, attribname, value))
             raise
-    
+
     def clear(self):
         self.itemInfoDict.clear()
