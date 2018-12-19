@@ -1,18 +1,15 @@
 # -*- coding: utf-8 -*-
 
 import os
+import platform
 import re
+import shutil
+import subprocess
 import sys
 import time
 import uuid
-import platform
-import subprocess
-import shutil
 
-from LeePyLibs import LeeCommon
-from LeePyLibs import LeeZipfile
-from LeePyLibs import LeePatchManager
-from LeePyLibs import LeeConfigure
+from LeePyLibs import LeeCommon, LeeConfigure, LeePatchManager, LeeZipfile
 
 if platform.system() == 'Windows':
     import winreg
@@ -21,7 +18,7 @@ class LeePublisher:
     def __init__(self):
         self.leeCommon = LeeCommon()
         self.patchManager = LeePatchManager()
-    
+
     def makeSource(self):
         '''
         将 LeeClient 的内容复制到打包源目录(并删除多余文件)
@@ -62,22 +59,24 @@ class LeePublisher:
                 # 过滤一下不需要导出的目录
                 isBlocked = False
                 for filterDir in filterDirectories:
-                    if ('%s%s%s' % (leeClientDir, filterDir, os.path.sep)).lower() in fullpath.lower(): 
+                    if ('%s%s%s' % (leeClientDir, filterDir, os.path.sep)).lower() in fullpath.lower():
                         isBlocked = True
                         break
-                if isBlocked: continue
-                
+                if isBlocked:
+                    continue
+
                 # 过滤一下不需要导出的文件
                 isBlocked = False
                 for filterFile in filterFiles:
-                    if ('%s%s' % (leeClientDir, filterFile)).lower() in fullpath.lower(): 
+                    if ('%s%s' % (leeClientDir, filterFile)).lower() in fullpath.lower():
                         isBlocked = True
                         break
-                if isBlocked: continue
-                
+                if isBlocked:
+                    continue
+
                 # 记录到 copyFileList 表示需要复制此文件到打包源
                 copyFileList.append(fullpath)
-        
+
         # 把文件拷贝到打包源
         # TODO: 最好能够显示文件的复制进度
         # http://zzq635.blog.163.com/blog/static/1952644862013125112025129/
@@ -90,25 +89,26 @@ class LeePublisher:
 
         # 把最终发布源所在的目录当做参数返回值回传
         return releaseDirpath
-    
+
     def getZipFilename(self, sourceDir):
         if sourceDir.endswith('\\') or sourceDir.endswith('/'):
             sourceDir = sourceDir[:-1]
         return '%s.zip' % sourceDir
-    
+
     def getPackageSourceList(self, dirpath):
         '''
         根据指定的 dir 中枚举出子目录的名字 (即打包源的目录名)
         返回: Array 保存着每个子目录名称的数组
         '''
         dirlist = []
-        list = os.listdir(dirpath)
-        
-        for dname in list:
-            if not dname.lower().startswith('leeclient_release_'): continue
+        osdirlist = os.listdir(dirpath)
+
+        for dname in osdirlist:
+            if not dname.lower().startswith('leeclient_release_'):
+                continue
             if os.path.isdir(os.path.normpath(dirpath) + os.path.sep + dname):
                 dirlist.append(dname)
-        
+
         dirlist.sort()
         return dirlist
 
@@ -121,7 +121,7 @@ class LeePublisher:
 
         zipConfigure = LeeConfigure().get('ZipConfigure')
         return LeeZipfile().zip(sourceDir, zipSavePath, zipConfigure['TopLevelDirName'])
-    
+
     def makeSetup(self, sourceDir, setupOutputDir = None):
         '''
         将打包源目录直接制作成一个 Setup 安装程序
@@ -135,7 +135,7 @@ class LeePublisher:
         # 判断 InnoSetup 是否已经安装
         if not self.__isInnoSetupInstalled():
             # 若未安装则进行安装 (此处需要管理员权限)
-            if self.__instInnoSetup(): 
+            if self.__instInnoSetup():
                 # 安装后将补丁文件复制到 InnoSetup 的安装目录中
                 self.__applyInnoSetupLdrPatch()
             else:
@@ -188,7 +188,7 @@ class LeePublisher:
 
         # 调用 ISCC.exe 执行 Setup 的打包操作
         return self.__runInnoScript(scriptCachePath)
-    
+
     def __isInnoSetupInstalled(self):
         '''
         判断 Inno Setup 是否已经安装到电脑中
@@ -196,7 +196,7 @@ class LeePublisher:
         innoSetupDir = self.__getInnoSetupInstallPath()
         if innoSetupDir is None: return False
         return self.leeCommon.isFileExists('%sCompil32.exe' % innoSetupDir)
-    
+
     def __getInnoSetupInstallPath(self):
         '''
         获取 Inno Setup 的安装目录, 末尾自动补斜杠
@@ -204,11 +204,11 @@ class LeePublisher:
         try:
             if platform.system() != 'Windows':
                 self.leeCommon.exitWithMessage('很抱歉, %s 此函数目前只能在 Windows 平台上运行.' % sys._getframe().f_code.co_name)
-            
+
             # 根据不同的平台切换注册表路径
             if platform.machine() == 'AMD64':
                 innoSetup_key = winreg.OpenKey(
-                    winreg.HKEY_LOCAL_MACHINE, 
+                    winreg.HKEY_LOCAL_MACHINE,
                     'SOFTWARE\\WOW6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Inno Setup 5_is1'
                 )
             else:
@@ -221,11 +221,11 @@ class LeePublisher:
             installLocation, _value_type = winreg.QueryValueEx(innoSetup_key, 'InstallLocation')
             if not (installLocation.endswith('\\') or installLocation.endswith('/')):
                 installLocation = '%s%s' % (installLocation, os.path.sep)
-            
+
             return installLocation
-        except:
+        except Exception as _err:
             return None
-    
+
     def __applyInnoSetupLdrPatch(self):
         '''
         应用 SetupLdr.e32 补丁到 Inno Setup 的安装目录下 (要求管理员权限)
@@ -243,13 +243,13 @@ class LeePublisher:
 
         if (not self.leeCommon.isFileExists(bakFilepath)) and self.leeCommon.isFileExists(dstFilepath):
             shutil.copyfile(dstFilepath, bakFilepath)
-        
+
         if not self.leeCommon.isFileExists(srcFilepath): return False
         os.remove(dstFilepath)
         shutil.copyfile(srcFilepath, dstFilepath)
 
         return True
-    
+
     def __checkInnoSetupStatus(self):
         '''
         检查 Inno Setup 的状态是否正常且符合要求
@@ -262,7 +262,7 @@ class LeePublisher:
 
         # Inno Setup 的 ISCC.exe 是否存在
         if not self.leeCommon.isFileExists('%sISCC.exe' % innoSetupDir): return False
-        
+
         # 是否已经安装了 SetupLdr.e32 补丁
         setupLdrMD5 = self.leeCommon.getMD5ForSmallFile('%sSetupLdr.e32' % innoSetupDir)
         if setupLdrMD5 != '544dbcf30c8ccb55082709b095173f6c': return False
@@ -280,16 +280,16 @@ class LeePublisher:
         installerFilepath = ('%sBin/InnoSetup/Resources/Installer/innosetup-5.6.1-unicode.exe' % scriptDir).replace('/', os.path.sep)
         if not self.leeCommon.isFileExists(installerFilepath):
             return False
-        
+
         # 执行静默安装过程
-        setupProc = subprocess.Popen('%s /VERYSILENT' % installerFilepath, 
+        setupProc = subprocess.Popen('%s /VERYSILENT' % installerFilepath,
             stdout = sys.stdout, cwd = os.path.dirname(installerFilepath)
         )
         setupProc.wait()
 
         # 确认结果并输出提示信息表示压缩结束
         return (setupProc.returncode == 0 and self.__isInnoSetupInstalled())
-    
+
     def choiceExit(self):
         print('不选择任何一个配置的话, 无法继续工作, 请重试.')
 
@@ -307,13 +307,13 @@ class LeePublisher:
             for cfgKey, cfgValue in enumerate(setupConfigure):
                 menuItem = [cfgValue['LeeName'], None, cfgKey]
                 menus.append(menuItem)
-            
+
             configure = self.leeCommon.simpleMenu(
                 items = menus,
-                title = '选择生成配置', 
+                title = '选择生成配置',
                 prompt = '请选择用于生成安装程序的配置',
-                injectClass = self, 
-                cancelExec = 'injectClass.choiceExit()', 
+                injectClass = self,
+                cancelExec = 'injectClass.choiceExit()',
                 withCancel = True,
                 resultMap = setupConfigure
             )
@@ -324,12 +324,12 @@ class LeePublisher:
         lines = self.__getConfigureInfos(configure)
         title = '确认配置的各个选项值'
         prompt = '是否继续?'
-        
+
         if not self.leeCommon.simpleConfirm(lines, title, prompt, None, None):
             self.leeCommon.exitWithMessage('感谢您的使用, 再见')
-        
+
         return configure
-    
+
     def __getConfigureInfos(self, configure, dontPrint = True):
         '''
         给定一个配置的字典对象, 把内容构建成可读样式, 必要的话打印出来
@@ -353,17 +353,21 @@ class LeePublisher:
             '----------------------------------------------------------------'
         ]
 
-        if not dontPrint: print('\r\n'.join(configureInfos))
+        if not dontPrint:
+            print('\r\n'.join(configureInfos))
         return configureInfos
-    
+
     def __readScriptTemplate(self):
         '''
         获取 Inno Setup 的脚本模板并作为字符串返回
         '''
         scriptDir = self.leeCommon.getScriptDirectory()
-        scriptTemplateFilepath = ('%sBin/InnoSetup/Resources/Scripts/Scripts_Template.iss' % scriptDir).replace('/', os.path.sep)
+        scriptTemplateFilepath = (
+            '%sBin/InnoSetup/Resources/Scripts/Scripts_Template.iss' % scriptDir
+        ).replace('/', os.path.sep)
 
-        if not self.leeCommon.isFileExists(scriptTemplateFilepath): return None
+        if not self.leeCommon.isFileExists(scriptTemplateFilepath):
+            return None
         return open(scriptTemplateFilepath, 'r', encoding = 'utf-8').read()
 
     def __generateFinallyScript(self, templateContent, configure):
@@ -373,11 +377,15 @@ class LeePublisher:
         finallyContent = templateContent
 
         for k,v in configure.items():
-            if v is None: continue
+            if v is None:
+                continue
             rePattern = '(#define %s ".*?")' % k
             searchResult = re.search(rePattern, finallyContent)
-            if searchResult is None: continue
-            finallyContent = finallyContent.replace(searchResult.group(0), '#define %s "%s"' % (k, v))
+            if searchResult is None:
+                continue
+            finallyContent = finallyContent.replace(
+                searchResult.group(0), '#define %s "%s"' % (k, v)
+            )
 
         return finallyContent
 
@@ -409,14 +417,17 @@ class LeePublisher:
         调用 ISCC.exe 进行安装程序的制作, 同步等待结束
         '''
         innoSetupDir = self.__getInnoSetupInstallPath()
-        if innoSetupDir is None: return False
+        if innoSetupDir is None:
+            return False
 
         isccPath = '%sISCC.exe' % innoSetupDir
-        if not self.leeCommon.isFileExists(isccPath): return False
+        if not self.leeCommon.isFileExists(isccPath):
+            return False
 
-        isccProc = subprocess.Popen('%s "%s"' % (isccPath, scriptPath), 
+        isccProc = subprocess.Popen(
+            '%s "%s"' % (isccPath, scriptPath),
             stdout = sys.stdout, cwd = os.path.dirname(scriptPath)
         )
         isccProc.wait()
-    
+
         return isccProc.returncode == 0

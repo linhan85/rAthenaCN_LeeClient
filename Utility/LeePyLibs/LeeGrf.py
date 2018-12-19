@@ -1,19 +1,18 @@
 # -*- coding: utf-8 -*-
 
 import os
-import sys
 import platform
 import subprocess
+import sys
 
-from LeePyLibs import LeeCommon
-from LeePyLibs import LeePatchManager
+from LeePyLibs import LeeCommon, LeePatchManager
+
 
 class LeeGrf:
     def __init__(self):
         self.leeCommon = LeeCommon()
         self.patchManager = LeePatchManager()
-        pass
-    
+
     def makeGrf(self, dataDirpath, grfOutputPath):
         # 确认操作系统平台
         if platform.system() != 'Windows':
@@ -22,7 +21,9 @@ class LeeGrf:
         # 确认 GrfCL 所需要的 .net framework 已安装
         if not self.leeCommon.isDotNetFrameworkInstalled('v3.5'):
             print('您必须先安装微软的 .NET Framework v3.5 框架.')
-            self.leeCommon.exitWithMessage('下载地址: https://www.microsoft.com/zh-CN/download/details.aspx?id=21')
+            self.leeCommon.exitWithMessage(
+                '下载地址: https://www.microsoft.com/zh-CN/download/details.aspx?id=21'
+            )
 
         # 确认已经切换到了需要的客户端版本
         if not self.patchManager.canRevert():
@@ -51,7 +52,7 @@ class LeeGrf:
             if not self.leeCommon.simpleConfirm(lines, title, prompt, None, None):
                 self.leeCommon.exitWithMessage('由于您放弃继续, 程序已自动终止.')
             os.remove(grfOutputPath)
-        
+
         # 执行压缩工作（同步等待）
         self.leeCommon.cleanScreen()
         grfCLProc = subprocess.Popen('%s %s' % (
@@ -68,4 +69,3 @@ class LeeGrf:
             self.leeCommon.exitWithMessage('已经将 data 目录压缩为 data.grf 并存放到根目录.')
         else:
             self.leeCommon.exitWithMessage('进行压缩工作的时候发生错误, 请发 Issue 进行反馈.')
-    

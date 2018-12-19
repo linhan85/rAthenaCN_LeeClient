@@ -1,16 +1,13 @@
 # -*- coding: utf-8 -*-
 
+import copy
+import glob
+import hashlib
 import os
 import re
-import json
-import hashlib
-import copy
-import time
-import glob
-from LeePyLibs import LeeCommon
-from LeePyLibs import LeeButtonRender
-from LeePyLibs import LeeBaseTranslator
-from LeePyLibs import LeeBaseRevert
+
+from LeePyLibs import LeeBaseRevert, LeeBaseTranslator, LeeButtonRender
+
 
 class LeeButtonTranslator(LeeBaseTranslator, LeeBaseRevert):
     def __init__(self):
@@ -40,13 +37,16 @@ class LeeButtonTranslator(LeeBaseTranslator, LeeBaseRevert):
         for dirpath, _dirnames, filenames in os.walk(patchesDir):
             for filename in filenames:
                 fullpath = os.path.normpath('%s/%s' % (dirpath, filename))
-                if not filename.lower().endswith('.bmp'): continue
-                if not re.match(rePathPattern, fullpath, re.I): continue
-                
+                if not filename.lower().endswith('.bmp'):
+                    continue
+                if not re.match(rePathPattern, fullpath, re.I):
+                    continue
+
                 relpath = re.search(self.leeCommon.normPattern(r'Original/(.*)$'), fullpath).group(1)
                 translateInfo = self.__getTranslateInfo(relpath)
-                if not (translateInfo and translateInfo['ButtonText'] and translateInfo['StyleFormat']): continue
-                
+                if not (translateInfo and translateInfo['ButtonText'] and translateInfo['StyleFormat']):
+                    continue
+
                 translateInfo['RelativePath'] = relpath
                 translateInfo['FullPath'] = fullpath
                 translateInfo['ButtonWidth'], translateInfo['ButtonHeight'] = self.leeFileIO.getImageSizeByFilepath(fullpath)
@@ -56,7 +56,8 @@ class LeeButtonTranslator(LeeBaseTranslator, LeeBaseRevert):
         # 根据汉化信息来逐个生成按钮文件（包括按钮的各个状态）
         btnStateDefine = ['normal', 'hover', 'press', 'disabled']
         for translateInfo in waitingToBuildTranslateInfolist:
-            if (specifiedClientVer is not None) and (specifiedClientVer not in translateInfo['FullPath']): continue
+            if (specifiedClientVer is not None) and (specifiedClientVer not in translateInfo['FullPath']):
+                continue
             translatedDirpath = re.search(self.leeCommon.normPattern(r'^(.*)Original/data/texture'), translateInfo['FullPath'], re.I).group(1) + 'Translated'
             textureDirpath = '%s/%s' % (translatedDirpath, os.path.dirname(translateInfo['RelativePath']))
             os.makedirs(textureDirpath, exist_ok = True)
@@ -67,17 +68,17 @@ class LeeButtonTranslator(LeeBaseTranslator, LeeBaseRevert):
                 btnSavePath = '%s/%s%s.bmp' % (textureDirpath, translateInfo['Basename'], postfix)
                 print('正在汉化, 请稍候: %s' % os.path.relpath(btnSavePath, leeClientDir).replace('Translated', 'Original'))
                 self.leeFileIO.createButtonBmpFile(
-                    translateInfo['StyleFormat'], 
-                    btnStateDefine[btnStateIndex], 
-                    translateInfo['ButtonText'], 
-                    translateInfo['ButtonWidth'], 
+                    translateInfo['StyleFormat'],
+                    btnStateDefine[btnStateIndex],
+                    translateInfo['ButtonText'],
+                    translateInfo['ButtonWidth'],
                     btnSavePath
                 )
                 self.rememberRevert(btnSavePath)
                 print('汉化完毕, 保存到: %s\r\n' % os.path.relpath(btnSavePath, leeClientDir))
-        
+
         self.saveRevert()
-    
+
     def update(self):
         scriptDir = self.leeCommon.getScriptDirectory()
         ragexeClientDir = os.path.normpath('%s/Patches' % scriptDir)
@@ -85,12 +86,15 @@ class LeeButtonTranslator(LeeBaseTranslator, LeeBaseRevert):
 
         for dirpath, _dirnames, filenames in os.walk(ragexeClientDir):
             for filename in filenames:
-                if not filename.lower().endswith('.bmp'): continue
-                if dirpath.lower().find('resource/original') <= 0: continue
-                
+                if not filename.lower().endswith('.bmp'):
+                    continue
+                if dirpath.lower().find('resource/original') <= 0:
+                    continue
+
                 fullpath = '%s/%s' % (dirpath, filename)
                 result, realBasename, referPostfix, filenameMode, withDisabled = self.__detectFilemode(fullpath)
-                if not result: continue
+                if not result:
+                    continue
 
                 relpath = re.search(self.leeCommon.normPattern(r'Original/(.*)$'), fullpath).group(1)
                 fullNameMode = '%s#%s#%s' % (referPostfix, filenameMode, withDisabled)
@@ -98,7 +102,7 @@ class LeeButtonTranslator(LeeBaseTranslator, LeeBaseRevert):
 
                 translateItem = {
                     'Directory': os.path.dirname(relpath).lower() + os.path.sep,
-                    'Basename': realBasename, 
+                    'Basename': realBasename,
                     'FilenameMode': fullNameMode,
                     'StyleFormat': '' if not (translateKey in self.translateMap) else self.translateMap[translateKey]['StyleFormat'],
                     'ButtonText': '' if not (translateKey in self.translateMap) else self.translateMap[translateKey]['ButtonText']
@@ -128,17 +132,19 @@ class LeeButtonTranslator(LeeBaseTranslator, LeeBaseRevert):
         filename = (os.path.splitext(os.path.basename(relpath))[0]).lower()
         translateKey = self.__generateKey(dirname, filename)
 
-        if translateKey not in self.translateMap: return None
+        if translateKey not in self.translateMap:
+            return None
         return self.translateMap[translateKey]
 
     def __updateRevertDefaultDBPath(self, specifiedClientVer = None):
-        if specifiedClientVer is not None: self.specifiedClientVer = specifiedClientVer
+        if specifiedClientVer is not None:
+            self.specifiedClientVer = specifiedClientVer
         self.revertDefaultDBPath = 'Resources/Databases/RevertData/LeeButtonRevert%s.json' % ('' if self.specifiedClientVer is None else '_%s' % self.specifiedClientVer)
-    
+
     def __detectFilemode(self, filepath):
         if not filepath.lower().endswith('.bmp'):
             return False, None, None, None, None
-        
+
         # demo_out.bmp | demo_over.bmp | demo_press.bmp | demo_disable.bmp
         # demo_out.bmp | demo_over.bmp | demo_press.bmp
         # demo.bmp | demo_a.bmp | demo_b.bmp | demo_c.bmp
@@ -162,8 +168,10 @@ class LeeButtonTranslator(LeeBaseTranslator, LeeBaseRevert):
         withDisabled = isValid = False
 
         for fileNameMode in fileNameModes:
-            if fullBasename.endswith(fileNameMode['base']): isValid = True
-        if not isValid: return False, None, None, None, None
+            if fullBasename.endswith(fileNameMode['base']):
+                isValid = True
+        if not isValid:
+            return False, None, None, None, None
 
         for fileNameMode in fileNameModes:
             realBasename = fullBasename[:len(fullBasename) - len(fileNameMode['base'])]
@@ -173,19 +181,21 @@ class LeeButtonTranslator(LeeBaseTranslator, LeeBaseRevert):
             for refer in fileNameMode['refer']:
                 if not self.leeCommon.isFileExists('%s/%s%s.bmp' % (dirpath, realBasename, refer)):
                     referPass = False
-            if not referPass: continue
+            if not referPass:
+                continue
 
             blockPass = True
             for block in fileNameMode['block']:
                 if self.leeCommon.isFileExists('%s/%s%s.bmp' % (dirpath, realBasename, block)):
                     blockPass = False
-            if not blockPass: continue
+            if not blockPass:
+                continue
 
             withDisabled = self.leeCommon.isFileExists('%s/%s%s.bmp' % (dirpath, realBasename, fileNameMode['disable']))
             finallyFilenameMode = fileNameMode['d'] if withDisabled else fileNameMode['n']
             break
-        
-        if len(finallyFilenameMode) <= 0:
+
+        if not finallyFilenameMode:
             return False, None, None, None, None
 
         return True, realBasename, referPostfix, finallyFilenameMode, withDisabled

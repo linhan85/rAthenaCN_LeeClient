@@ -10,7 +10,8 @@ class LeePatchManager:
     '''
     用于管理补丁文件列表的操作类
     '''
-    class SourceFileNotFoundError(FileNotFoundError): pass
+    class SourceFileNotFoundError(FileNotFoundError):
+        pass
 
     def __init__(self):
         self.leeCommon = LeeCommon()
@@ -44,7 +45,7 @@ class LeePatchManager:
         self.stagingFiles.clear()
         self.backupFiles.clear()
         self.patchesFiles.clear()
-    
+
     def __pathrestore(self, dictobj):
         '''
         用于处理 dictobj 字典对象中存储的路径
@@ -74,8 +75,12 @@ class LeePatchManager:
             self.patchesFiles = patchesInfo['patchlist']
 
             # 标准化处理一下反斜杠, 以便在跨平台备份恢复时可以顺利找到文件
-            self.backupFiles = [filepath.replace('\\', os.path.sep) for filepath in self.backupFiles]
-            self.patchesFiles = [self.__pathrestore(item) for item in self.patchesFiles]
+            self.backupFiles = [
+                filepath.replace('\\', os.path.sep) for filepath in self.backupFiles
+            ]
+            self.patchesFiles = [
+                self.__pathrestore(item) for item in self.patchesFiles
+            ]
 
             return True
         return False
@@ -83,16 +88,17 @@ class LeePatchManager:
     def __copyDirectory(self, srcDirectory):
         scriptDir = self.leeCommon.getScriptDirectory()
         useless_files = ['thumbs.db', '.ds_store', '.gitignore', '.gitkeep']
-        
+
         # 复制文件，且记录所有可能会应用的目的地址
         for dirpath, _dirnames, filenames in os.walk(srcDirectory):
             for filename in filenames:
-                if filename.lower() in useless_files: continue
+                if filename.lower() in useless_files:
+                    continue
                 file_path = os.path.join(dirpath, filename)
                 srcrel_path = os.path.relpath(file_path, scriptDir)
                 dstrel_path = os.path.relpath(file_path, srcDirectory)
                 self.stagingFiles.append({'src' : srcrel_path, 'dst' : dstrel_path})
-    
+
     def __commitSession(self):
         scriptDir = self.leeCommon.getScriptDirectory()
         leeClientDir = self.leeCommon.getLeeClientDirectory()
@@ -103,7 +109,9 @@ class LeePatchManager:
             for item in self.stagingFiles:
                 src_path = os.path.abspath('%s/%s' % (scriptDir, item['src']))
                 if not (os.path.exists(src_path) and os.path.isfile(src_path)):
-                    raise self.SourceFileNotFoundError("Can't found source patch file : %s" % src_path)
+                    raise self.SourceFileNotFoundError(
+                        "Can't found source patch file : %s" % src_path
+                    )
 
             # 备份所有可能会被覆盖的文件，并记录备份成功的文件
             for item in self.stagingFiles:
@@ -127,9 +135,10 @@ class LeePatchManager:
                 src_path = os.path.abspath('%s/%s' % (scriptDir, item['src']))
                 dst_path = os.path.abspath('%s/%s' % (leeClientDir, item['dst']))
                 dst_dirs = os.path.dirname(dst_path)
-                
+
                 os.makedirs(dst_dirs, exist_ok = True)
-                if os.path.exists(dst_path): os.remove(dst_path)
+                if os.path.exists(dst_path):
+                    os.remove(dst_path)
                 shutil.copyfile(src_path, dst_path)
                 # print('复制 %s 到 %s' % (src_path, dst_path))
                 self.patchesFiles.append(item)
@@ -145,20 +154,21 @@ class LeePatchManager:
 
         # 记录备份和成功替换的文件信息
         sessionInfoFile = self.__getSessionPath()
-        if os.path.exists(sessionInfoFile): os.remove(sessionInfoFile)
+        if os.path.exists(sessionInfoFile):
+            os.remove(sessionInfoFile)
 
         # 标准化处理一下反斜杠, 以便在跨平台备份恢复时可以顺利找到文件
         self.backupFiles = [filepath.replace('/', '\\') for filepath in self.backupFiles]
         self.patchesFiles = [self.__pathnorm(item) for item in self.patchesFiles]
-        
+
         json.dump({
             'patchtime' : time.strftime('%Y-%m-%d %H:%M:%S',time.localtime()),
             'backuplist' : self.backupFiles,
             'patchlist' : self.patchesFiles
         }, open(sessionInfoFile, 'w', encoding = 'utf-8'), ensure_ascii = False, indent = 4)
-        
+
         return True
-    
+
     def canRevert(self):
         self.__loadSession()
         leeClientDir = self.leeCommon.getLeeClientDirectory()
@@ -174,9 +184,9 @@ class LeePatchManager:
         for item in self.patchesFiles:
             path = item['dst']
             restoreFileInfo.append([1, path])
-        
+
         return len(restoreFileInfo) > 0
-        
+
     def doRevertPatch(self, loadSession = True):
         if loadSession:
             self.__loadSession()
@@ -201,33 +211,34 @@ class LeePatchManager:
                     if os.path.exists(fullpath) and os.path.isfile(fullpath):
                         # print('强制移除 : %s' % fullpath)
                         os.remove(fullpath)
-        
+
         # 还原之前备份的文件列表
         for item in self.backupFiles:
             backup_path = os.path.abspath('%s/%s' % (backupDir, item))
             source_path = os.path.abspath('%s/%s' % (leeClientDir, item))
             shutil.copyfile(backup_path, source_path)
-            pass
-        
+
         if os.path.exists(backupDir) and os.path.isdir(backupDir):
             shutil.rmtree(backupDir)
-        
+
         if os.path.exists(sessionInfoFile) and os.path.isfile(sessionInfoFile):
             os.remove(sessionInfoFile)
-        
+
         self.leeCommon.removeEmptyDirectorys(leeClientDir)
         return True
-    
+
     def doApplyPatch(self, clientver):
         '''
         应用特定版本的补丁
         '''
         scriptDir = self.leeCommon.getScriptDirectory()
-        clientList = self.leeCommon.getRagexeClientList(os.path.abspath(scriptDir + 'Patches') + os.sep)
-        
+        clientList = self.leeCommon.getRagexeClientList(
+            os.path.abspath(scriptDir + 'Patches') + os.sep
+        )
+
         if not clientver in clientList:
             self.leeCommon.exitWithMessage('您期望切换的版本号 %s 是无效的' % clientver)
-        
+
         beforeDir = self.leeCommon.getBeforePatchesDirectory()
         ragexeDir = self.leeCommon.getClientBuildDirectory(clientver)
         clientOriginDir = self.leeCommon.getClientOriginDirectory(clientver)
@@ -244,19 +255,25 @@ class LeePatchManager:
         if not self.leeCommon.isDirectoryExists(ragexeDir):
             self.leeCommon.exitWithMessage('无法找到 %s 版本的 Ragexe 目录: %s' % (clientver, ragexeDir))
         if not self.leeCommon.isDirectoryExists(clientOriginDir):
-            self.leeCommon.exitWithMessage('无法找到 %s 版本的 Original 目录: %s' % (clientver, clientOriginDir))
+            self.leeCommon.exitWithMessage(
+                '无法找到 %s 版本的 Original 目录: %s' % (clientver, clientOriginDir)
+            )
         if not self.leeCommon.isDirectoryExists(clientTranslatedDir):
-            self.leeCommon.exitWithMessage('无法找到 %s 版本的 Translated 目录: %s' % (clientver, clientTranslatedDir))
+            self.leeCommon.exitWithMessage(
+                '无法找到 %s 版本的 Translated 目录: %s' % (clientver, clientTranslatedDir)
+            )
         if not self.leeCommon.isDirectoryExists(afterDir):
             self.leeCommon.exitWithMessage('无法找到 AfterPatches 的 Base 目录: %s' % afterDir)
 
         if not self.leeCommon.isDirectoryExists(importBeforeDir):
             self.leeCommon.exitWithMessage('无法找到 BeforePatches 的 Import 目录: %s' % importBeforeDir)
         if not self.leeCommon.isDirectoryExists(importClientDir):
-            self.leeCommon.exitWithMessage('无法找到 %s 版本的 Import 目录: %s' % (clientver, importClientDir))
+            self.leeCommon.exitWithMessage(
+                '无法找到 %s 版本的 Import 目录: %s' % (clientver, importClientDir)
+            )
         if not self.leeCommon.isDirectoryExists(importAftertDir):
             self.leeCommon.exitWithMessage('无法找到 AfterPatches 的 Import 目录: %s' % importAftertDir)
-        
+
         # 创建一个事务并执行复制工作, 最后提交事务
         self.__createSession()
         self.__copyDirectory(beforeDir)
@@ -267,9 +284,9 @@ class LeePatchManager:
         self.__copyDirectory(importClientDir)        # Import
         self.__copyDirectory(afterDir)
         self.__copyDirectory(importAftertDir)        # Import
-        
+
         if not self.__commitSession():
             print('应用特定版本的补丁过程中发生错误, 终止...')
             return False
-        
+
         return True

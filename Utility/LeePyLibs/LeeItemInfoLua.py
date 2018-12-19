@@ -105,10 +105,14 @@ end
                     itemID = itemID,
                     unidentifiedDisplayName = g.tbl[itemID]['unidentifiedDisplayName'],
                     unidentifiedResourceName = g.tbl[itemID]['unidentifiedResourceName'],
-                    unidentifiedDescriptionName = self.__normdesc(g.tbl[itemID]['unidentifiedDescriptionName']),
+                    unidentifiedDescriptionName = self.__normdesc(
+                        g.tbl[itemID]['unidentifiedDescriptionName']
+                    ),
                     identifiedDisplayName = g.tbl[itemID]['identifiedDisplayName'],
                     identifiedResourceName = g.tbl[itemID]['identifiedResourceName'],
-                    identifiedDescriptionName = self.__normdesc(g.tbl[itemID]['identifiedDescriptionName']),
+                    identifiedDescriptionName = self.__normdesc(
+                        g.tbl[itemID]['identifiedDescriptionName']
+                    ),
                     slotCount = g.tbl[itemID]['slotCount'],
                     ClassNum = g.tbl[itemID]['ClassNum'],
                 )

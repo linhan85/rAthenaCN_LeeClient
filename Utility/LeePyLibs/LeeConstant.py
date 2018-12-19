@@ -7,18 +7,19 @@ class LeeConstant:
     '''
     __singleInstance = None
 
-    class ConstError(PermissionError): pass
-    
+    class ConstError(PermissionError):
+        pass
+
     def __new__(cls):
-        if cls.__singleInstance == None:
+        if cls.__singleInstance is None:
             cls.__singleInstance = object.__new__(cls)
         return cls.__singleInstance
-    
+
     def __setattr__(self, name, value):
         if name in self.__dict__.keys():
             raise self.ConstError("Can't rebind constant : %s" % name)
         self.__dict__[name] = value
-    
+
     def __delattr__(self, name):
         if name in self.__dict__:
             raise  self.ConstError("Can't unbind constant : %s" % name)

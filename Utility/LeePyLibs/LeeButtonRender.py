@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 
-import os
-import sys
-import json
 import contextlib
-import tempfile
+import json
+import os
 import shutil
+import tempfile
+
+from PIL import Image, ImageChops
 
 from LeePyLibs import LeeCommon
-from PIL import Image, ImageChops, ImageDraw, ImageFont
 
 with contextlib.redirect_stdout(None):
     import pygame
@@ -27,7 +27,7 @@ class LeeButtonRender:
             to choose what to crop.
             Otherwise, this function will try to find the most popular color
             on the edges of the image and consider this color "whitespace".
-            (You can override this color with the backgroundColor parameter) 
+            (You can override this color with the backgroundColor parameter)
             Input:
                 image (a PIL Image object): The image to crop.
                 backgroundColor (3 integers tuple): eg. (0,0,255)
@@ -64,9 +64,11 @@ class LeeButtonRender:
                 if RGB in counts:
                     counts[RGB] += 1
                 else:
-                    counts[RGB] = 1  
+                    counts[RGB] = 1
             # Get the colour which is the most popular:
-            mostPopularColor = sorted([(count,rgba) for (rgba,count) in counts.items()],reverse=True)[0][1]
+            mostPopularColor = sorted(
+                [(count,rgba) for (rgba,count) in counts.items()], reverse=True
+            )[0][1]
             return ord(mostPopularColor[0]),ord(mostPopularColor[1]),ord(mostPopularColor[2])
         bbox = None
         # If the image has an alpha (tranparency) layer, we use it to crop the image.
@@ -87,7 +89,9 @@ class LeeButtonRender:
             diff = ImageChops.difference(image, bg) # Substract background color from image
             bbox = diff.getbbox() # Try to find the real bounding box of the image.
         else:
-            raise NotImplementedError("Sorry, this function is not implemented yet for images in mode '%s'." % image.mode)
+            raise NotImplementedError(
+                "Sorry, this function is not implemented yet for images in mode '%s'." % image.mode
+            )
         if bbox:
             image = image.crop(bbox)
         return image
@@ -114,16 +118,12 @@ class LeeButtonRender:
         imgButton.paste(imgText, pasteRect, mask = imgText)
 
         return imgButton
-    
-    def createButtonBmpFile(self, tplName, btnState, btnText, btnWidth, savePath):
-        try:
-            btnImage = self.createButtonImage(tplName, btnState, btnText, btnWidth)
-            btnImage.save(os.path.abspath(savePath), 'bmp')
-        except Exception:
-            raise
 
+    def createButtonBmpFile(self, tplName, btnState, btnText, btnWidth, savePath):
+        btnImage = self.createButtonImage(tplName, btnState, btnText, btnWidth)
+        btnImage.save(os.path.abspath(savePath), 'bmp')
         return True
-    
+
     def createButtonBackgroundImage(self, tplName, btnState, btnWidth):
         pathLeftPiece = self.getButtonTemplatePath(tplName, btnState, 'left')
         pathMidPiece = self.getButtonTemplatePath(tplName, btnState, 'mid')
@@ -137,9 +137,9 @@ class LeeButtonRender:
         imgMidWidth, imgMidHeight = imgMidPiece.size
         imgRightWidth, imgRightHeight = imgRightPiece.size
 
-        if not (imgLeftHeight == imgMidHeight == imgRightHeight):
+        if not imgLeftHeight == imgMidHeight == imgRightHeight:
             print('左中右三张切图文件的高度必须完全匹配')
-        
+
         # 解析来开始拼接按钮的背景图片
         # 建立一个 btnWidth x imgLeftHeight 的图片对象, 底色用 RO 的透明色 FF40FF
         imgButton = Image.new('RGBA', (btnWidth, imgLeftHeight), '#FF40FF')
@@ -147,7 +147,7 @@ class LeeButtonRender:
         # 将中间的图片填满除了左右两侧之外的中央的区域
         midSpace = btnWidth - imgLeftWidth - imgRightWidth
         repeatTime = 0
-        while (midSpace > 0):
+        while midSpace > 0:
             left = imgLeftWidth + (imgMidWidth * repeatTime)
             imgButton.paste(imgMidPiece, (left, 0, left + imgMidWidth, imgMidHeight))
             repeatTime = repeatTime + 1
@@ -165,12 +165,16 @@ class LeeButtonRender:
         imgRightPiece.close()
 
         return imgButton
-    
+
     def createTextImage(self, btnText, btnState):
         fontName, fontSize = self.__getButtonFontInfomation()
         fontPath = self.getFontPath(fontName)
-        foreFontColor = self.leeCommon.strHexToRgb(self.__getButtonConfigureValue(btnState, 'fontColor'))
-        shadowFontColor = self.leeCommon.strHexToRgb(self.__getButtonConfigureValue(btnState, 'shadowColor'))
+        foreFontColor = self.leeCommon.strHexToRgb(
+            self.__getButtonConfigureValue(btnState, 'fontColor')
+        )
+        shadowFontColor = self.leeCommon.strHexToRgb(
+            self.__getButtonConfigureValue(btnState, 'shadowColor')
+        )
         shadowFontAlpha = int(self.__getButtonConfigureValue(btnState, 'shadowAlpha'))
 
         # 根据不同的阴影类型, 进行渲染
@@ -194,10 +198,14 @@ class LeeButtonRender:
             _red, _green, _blue, alpha = imgBackText.split()
             alpha = alpha.point(lambda i: i > 0 and (255 / 100) * shadowFontAlpha)
             imgBackText.putalpha(alpha)
-        
+
             # 文字的阴影的偏移叠加处理过程
-            shadowOffsetX = int(self.__getButtonConfigureValue(btnState, 'shadowOffset').split(',')[0])
-            shadowOffsetY = int(self.__getButtonConfigureValue(btnState, 'shadowOffset').split(',')[1])
+            shadowOffsetX = int(self.__getButtonConfigureValue(
+                btnState, 'shadowOffset'
+            ).split(',')[0])
+            shadowOffsetY = int(self.__getButtonConfigureValue(
+                btnState, 'shadowOffset'
+            ).split(',')[1])
             boardWidth = imgForeText.size[0] + abs(shadowOffsetX)
             boardHeight = imgForeText.size[1] + abs(shadowOffsetY)
             foreOffsetX = 0 if self.leeCommon.is_positive(shadowOffsetX) else abs(shadowOffsetX)
@@ -208,9 +216,9 @@ class LeeButtonRender:
             imgMergeText = Image.new('RGBA', (boardWidth, boardHeight), (0,0,0,0))
             imgMergeText.paste(imgBackText, (shadowOffsetX, shadowOffsetY))
             imgMergeText.paste(imgForeText, (foreOffsetX, foreOffsetY), mask = imgForeText)
-        
+
             return imgMergeText
-        
+
         elif self.__getButtonConfigureValue(btnState, 'shadowMode') == 'outline':
 
             outFont = pygame.font.Font(fontPath, fontSize + 2)
@@ -226,7 +234,7 @@ class LeeButtonRender:
             for x in range(-1,2):
                 for y in range(-1,2):
                     imgSurface.blit(outline, (x+cx, y+cy))
-            
+
             imgSurface.blit(innerFont.render(btnText, 1, foreFontColor), (cx,cy))
             imgSurfaceTextStor = pygame.image.tostring(imgSurface, 'RGBA', False)
             imgFinalText = Image.frombytes('RGBA', imgSurface.get_size(), imgSurfaceTextStor)
@@ -239,11 +247,11 @@ class LeeButtonRender:
         return os.path.abspath('%s/Resources/Texture/Button/Style_%s/%s_%s.png' % (
             scriptDir, tplName, btnState, piece
         ))
-    
+
     def getFontPath(self, fontFilename):
-        if (fontFilename in self.fontPathMap):
+        if fontFilename in self.fontPathMap:
             return self.fontPathMap[fontFilename]
-        
+
         scriptDir = self.leeCommon.getScriptDirectory()
         fontOriginPath = os.path.abspath('%s/Resources/Fonts/%s' % (
             scriptDir, fontFilename
@@ -256,7 +264,7 @@ class LeeButtonRender:
         # 记住临时字体文件的路径避免重复复制
         self.fontPathMap[fontFilename] = fontTempPath
         return fontTempPath
-    
+
     def getImageSizeByFilepath(self, filepath):
         img = Image.open(filepath)
         imgsize = img.size
@@ -266,15 +274,18 @@ class LeeButtonRender:
     def __loadButtonConfigure(self, tplName):
         scriptDir = self.leeCommon.getScriptDirectory()
         configurePath = '%s/Resources/Texture/Button/Style_%s/configure.json' % (scriptDir, tplName)
-        return json.load(open(configurePath, 'r')) if self.leeCommon.isFileExists(configurePath) else None
-    
+        return (
+            json.load(open(configurePath, 'r'))
+            if self.leeCommon.isFileExists(configurePath) else None
+        )
+
     def __getButtonFontInfomation(self):
         if self.btnConfigure:
             return self.btnConfigure['fontName'], int(self.btnConfigure['fontSize'])
         else:
             self.leeCommon.exitWithMessage('__getButtonFontInfomation: 无法加载字体的配置信息')
             return None, None
-    
+
     def __getButtonConfigureValue(self, btnState, attrib):
         if self.btnConfigure:
             return self.btnConfigure[btnState][attrib]

@@ -55,8 +55,9 @@ class LeeMenu:
             self.leeCommon.removeEmptyDirectorys(leeClientDir)
 
             print('已成功重置 LeeClient 客户端环境')
-        except:
+        except Exception as _err:
             print('很抱歉, 重置 LeeClient 客户端环境的过程中发生了意外, 请检查结果')
+            raise
 
     def switchWorkshop(self, clientver):
         '''
@@ -100,7 +101,8 @@ class LeeMenu:
         '''
         将指定的打包源压缩成一个 ZIP 文件
         '''
-        leeClientParantDir = os.path.abspath('%s..%s' % (self.leeCommon.getLeeClientDirectory(), os.path.sep))
+        leeClientParantDir = '%s..%s' % (self.leeCommon.getLeeClientDirectory(), os.path.sep)
+        leeClientParantDir = os.path.abspath(leeClientParantDir)
         packageSourceDirpath = '%s%s%s' % (leeClientParantDir, os.path.sep, packageSourceDirname)
 
         zipFilename = LeePublisher().getZipFilename(packageSourceDirpath)
@@ -113,7 +115,8 @@ class LeeMenu:
         '''
         将指定的打包源制作成一个 Setup 安装程序
         '''
-        leeClientParantDir = os.path.abspath('%s..%s' % (self.leeCommon.getLeeClientDirectory(), os.path.sep))
+        leeClientParantDir = '%s..%s' % (self.leeCommon.getLeeClientDirectory(), os.path.sep)
+        leeClientParantDir = os.path.abspath(leeClientParantDir)
         packageSourceDirpath = '%s%s%s' % (leeClientParantDir, os.path.sep, packageSourceDirname)
         outputDirpath = './Output/%s' % packageSourceDirname
 
@@ -163,7 +166,9 @@ class LeeMenu:
         self.leeCommon.cleanScreen()
 
         leeClientDir = self.leeCommon.getLeeClientDirectory()
-        packageSourceDirnameList = LeePublisher().getPackageSourceList(os.path.abspath(leeClientDir + '..' + os.path.sep) + os.sep)
+        packageSourceDirnameList = LeePublisher().getPackageSourceList(
+            os.path.abspath(leeClientDir + '..' + os.path.sep) + os.sep
+        )
         if packageSourceDirnameList is None:
             self.leeCommon.exitWithMessage('很抱歉, 无法获取打包源列表, 程序终止')
 
@@ -172,7 +177,11 @@ class LeeMenu:
 
         menus = []
         for packageSourceDirname in packageSourceDirnameList:
-            menuItem = [packageSourceDirname, 'injectClass.makePackageSourceToZipfile(\'%s\')' % packageSourceDirname, None]
+            menuItem = [
+                packageSourceDirname,
+                'injectClass.makePackageSourceToZipfile(\'%s\')' % packageSourceDirname,
+                None
+            ]
             menus.append(menuItem)
 
         self.leeCommon.simpleMenu(
@@ -192,7 +201,9 @@ class LeeMenu:
         self.leeCommon.cleanScreen()
 
         leeClientDir = self.leeCommon.getLeeClientDirectory()
-        packageSourceDirnameList = LeePublisher().getPackageSourceList(os.path.abspath(leeClientDir + '..\\') + os.sep)
+        packageSourceDirnameList = LeePublisher().getPackageSourceList(
+            os.path.abspath(leeClientDir + '..\\') + os.sep
+        )
         if packageSourceDirnameList is None:
             self.leeCommon.exitWithMessage('很抱歉, 无法获取打包源列表, 程序终止')
 
@@ -201,7 +212,11 @@ class LeeMenu:
 
         menus = []
         for packageSourceDirname in packageSourceDirnameList:
-            menuItem = [packageSourceDirname, 'injectClass.makePackageSourceToSetup(\'%s\')' % packageSourceDirname, None]
+            menuItem = [
+                packageSourceDirname,
+                'injectClass.makePackageSourceToSetup(\'%s\')' % packageSourceDirname,
+                None
+            ]
             menus.append(menuItem)
 
         self.leeCommon.simpleMenu(
@@ -221,7 +236,9 @@ class LeeMenu:
         self.leeCommon.cleanScreen()
 
         scriptDir = self.leeCommon.getScriptDirectory()
-        clientList = self.leeCommon.getRagexeClientList(os.path.abspath(scriptDir + 'Patches') + os.sep)
+        clientList = self.leeCommon.getRagexeClientList(
+            os.path.abspath(scriptDir + 'Patches') + os.sep
+        )
         if clientList is None:
             self.leeCommon.exitWithMessage('很抱歉, 无法获取客户端版本列表, 程序终止')
 
@@ -274,7 +291,9 @@ class LeeMenu:
         ]
         title = '更新客户端按钮的翻译数据库'
         prompt = '是否执行更新操作?'
-        self.leeCommon.simpleConfirm(lines, title, prompt, self, 'menus.maintenanceUpdateButtonTranslateDB()')
+        self.leeCommon.simpleConfirm(
+            lines, title, prompt, self, 'menus.maintenanceUpdateButtonTranslateDB()'
+        )
 
     def item_MaintenanceRunClientResourceCheck(self):
         '''
@@ -288,7 +307,9 @@ class LeeMenu:
         ]
         title = '对客户端资源进行完整性校验'
         prompt = '是否确认执行?'
-        self.leeCommon.simpleConfirm(lines, title, prompt, self, 'menus.maintenanceRunClientResourceCheck()')
+        self.leeCommon.simpleConfirm(
+            lines, title, prompt, self, 'menus.maintenanceRunClientResourceCheck()'
+        )
 
     def item_MaintenanceMakeDataToGrf(self):
         '''
@@ -352,15 +373,51 @@ def main():
 
     # 选择操作
     menus = [
-        ['切换客户端到指定版本', 'injectClass.item_SwitchWorkshop()', None],
-        ['重置 LeeClient 客户端到干净状态', 'injectClass.item_ResetWorkshop()', None],
-        ['进行文件资源的完整性校验', 'injectClass.item_MaintenanceRunClientResourceCheck()', None],
-        ['维护 - 将 data 目录打包为标准 grf 文件', 'injectClass.item_MaintenanceMakeDataToGrf()', None],
-        ['维护 - 生成客户端打包源', 'injectClass.item_MaintenanceMakePackageSource()', None],
-        ['维护 - 将指定的打包源压缩成 ZIP 文件', 'injectClass.item_MaintenanceMakePackageSourceToZipfile()', None],
-        ['维护 - 将指定的打包源制作 Setup 安装程序', 'injectClass.item_MaintenanceMakePackageSourceToSetup()', None],
-        # ['维护 - 更新客户端按钮的翻译数据库', 'injectClass.item_MaintenanceUpdateButtonTranslateDB()', None],
-        ['退出程序', 'injectClass.item_End()', None]
+        [
+            '切换客户端到指定版本',
+            'injectClass.item_SwitchWorkshop()',
+            None
+        ],
+        [
+            '重置 LeeClient 客户端到干净状态',
+            'injectClass.item_ResetWorkshop()',
+            None
+        ],
+        [
+            '进行文件资源的完整性校验',
+            'injectClass.item_MaintenanceRunClientResourceCheck()',
+            None
+        ],
+        [
+            '维护 - 将 data 目录打包为标准 grf 文件',
+            'injectClass.item_MaintenanceMakeDataToGrf()',
+            None
+        ],
+        [
+            '维护 - 生成客户端打包源',
+            'injectClass.item_MaintenanceMakePackageSource()',
+            None
+        ],
+        [
+            '维护 - 将指定的打包源压缩成 ZIP 文件',
+            'injectClass.item_MaintenanceMakePackageSourceToZipfile()',
+            None
+        ],
+        [
+            '维护 - 将指定的打包源制作 Setup 安装程序',
+            'injectClass.item_MaintenanceMakePackageSourceToSetup()',
+            None
+        ],
+        # [
+        #     '维护 - 更新客户端按钮的翻译数据库',
+        #     'injectClass.item_MaintenanceUpdateButtonTranslateDB()',
+        #     None
+        # ],
+        [
+            '退出程序',
+            'injectClass.item_End()',
+            None
+        ]
     ]
 
     leeCommon.simpleMenu(
