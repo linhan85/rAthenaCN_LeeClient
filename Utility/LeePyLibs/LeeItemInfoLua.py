@@ -87,13 +87,17 @@ end
     def load(self, filepath):
         self.itemInfoDict.clear()
 
-        luafile = open(filepath, 'r', encoding = 'latin1')
-        content = luafile.read()
-        luafile.close()
+        try:
+            luafile = open(filepath, 'r', encoding = 'latin1')
+            content = luafile.read()
+            luafile.close()
 
-        lua = LuaRuntime(unpack_returned_tuples=True)
-        lua.execute(content)
-        g = lua.globals()
+            lua = LuaRuntime(unpack_returned_tuples=True)
+            lua.execute(content)
+            g = lua.globals()
+        except Exception as _err:
+            print('解析文件时发生了错误: %s' % filepath)
+            raise
 
         for itemID in list(g.tbl):
             try:
