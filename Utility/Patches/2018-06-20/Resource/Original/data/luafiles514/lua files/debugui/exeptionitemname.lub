@@ -1,0 +1,17 @@
+TYPE_HEAL = 0
+TYPE_SCHANGE = 1
+TYPE_SPECIAL = 2
+TYPE_EVENT = 3
+TYPE_ARMOR = 4
+TYPE_WEAPON = 5
+TYPE_CARD = 6
+TYPE_QUEST = 7
+TYPE_BOW = 8
+TYPE_BOTHHAND = 9
+excItemNameTable = {
+	伙般混H = { name = "1殿鞭 伙般混", type = TYPE_SPECIAL },
+	捞弊靛扼角凯概 = { name = "捞弊靛扼角狼 凯概", type = TYPE_SPECIAL },
+	泅磊狼倒_ = { name = "泅磊狼 倒", type = TYPE_SPECIAL },
+	泅磊狼倒 = { name = "泅磊狼 倒", type = TYPE_EVENT },
+	侥牢荐狼采 = { name = "侥牢荐狼 采", type = TYPE_EVENT }
+}
