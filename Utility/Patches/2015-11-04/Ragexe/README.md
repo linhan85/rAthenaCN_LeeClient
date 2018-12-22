@@ -1,23 +1,23 @@
 
-���ڱ���
+窗口标题
 ----------------
-��ӭʹ�� rAthenaCN ���׿ͻ��� �˿ͻ��˰汾Ϊ 20151104 �ɷ�WPE����ط��� ������
-��ӭʹ�� rAthenaCN ���׿ͻ��� �˿ͻ��˰汾Ϊ 20151104 �ɷ�WPE����ط��� ���԰�
+欢迎使用 rAthenaCN 配套客户端 此客户端版本为 20151104 可防WPE封包重发器 正常版
+欢迎使用 rAthenaCN 配套客户端 此客户端版本为 20151104 可防WPE封包重发器 调试版
 
-������Կ
+混淆密钥
 ----------------
-���÷������ (Ĭ��)
-ʹ����Կ: 0x00dd7a90,0x37ea4427,0x28b79a45
+启用封包混淆 (默认)
+使用密钥: 0x00dd7a90,0x37ea4427,0x28b79a45
 
-����˵��
+配置说明
 ----------------
-rAthenaCN_Normal.log ��������������ļ�
-rAthenaCN_ReportError.log �ǵ��԰�������ļ�
+rAthenaCN_Normal.log 是正常版的配置文件
+rAthenaCN_ReportError.log 是调试版的配置文件
 
-DIFF˵��
+DIFF说明
 ----------------
-ʹ�� NEMO ��Ϊ DIFF ����, ��ʹ�����°汾�� NEMO ����
+使用 NEMO 作为 DIFF 工具, 请使用最新版本的 NEMO 程序
 
-������
+最后更新
 ----------------
-2018��07��31��22:56:03 By SolaؼС�� (CairoLee)
+2018-07-31 22:56:03 By Sola丶小克 (CairoLee)
