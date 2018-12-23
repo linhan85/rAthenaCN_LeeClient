@@ -410,3 +410,26 @@ class LeeCommon:
              ):
             return resultMap[menuIndexAndResultIndexDict[userSelect]]
         return None
+
+    def simpleInput(self, lines, title, prompt, menus, evalcmd):
+        '''
+        简易的确认对话框
+        '''
+        self.cleanScreen()
+        if not title is None:
+            titleFmt = '= %s%-' + str(60 - self.getStringWidthLen(title)) + 's ='
+            print('================================================================')
+            print(titleFmt % (title, ''))
+            print('================================================================')
+
+        for line in lines:
+            print(line)
+
+        print('')
+        user_input = input(prompt + ': ')
+        print('----------------------------------------------------------------')
+
+        if evalcmd is not None:
+            exec(evalcmd)
+        elif evalcmd is None:
+            return user_input

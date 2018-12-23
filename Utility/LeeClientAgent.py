@@ -14,6 +14,7 @@ from LeePyLibs import LeeTowninfoTranslator
 from LeePyLibs import LeeSkillinfolistTranslator
 from LeePyLibs import LeeSkilldescriptTranslator
 from LeePyLibs import LeePublisher
+from LeePyLibs import LeeLuadec
 
 # pip3 install pygame -i https://pypi.douban.com/simple --trusted-host=pypi.douban.com
 # pip3 install pillow -i https://pypi.douban.com/simple --trusted-host=pypi.douban.com
@@ -228,6 +229,31 @@ class LeeMenu:
             withCancel = True
         )
 
+    def maintenanceBatchDecompileLub(self, lubSourceDirectory):
+        '''
+        将某个目录下的 lub 文件批量反编译
+        需要让用户来选择这个目录的所在位置, 而不是一个固定位置
+        '''
+        print('您指定的目录为: %s' % lubSourceDirectory)
+
+        if not self.leeCommon.isDirectoryExists(lubSourceDirectory):
+            self.leeCommon.exitWithMessage('很抱歉, 你指定的目录不存在, 程序终止')
+
+        if lubSourceDirectory.endswith('/') or lubSourceDirectory.endswith('\\'):
+            lubSourceDirectory = lubSourceDirectory[:-1]
+
+        lubOutputDirectory = '%s%s%s' % (
+            os.path.dirname(lubSourceDirectory), os.path.sep,
+            os.path.basename(lubSourceDirectory) + '_output'
+        )
+        print('计划的输出目录: %s' % lubOutputDirectory)
+
+        if self.leeCommon.isDirectoryExists(lubOutputDirectory):
+            self.leeCommon.exitWithMessage('发现输出目录已经存在, 请先手动删除后重试..')
+
+        print('')
+        LeeLuadec().decodeDir(lubSourceDirectory, lubOutputDirectory)
+
     def item_SwitchWorkshop(self):
         '''
         菜单处理函数
@@ -353,6 +379,30 @@ class LeeMenu:
         '''
         self.maintenanceMakePackageSourceToSetup()
 
+    def item_MaintenanceBatchDecompileLub(self):
+        '''
+        菜单处理函数
+        当选择“维护 - 批量反编译某个目录中的 lub 文件”时执行
+        '''
+        self.leeCommon.cleanScreen()
+
+        lines = [
+            '您不能指望反编译后的 lua 文件可被 RO 客户端无错运行.',
+            '反编译 lua 的函数时, 转换后的结果常出问题(语法错误), 需手动修正.',
+            '',
+            '请填写一个包含 lub 文件的 luafiles514 目录的完整路径.',
+            '程序只转换后缀为 lub 的文件, 并将反编译后的文件保存到平级目录下.',
+            '',
+            '比如你填写的路径是: C:\\luafiles 那么输出会在 C:\\luafiles_output',
+            '程序会将无需反编译的文件, 也一起复制到输出目录(保持目录结构).',
+            ''
+        ]
+        title = '批量反编译指定目录下的 lub 文件'
+        prompt = '请填写目录路径'
+        self.leeCommon.simpleInput(
+            lines, title, prompt, self, 'menus.maintenanceBatchDecompileLub(user_input)'
+        )
+
     def item_End(self):
         '''
         菜单处理函数
@@ -406,6 +456,11 @@ def main():
         [
             '维护 - 将指定的打包源制作 Setup 安装程序',
             'injectClass.item_MaintenanceMakePackageSourceToSetup()',
+            None
+        ],
+        [
+            '维护 - 批量反编译某个目录中的 lub 文件',
+            'injectClass.item_MaintenanceBatchDecompileLub()',
             None
         ],
         # [
