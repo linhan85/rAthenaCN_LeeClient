@@ -85,8 +85,8 @@ Party Capacity exceeded.#
 You left the party.#
 Send to All#
 Send to Party#
-Send transaction request#
-Send party invitation#
+Request a deal with %s#
+Ask %s to join your party#
 Pri:#
 Pub:#
 Click ''Restart'' to go back to your save point or click ''Exit'' to select another character.#
@@ -107,7 +107,7 @@ Status#
 Inventory#
 /organize ''Party Name'' To organize a party. Type /leave To leave a Party.#
 If you are the party master, you can invite someone into your party by right-clicking on a Character.#
-Recover#
+Consumables#
 Attack#
 Support#
 Entire#
@@ -180,7 +180,7 @@ There are %d Players Currently Connected.#
 (%s) has entered.#
 (%s) has left.#
 (%s) was kicked out.#
- %d ea.#
+%d ea.#
 %s: %d ea.#
 %s %s: %d ea.#
 Available Items to sell#
@@ -200,8 +200,8 @@ No Whisper List.#
 You cannot put a space at the beginning or end of a name.#
 Private#
 Public#
-Insufficient SP#
-Insufficient HP#
+Not Enough SP#
+Not Enough HP#
 Skill has failed.#
 Steal has failed.#
 Trade#
@@ -285,9 +285,9 @@ Skill Tree#
 Skill Point: %d#
 Skill has failed.#
 Passive#
-Each Take #
-Even Share#
-Each Take#
+Individual#
+Shared#
+Individual#
 Party Share#
 Party Setup#
 How to share EXP#
@@ -303,9 +303,9 @@ Character Deletion has failed because you have entered an incorrect e-mail addre
 Enter Second Serial Cord of your Social Security number.#
 Character Deletion has failed because you have entered an incorrect SSN.#
 You can't sell more than 15 types of Items at one time.#
-You are underaged and cannot join this server.#
-HP and SP natural regeneration are disabled because your carried weight is over 50% of the Weight Limit.#
-You can't use Skills or Attack while your carried weight is over 90% of your Weight Limit.#
+The age limit from commandment tables cannot connect to this server.#
+HP and SP will not be restored when your carried weight is over 50%% of the Weight Limit.#
+You can't use Skills or Attack while your carried weight is over 90%% of your Weight Limit.#
 Your HP/SP are now being restored naturally.#
 Attack and Skills are now available.#
 Your Game's Exe File is not the latest version.#
@@ -325,7 +325,7 @@ Change Skill#
 Sprite Resolution#
 Texture Resolution#
 Arrange Detail#
-%s Zeny obtained#
+You got %s Zeny#
 Guild Name#
 Guild Level#
 Guild Master#
@@ -385,8 +385,8 @@ You haven't learned enough skills for aligning.#
 Aligning completed.#
 You already spent your point for today.#
 Hasn't been a month yet since you aligned this person.#
-Received positive manner point from %s.#
-Received negative manner point from %s.#
+Remember, Spamming isn't nice.#
+Please refrain from ill-mannered conduct, thank you.#
 Align with a Good Point#
 Align with a Bad Point#
 Request a deal with (%s)#
@@ -496,8 +496,8 @@ Compounding has failed.#
 Antagonist has been set.#
 Guild has too many Antagonists.#
 Already set as an Antagonist#
-Upgrade success!!#
-Upgrade failed!!#
+Upgrade has been completed successfully.#
+Upgrade has failed.#
 Unavailable Area to Teleport#
 Unable to memorize this place as Warp Point#
 Please wait 10 seconds before trying to log out.#
@@ -530,7 +530,7 @@ https://pay.ragnarok.co.kr (Billing Web)#
 IP capacity of this Internet Cafe is full. Would you like to pay the personal base?#
 You are out of available paid playing time. Game will be shut down automatically.#
 Name is too long. Please enter a name no greater than 23 english characters.#
-deleted#
+Character will be deleted in %d seconds.#
 You paid with the personal regular base.#
 You paid with the personal regular base. Available time is xx hrs xx mins xx secs.#
 You are free!#
@@ -608,56 +608,56 @@ N/A#
 N/A#
 Character in the same account already joined.#
 (%d ppl) - over the age 18#
- Provoke initiated.#
- Provoke canceled.#
- Endure initiated.#
- Endure canceled.#
- Improve Concentration initiated.#
- Improve Concentration canceled.#
- Hiding initiated.#
- Hiding canceled.#
- Cloaking initiated.#
- Cloaking canceled.#
- Poison React initiated.#
- Poison React canceled.#
- Movement speed reduced.#
- Quagmire canceled.#
- Defense increased.#
- Angelus canceled.#
- Str, Int and Dex increased.#
- Blessing canceled.#
- Signum Crusis initiated.#
- Signum Crusis canceled.#
- Slow Poison initiated.#
- Slow Poison canceled.#
-SP regeneration increased.#
+Provoke initiated.#
+Provoke canceled.#
+Endure initiated.#
+Endure canceled.#
+Improve Concentration initiated.#
+Improve Concentration canceled.#
+Hiding Initiated.#
+Hiding Canceled.#
+Cloaking initiated.#
+Cloaking canceled.#
+Poison React initiated.#
+Poison React canceled.#
+Speed reduced.#
+Quagmire canceled.#
+Defense increased.#
+Angelus canceled.#
+Blessing aligned.#
+Blessing canceled.#
+Signum Crusis initiated.#
+Signum Crusis canceled.#
+Slow Poison initiated.#
+Slow Poison Canceled.#
+SP recovery increased.#
 Magnificat canceled.#
-Luk increased.#
+Luck increased.#
 Gloria canceled.#
- You will receive double damage from 1 attack.#
- Lex Eterna canceled.#
- Attack speed increased.#
- Attack speed reduced.#
- You just mounted a Pecopeco.#
- You just dismounted a Pecopeco.#
- You just carried a Falcon with.#
- You just released a Falcon.#
- Play Dead initiated.#
- Play Dead canceled.#
- Str increased.#
- Str turned back to normal.#
- Energy Coat initiated.#
- Energy Coat canceled.#
- Armor damaged.#
- Armor repaired.#
- Weapon damaged.#
- Weapon repaired.#
- Invisibility initiated.#
- Invisibility canceled.#
+You will receive double damage from 1 attack.#
+Lex Eterna canceled.#
+Attack Speed increased.#
+Attack Speed reduced.#
+You've just been on a Peco Peco.#
+You've just got off of a Peco Peco.#
+You've just carried a Falcon with.#
+You've just released a Falcon.#
+Play Dead initiated.#
+Play Dead canceled.#
+STR improved.#
+STR turned back to normal.#
+Energy Coat initiated.#
+Energy Coat canceled.#
+Armor destroyed.#
+Armor has just been released from destroyed status.#
+Weapon destroyed.#
+Weapon has just been released from destroyed status.#
+Invisibility initiated.#
+Invisibility canceled.#
 Sorry. It is delayed due to the process of payment. Please re-connect in a minute.#
 You must unequip ammunition first.#
-Arrow list#
-Cart list#
+Arrow List#
+Cart List#
 You must have a cart.#
 You cannot open a Chat Window.#
 Registering an account is the first step to accessing the game. Do you want to visit the registration page now?#
@@ -681,7 +681,7 @@ Your account has play time of %d hour %d minute.#
 Your account is a free account.#
 This account can't connect the Sakray server.#
 Your pet name must be 23 characters or less.#
-You may change your pet's name only once. Your pet's name will be changed to ^0000ff %s^000000.  Do you wish to continue?#
+You may change your pet's name only once. Your pet's name will be changed to ^0000ff^0000ff %s^000000^000000.  Do you wish to continue?#
 /font#
 Your guild lacks the funds to pay for this venture.#
 Your guild zeny limit prevents you from performing this action.#
@@ -912,7 +912,7 @@ Upgradeable weapons#
 Refined weapon: %s#
 Refined weapon: %s#
 You cannot upgrade %s until you level up your Upgrade Weapon skill.#
-%s is required to upgrade this weapon.#
+You lack a necessary item %s to upgrade this weapon.#
 Full Divestment cannot pierce the target. The target is fully shielded.#
 You cannot adopt a married person.#
 This name is not registered in your Friend List. Please check the name again.#
@@ -985,13 +985,13 @@ High Thief#
 Lord Knight#
 High Priest#
 High Wizard#
-Whitesmith#
+WhiteSmith#
 Sniper#
 Assassin Cross#
 Lord Knight#
 High Priest#
 High Wizard#
-Whitesmith#
+WhiteSmith#
 Sniper#
 Assassin Cross#
 Paladin#
@@ -1080,7 +1080,7 @@ Your Current Zeny#
 Highest Bid#
 Previous Bid#
 Next Bid#
-Buy it now?#
+Press buy to confirm.#
 Would you like to sell this item?#
 Place Bid#
 Buy Now#
@@ -1113,14 +1113,14 @@ You do not have enough zeny to pay the Auction Fee.#
 View Status#
 Feed#
 Stand By#
-Super Novice#
-Super Novice#
+Super Novice (Male)#
+Super Novice (Female)#
 Taekwon Boy#
 Taekwon Girl#
-Star Gladiator#
-Star Gladiator#
-Soul Linker#
-Soul Linker#
+Taekwon Master (Male)#
+Taekwon Master (Female)#
+Soul Linker (Male)#
+Soul Linker (Female)#
 Please check the connection, more than 2 accounts are connected with Internet Cafe Time Plan.#
 Your account is using monthly payment. (Remaining day: %d day)#
 Your account is using time limited. (Remaining time: %d hour %d minute %d second)#
@@ -1248,7 +1248,7 @@ Accuracy Rate has returned to normal.#
 Critical Attack (Critical) has increased.#
 Critical Attack has returned to normal.#
 You will receive 1.5 times more EXP from hunting monsters for the next 30 minutes.#
-This character will not receive any EXP penalty if ko'ed within the next 30 minutes.#
+This character will not receive any EXP penalty if killed within the next 30 minutes.#
 Regular item drops from monsters will be doubled for the next 30 minutes.#
 Boss Monster Map Information for the next 10 minutes.#
 Do you really want to purchase this item? %d points will be deducted from your total Kafra Credit Points.#
@@ -1275,22 +1275,22 @@ Mercenary will follow custom AI.#
 Mercenary will follow basic AI.#
  %s's #
 %s has acquired %s.#
-Public Chat#
-Whisper#
-Party Chat#
-Guild Chat#
-Item get/drop#
-Equipment on/off#
-Abnormal status#
-Party member's obtained item#
-Party member's abnormal status#
-Skill failure#
-Party configuration#
-Damaged equipment#
-Battle Message Window#
+Public Chat Display#
+Whisper Display#
+Party Chat Display#
+Guild Chat Display#
+Item Get/Drop Message Display#
+Equipment On/Off Message Display#
+Abnormal Status Message Display#
+Party Member's Obtained Item Message Display#
+Party Member's Abnormal Status Message Display#
+Skill Failure Message Display#
+Party Configuration Message Display#
+Damaged Equipment Message Display#
+Battle Message Window Display#
 [%s]'s Han Coin: %d Han Coin#
-Public#
-Battle#
+Public Log#
+Battle Log#
 Mobile Authentication#
 Read#
 Auto Read#
@@ -1313,8 +1313,8 @@ Incorrect or nonexistent ID.#
 Do you really want to purchase these items? You will spend %d Regular Cash Points and %d Free Cash Points.#
 %d hour(s) has passed.#
 %d hour(s) %d minute(s) has passed.#
-Please stop playing the game, and take a break. Exp and other features will be reduced to 50%.#
-Please stop playing the game since you'll need to rest. Exp and other features will be fixed to 0%.#
+Please stop playing the game, and take a break. Exp and other features will be reduced to 50%%.#
+Please stop playing the game since you'll need to rest. Exp and other features will be fixed to 0%%.#
 Quest List#
 RO Shop#
 Memorial Dungeon, '%s' is booked.#
@@ -1329,7 +1329,7 @@ This item will be permanently bound to this character once it is equipped. Do yo
 %s is now permanently bound to this character.#
 You do not have enough Kafra Credit Points. Please enter whether you have free credit points.#
 Request to Join Party#
-WOE Information#
+Display WOE Info#
 Memorial Dungeon %s's reservation has been canceled.#
 Failed to create Memorial Dungeon %s. Please try again.#
 This skill cannot be used within this area.#
@@ -1373,7 +1373,7 @@ The Memorial Dungeon is now open.#
 This account has not been confirmed by connecting to the safe communication key. Please connect to the key first, and then log into the game.#
 The number of accounts connected to this IP has exceeded the limit.#
 You have received a new quest.#
-^CC3399Requirement:#
+^777777Acquirement conditions:#
 View Skill Info#
 Once used, skill points cannot be re-allocated. Would you like to use the skill points?#
 1stJob#
@@ -1381,10 +1381,10 @@ Once used, skill points cannot be re-allocated. Would you like to use the skill 
 This account has been used for illegal program or hacking program. Block Time: %s#
 The possibility of exposure to illegal program, PC virus infection or Hacking Tool has been detected. Please execute licensed client. Our team is trying to make a best environment for Ro players.#
 You are currently playing in the best game environment. Please enjoy the Ragnarok.#
-Job Exp points from hunting monsters are increased by 50% for 30 minutes.#
-Exp points from hunting monsters are increased by 25% for 30 minutes.#
-EXP points from hunting monsters are increased by 100% for 30 minutes.#
-EXP points from hunting monsters are increased by 50% for 60 minutes.#
+Job Exp points from hunting monsters are increased by 50%% for 30 minutes.#
+Exp points from hunting monsters are increased by 25%% for 30 minutes.#
+EXP points from hunting monsters are increased by 100%% for 30 minutes.#
+EXP points from hunting monsters are increased by 50%% for 60 minutes.#
 Unable to organize a party in this map.#
 (%s) are currently in restricted map to join a party.#
 Simple Item Shop#
@@ -1426,7 +1426,7 @@ HHD monitoring tool has been detected.#
 [Paint Brush] is required.#
 [Surface Paint] is required.#
 Use the skills that are not at the specified location.#
-Insufficient SP.#
+Not enough SP.#
 Character %d is character selection window cannot connect to the game that exceeds the total. Please remove unwanted characters.#
 [Neck Protection Candy] is required.#
 [Regrettable Tears] is required.#
@@ -1481,7 +1481,7 @@ Can't read a Magic Book anymore.#
 Waiting time has passed. Please log in again#
 Watch out! Same account is already logged in. Stop mobile verification and log in again after changing your password#
 Watch out! Same account is waiting for mobile verification. Stop mobile verification and log in again after changing your password#
-Game option                                                                                                 #
+Game Option                                                                                                 #
 Graphic#
 Sound#
 Press a key to assign. Pressing 'ESC' will remove the assigned key.#
@@ -1492,7 +1492,7 @@ Initialization is stored in the shortcut key settings. Do you want to initialize
 Skill Bar#
 Interface#
 Macros#
-Shortcut settings#
+Shortcut Settings#
 BGM#
 Effect#
 Skin#
@@ -1543,11 +1543,11 @@ Admission application complete.#
 It was unregistered and not be able to enter the state.#
 Current admission application state.#
 Do you want to cancel the admission application?#
-%s has canceled Battle field admission.#
-After %s go to the Battle field. Make sure you're in stable condition. (Trading and teleportation are disabled)#
-Formal Name#
+Admission request has been cancelled.#
+Go to the battlefield quickly.#
+Battlefield - [%s]#
 Do you really want to go back to your savepoint?#
-Party member search#
+Search Message for Party Members#
 Message option is off the search party members.#
 10 seconds delay of party support is in effect#
 Party leader is '%s'.#
@@ -1603,30 +1603,30 @@ Disable Battlefield icon.#
 Field notification was moved.#
 Admission pending notification of the battlefield#
 Someone#
- [%s] inflicts '%d' damage points on you.#
- [%s] attacked by [%s] with '%d' damage points.#
- [%s] receives '%d' damage points.#
- [%s] attacks [%s] with '%d' damage points.#
+ [%s] deal '%d' damage on you.#
+ [%s] received a damage from [%s] with '%d' damage.#
+ [%s] received '%d' damage.#
+ [%s] deal damage to [%s] with '%d' damage.#
 You dropped %s (%d).#
-[%s] quest - defeating [%s] progress (%d/%d).#
-[%s] quest was deleted.#
-[%s] #
- %d Base exp points#
- %d Job exp points#
- acquired.#
+[%s] Quest - defeated [%s] progress (%d/%d)#
+The Quest %s has been removed.#
+[%s] has #
+%d Base Experience#
+%d Job Experience#
+ gained.#
  has lost.#
 From [%s], '%d' coins were stolen.#
-Battle message#
-Party member's battle message#
-Experience message#
-Party member's experience message#
-Quest information#
-Battlefield message#
+Battle Message#
+Party Battle Message Display#
+Experience Message Display#
+Party Experience Message Display#
+Quest Info Message Display#
+Battlefield Message Display#
 #
-casts [%s] skill.#
+Casted [%s] skill.#
 Activate lock function#
 Deactivate lock function#
-%s has opened [%s] and received [%s].#
+[%s] opened [%s] and awarded with '%s'!!#
 Swordman#
 Mage#
 Archer#
@@ -1657,7 +1657,7 @@ Sorcerer#
 Minstrel#
 Wanderer#
 Sura#
-Geneticist#
+Genetic#
 Shadow Chaser#
 High Swordman#
 High Mage#
@@ -1775,13 +1775,13 @@ You cannot equip this item with your current level.#
 You cannot use this item with your current level.#
 Enable Battlemode#
 Failed to add because you have reached the limit.#
- message log settings#
+Window Sign Information#
 Sell#
 Purchase#
 Search for Vends#
 Shop Name#
-Amount#
-Price#
+Quantity#
+Cost#
 Too much results have been found. Please do a more precisely search.#
 Do you want to open a street stall?#
 Failed to recognize SSO.#
@@ -1793,11 +1793,11 @@ You will not be disconnect from the game.#
 It is available only for 12 hours.#
 Your account is blocked due to illegal use of the game account.#
 Your account is blocked because there may exist a bug with your account.#
-Increases base exp and job exp gained by killing monsters up to 75% for 30 minutes.#
-Increases base exp and job exp gained by killing monsters up to 50% for 30 minutes.#
+Increases base exp and job exp gained by killing monsters up to 75%% for 30 minutes.#
+Increases base exp and job exp gained by killing monsters up to 50%% for 30 minutes.#
 No sales information.#
 Failed to search any further.#
-The selected item does not exist.#
+The item you have entered does not exist.#
 Cannot search yet.#
 Enter the card name or prefix/suffix.#
 Searches left: %d#
@@ -1855,8 +1855,8 @@ Other#
 Cost#
 Quantity#
 Total#
-Free Cash: %s Coin#
-Cash Points: %s Coin#
+Free Cash : %s C#
+CashPoints : %s C#
 You cannot summon a monster in this area.#
 Exceeded total free cash#
 Content has been saved in [SaveData_ExMacro%d]#
@@ -1920,7 +1920,7 @@ Next attack time: #
 When died#
 When invited to a party#
 Pickup Item#
-Over 85% Weight#
+Over 85%% Weight#
 Any work in progress (NPC dialog, manufacturing ...) quit and try again.#
 Monster Job hunting experience that you can get through the doubling of %d is %.2f minutes.#
 SaveData_ExMacro %d#
@@ -1930,9 +1930,9 @@ The current character is a party or join the guild cannot be deleted.#
 Objects can be used only near the wall.#
 %s : Level %d %s party to obtain level.#
 While boarding reins is not available for items.#
-This skill requires 1% experience.#
-E X P rate : #
-Drop rate  : #
+This skill requires 1%% experience.#
+E   X   P: #
+Drop rate: #
 Death Penalty: #
 %d%% (Internet cafe %d%% + TPLUS %d%% + Premium %d%% + %s Server %d%%)#
 Amount of party members to cast the skill Chorus SP is low.#
@@ -1991,7 +1991,7 @@ The same file exists already.#
 Record Start#
  is Saved.#
 Weight: %3d / %3d#
-Total: %s Coin#
+Total: %s C#
 [Shuriken] must be equipped.#
 Base Lv. %d#
 Job Lv. %d#
@@ -2029,7 +2029,7 @@ Length exceeds the maximum size of the character name you want to change.#
 Name contains invalid characters. Character name change failed.#
 The name change is prohibited. Character name change failed.#
 Complete#
-For %d minutes your Exp will increase by %d%%.#
+During %d minutes your Exp will increase by %d%%.#
 %02d seconds left until summon.#
 Your party leader summons you to %s (%s). Warp costs %d Zeny.#
 Summon target#
@@ -2334,7 +2334,7 @@ Card Book#
 %d%% [ Basic 100%% + %s Server %d%% ]#
 This is PK region. Minors,Please leave immediately.#
 Fatigue#
-Health and gaming revenue is 100%.#
+Health and gaming revenue is 100%%.#
 Fatigue because it is now a guest of the gaming revenue is down 50 percent.Hope for the proper health#
 Now because it is a non-health to the health of the guests want to offline games. If you still are online gaming revenue because the damage to the health of the game falls to 0%% again after 5 hours will be restored offline.#
 Online since %d minutes#
@@ -2363,7 +2363,7 @@ Send to Clan#
 Clan Leader#
 Number of Members#
 Castles Owned#
-Clan chat#
+Clan Chat Messages#
 Go to Page Charged.#
 https://gfb.gameflier.com/Billing/ingame/index_new.asp?#
 Create Character#
@@ -2378,7 +2378,7 @@ Game Commands#
 Game Command ON/OFF#
 Macro#
 Trading is prohibited in this Map#
-Using cart is prohibited in this Map#
+Vending is prohibited in this Map#
 In this Map,Effect of Mirace of Sun and Moon is nullified.#
 Ranking Board#
 Rank#
@@ -2399,7 +2399,7 @@ RoyalGuard#
 Sorcerer#
 Minstrel#
 Wanderer#
-Geneticist#
+Genetic#
 ShadowChaser#
 Sura#
 Kagerou#
@@ -2453,7 +2453,7 @@ Average#
 Low#
 Very Low#
 The bank is not available. Please try again in a few minutes.#
-Bank balance is low.#
+Bank Balance is not enough.#
 You don't have enough zeny#
 Minimum Deposit Amount: 1 zeny#
 Minimum Withdrawal Amount: 1 zeny#
@@ -2464,7 +2464,7 @@ For %d minutes, Job experience obtained from monster is increased by %d%%.#
 Current Zeny: %s Zeny#
 Zeny#
 The Maximum amount is 2,147,483,647 Zeny#
-Insufficient bullet#
+Your bullet is not enough#
 You entered more than 1 Billion Zeny, the price will be set to 1 Billion Zeny.#
 AuthTicket is Not Valid#
 ErrorCategory : %d, ErrorCode : %d (%d,%d,%d,%d)#
@@ -2519,10 +2519,10 @@ Item has already been registered. Please try again later.#
 Failed to remove this item. Please try again later.#
 %s item has been removed.#
 Special#
-Update quantity of limited sale items#
-Sales closed#
-item count should be renewed#
-Item stock is low. You can only buy %d items.#
+Sales limited sale item update#
+ Discontinued#
+Quantity update is required #
+The %d is out of stock or to buy as much as#
 %s Items are on sale#
 %s time-out or sale of the items sold has been shut down due to the limited sales #
 /limitedsale#
@@ -2763,8 +2763,8 @@ Memorize location#
 The minimum trading unit must be 100 crackers or more.#
 Hair color#
 Hair style#
-Extra colors#
-Extra costumes#
+Cloth color#
+Cloth pattern#
 In this map You can't memorize and zoom the minimap.#
 Enter zeny below 2,147,483,647.#
 Please enter at least 1 zeny.#
@@ -2778,12 +2778,12 @@ Withdraw#
 1 z Down#
 Max#
 There is no Input value#
-Insufficient zeny#
+Not enough zeny#
 Input Required#
 Numbers only#
 Exceeded max input#
 Below Minimum Input#
-Insufficient zeny#
+Not enough zeny#
 Insufficient funds#
 Exceeded max zeny#
 Can't be dropped#
@@ -2843,7 +2843,7 @@ MaxSP is too low to use this skill#
 Compare equips#
 Lock item drop#
 Screenshot is not attached#
-TWITTER#
+Twitter#
 General#
 Notice#
 Return#
@@ -3444,8 +3444,8 @@ The party leader is in the map that can't receive request.#
 No party can be found.#
 Party request.#
 http://rathena.org#
-°#
-?#
+¡ã#
+¡å#
 You're already friends#
 Can't find other party#
 You're already a friend with another character.#
