@@ -41,6 +41,7 @@ __pycache__
 # 能够被 LeeClientAgent 自动汉化的翻译后文件
 /Utility/Patches/*/Resource/Translated/System/iteminfo.lub
 /Utility/Patches/*/Resource/Translated/System/iteminfo_sak.lub
+/Utility/Patches/*/Resource/Translated/System/iteminfo_true.lub
 /Utility/Patches/*/Resource/Translated/System/towninfo.lub
 /Utility/Patches/*/Resource/Translated/data/luafiles514/lua files/skillinfoz/skillinfolist.lub
 /Utility/Patches/*/Resource/Translated/data/luafiles514/lua files/skillinfoz/skilldescript.lub
