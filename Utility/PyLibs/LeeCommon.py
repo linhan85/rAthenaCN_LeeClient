@@ -8,7 +8,7 @@ import sys
 
 import chardet
 
-from LeePyLibs import LeeConstant
+from PyLibs import LeeConstant
 
 if platform.system() == 'Windows':
     import winreg
@@ -34,7 +34,7 @@ class LeeCommon:
         os.chdir(scriptDir)
 
         # 检查脚本所在的目录中, 是否存在特定的平级目录
-        verifyDirList = ['LeePyLibs', 'Patches', 'Resources']
+        verifyDirList = ['PyLibs', 'Patches', 'Resources']
         for dirname in verifyDirList:
             verifyPath = (os.path.abspath(scriptDir + dirname) + os.sep)
             if not (os.path.isdir(verifyPath) and os.path.exists(verifyPath)):

@@ -5,7 +5,7 @@ import platform
 import subprocess
 import sys
 
-from LeePyLibs import LeeCommon, LeePatchManager
+from PyLibs import LeeCommon, LeePatchManager
 
 
 class LeeGrf:

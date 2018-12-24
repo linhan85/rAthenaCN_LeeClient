@@ -6,7 +6,7 @@ import re
 import shutil
 import subprocess
 
-from LeePyLibs import LeeCommon
+from PyLibs import LeeCommon
 
 
 class LeeLuadec:

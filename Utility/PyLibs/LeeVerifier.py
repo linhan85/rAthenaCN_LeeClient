@@ -6,8 +6,8 @@ import time
 import timeit
 import struct
 import re
-from LeePyLibs import LeeCommon
-from LeePyLibs import LeeIteminfoLua
+from PyLibs import LeeCommon
+from PyLibs import LeeIteminfoLua
 
 class LeeVerifier:
     '''

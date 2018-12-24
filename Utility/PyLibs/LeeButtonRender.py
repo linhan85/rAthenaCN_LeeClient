@@ -8,7 +8,7 @@ import tempfile
 
 from PIL import Image, ImageChops
 
-from LeePyLibs import LeeCommon
+from PyLibs import LeeCommon
 
 with contextlib.redirect_stdout(None):
     import pygame

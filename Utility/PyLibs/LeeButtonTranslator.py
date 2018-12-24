@@ -6,7 +6,7 @@ import hashlib
 import os
 import re
 
-from LeePyLibs import LeeBaseRevert, LeeBaseTranslator, LeeButtonRender
+from PyLibs import LeeBaseRevert, LeeBaseTranslator, LeeButtonRender
 
 
 class LeeButtonTranslator(LeeBaseTranslator, LeeBaseRevert):

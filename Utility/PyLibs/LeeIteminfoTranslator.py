@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from LeePyLibs import LeeBaseTranslator, LeeIteminfoLua
+from PyLibs import LeeBaseTranslator, LeeIteminfoLua
 
 
 class LeeIteminfoTranslator(LeeBaseTranslator):

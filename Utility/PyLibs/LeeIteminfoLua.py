@@ -5,7 +5,7 @@ from dataclasses import dataclass
 
 from lupa import LuaRuntime
 
-from LeePyLibs import LeeCommon
+from PyLibs import LeeCommon
 
 
 @dataclass

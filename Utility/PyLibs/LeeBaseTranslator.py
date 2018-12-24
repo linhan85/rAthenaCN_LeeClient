@@ -4,7 +4,7 @@ import json
 import os
 import re
 
-from LeePyLibs import LeeCommon
+from PyLibs import LeeCommon
 
 
 class LeeBaseTranslator:

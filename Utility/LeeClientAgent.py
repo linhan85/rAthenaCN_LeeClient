@@ -3,18 +3,18 @@
 
 import os
 
-from LeePyLibs import LeeConstant
-from LeePyLibs import LeeCommon
-from LeePyLibs import LeePatchManager
-from LeePyLibs import LeeGrf
-from LeePyLibs import LeeButtonTranslator
-from LeePyLibs import LeeVerifier
-from LeePyLibs import LeeIteminfoTranslator
-from LeePyLibs import LeeTowninfoTranslator
-from LeePyLibs import LeeSkillinfolistTranslator
-from LeePyLibs import LeeSkilldescriptTranslator
-from LeePyLibs import LeePublisher
-from LeePyLibs import LeeLuadec
+from PyLibs import LeeConstant
+from PyLibs import LeeCommon
+from PyLibs import LeePatchManager
+from PyLibs import LeeGrf
+from PyLibs import LeeButtonTranslator
+from PyLibs import LeeVerifier
+from PyLibs import LeeIteminfoTranslator
+from PyLibs import LeeTowninfoTranslator
+from PyLibs import LeeSkillinfolistTranslator
+from PyLibs import LeeSkilldescriptTranslator
+from PyLibs import LeePublisher
+from PyLibs import LeeLuadec
 
 # pip3 install pygame -i https://pypi.douban.com/simple --trusted-host=pypi.douban.com
 # pip3 install pillow -i https://pypi.douban.com/simple --trusted-host=pypi.douban.com

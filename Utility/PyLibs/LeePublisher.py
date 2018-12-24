@@ -9,7 +9,7 @@ import sys
 import time
 import uuid
 
-from LeePyLibs import LeeCommon, LeeConfigure, LeePatchManager, LeeZipfile
+from PyLibs import LeeCommon, LeeConfigure, LeePatchManager, LeeZipfile
 
 if platform.system() == 'Windows':
     import winreg

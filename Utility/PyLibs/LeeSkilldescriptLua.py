@@ -5,7 +5,7 @@ import os
 import lupa
 from lupa import LuaRuntime
 from dataclasses import dataclass
-from LeePyLibs import LeeCommon
+from PyLibs import LeeCommon
 
 @dataclass
 class LeeSkilldescriptSingleItem:

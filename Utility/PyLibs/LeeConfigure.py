@@ -4,7 +4,7 @@ import os
 
 import yaml
 
-from LeePyLibs import LeeCommon
+from PyLibs import LeeCommon
 
 
 class LeeConfigure:
