@@ -56,17 +56,30 @@ class LeeButtonTranslator(LeeBaseTranslator, LeeBaseRevert):
         # 根据汉化信息来逐个生成按钮文件（包括按钮的各个状态）
         btnStateDefine = ['normal', 'hover', 'press', 'disabled']
         for translateInfo in waitingToBuildTranslateInfolist:
-            if (specifiedClientVer is not None) and (specifiedClientVer not in translateInfo['FullPath']):
+            if (specifiedClientVer is not None) and \
+               (specifiedClientVer not in translateInfo['FullPath']):
                 continue
-            translatedDirpath = re.search(self.leeCommon.normPattern(r'^(.*)Original/data/texture'), translateInfo['FullPath'], re.I).group(1) + 'Translated'
-            textureDirpath = '%s/%s' % (translatedDirpath, os.path.dirname(translateInfo['RelativePath']))
+
+            resourceDirpath = re.search(
+                self.leeCommon.normPattern(r'^(.*)Original/data/texture'),
+                translateInfo['FullPath'], re.I
+            ).group(1)
+
+            translatedDirpath = resourceDirpath + 'Translated'
+            textureDirpath = '%s/%s' % (
+                translatedDirpath, os.path.dirname(translateInfo['RelativePath'])
+            )
             os.makedirs(textureDirpath, exist_ok = True)
 
             _referPostfix, filenameMode, _withDisabled = translateInfo['FilenameMode'].split('#')
 
             for btnStateIndex, postfix in enumerate(filenameMode.split('|')):
                 btnSavePath = '%s/%s%s.bmp' % (textureDirpath, translateInfo['Basename'], postfix)
-                print('正在汉化, 请稍候: %s' % os.path.relpath(btnSavePath, leeClientDir).replace('Translated', 'Original'))
+
+                print('正在汉化: %s' % os.path.relpath(
+                    btnSavePath, leeClientDir
+                ).replace('Translated', 'Original'))
+
                 self.leeFileIO.createButtonBmpFile(
                     translateInfo['StyleFormat'],
                     btnStateDefine[btnStateIndex],
@@ -75,7 +88,10 @@ class LeeButtonTranslator(LeeBaseTranslator, LeeBaseRevert):
                     btnSavePath
                 )
                 self.rememberRevert(btnSavePath)
-                print('汉化完毕, 保存到: %s\r\n' % os.path.relpath(btnSavePath, leeClientDir))
+
+                print('汉化完毕: %s\r\n' % os.path.relpath(
+                    btnSavePath, leeClientDir
+                ))
 
         self.saveRevert()
 
