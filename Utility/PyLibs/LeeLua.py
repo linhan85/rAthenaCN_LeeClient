@@ -9,7 +9,7 @@ import subprocess
 from PyLibs import LeeCommon
 
 
-class LeeLuadec:
+class LeeLua:
     def __init__(self):
         self.leeCommon = LeeCommon()
         self.sourceDirectory = None

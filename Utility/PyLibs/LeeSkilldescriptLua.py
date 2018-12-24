@@ -67,7 +67,7 @@ class LeeSkilldescriptLua:
 
             descriptLines = []
             for descriptLine in list(skillDescriptLuaObject):
-                 descriptLines.append(skillDescriptLuaObject[descriptLine])
+                descriptLines.append(skillDescriptLuaObject[descriptLine])
 
             descriptSingleItem = LeeSkilldescriptSingleItem(
                 Constant = skillConstant,

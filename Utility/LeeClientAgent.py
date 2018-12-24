@@ -3,18 +3,11 @@
 
 import os
 
-from PyLibs import LeeConstant
-from PyLibs import LeeCommon
-from PyLibs import LeePatchManager
-from PyLibs import LeeGrf
-from PyLibs import LeeButtonTranslator
-from PyLibs import LeeVerifier
-from PyLibs import LeeIteminfoTranslator
-from PyLibs import LeeTowninfoTranslator
-from PyLibs import LeeSkillinfolistTranslator
-from PyLibs import LeeSkilldescriptTranslator
-from PyLibs import LeePublisher
-from PyLibs import LeeLuadec
+from PyLibs import (LeeButtonTranslator, LeeCommon, LeeConstant, LeeGrf,
+                    LeeIteminfoTranslator, LeeLua, LeePatchManager,
+                    LeePublisher, LeeSkilldescriptTranslator,
+                    LeeSkillinfolistTranslator, LeeTowninfoTranslator,
+                    LeeVerifier)
 
 # pip3 install pygame -i https://pypi.douban.com/simple --trusted-host=pypi.douban.com
 # pip3 install pillow -i https://pypi.douban.com/simple --trusted-host=pypi.douban.com
@@ -251,7 +244,7 @@ class LeeMenu:
             self.leeCommon.exitWithMessage('发现输出目录已经存在, 请先手动删除后重试..')
 
         print('')
-        LeeLuadec().decodeDir(lubSourceDirectory, lubOutputDirectory)
+        LeeLua().decodeDir(lubSourceDirectory, lubOutputDirectory)
 
     def item_SwitchWorkshop(self):
         '''

@@ -7,7 +7,7 @@ from .LeeCommon import LeeCommon
 from .LeeConfigure import LeeConfigure
 from .LeePatchManager import LeePatchManager
 from .LeeGrf import LeeGrf
-from .LeeLuadec import LeeLuadec
+from .LeeLua import LeeLua
 from .LeeZipfile import LeeZipfile
 from .LeePublisher import LeePublisher
 
