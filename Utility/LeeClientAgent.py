@@ -68,7 +68,6 @@ class LeeMenu:
             lines = [
                 '在切换版本之前, 需要将 LeeClient 客户端恢复到干净状态',
                 '请将自己添加的额外重要文件移出 LeeClient 目录, 避免被程序误删'
-                ''
             ]
             title = '切换主程序版本到 %s' % clientver
             prompt = '是否立刻执行重置操作?'
@@ -294,8 +293,7 @@ class LeeMenu:
         if self.patchManager.canRevert():
             lines = [
                 '此操作可以将 LeeClient 客户端恢复到干净状态',
-                '请将自己添加的额外重要文件移出 LeeClient 目录, 避免被程序误删',
-                ''
+                '请将自己添加的额外重要文件移出 LeeClient 目录, 避免被程序误删'
             ]
             title = '重置 LeeClient 客户端到干净状态'
             prompt = '是否立刻执行重置操作?'

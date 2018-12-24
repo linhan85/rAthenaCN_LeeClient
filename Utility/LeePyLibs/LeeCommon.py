@@ -20,6 +20,7 @@ class LeeCommon:
     '''
     def __init__(self):
         self.leeConstant = LeeConstant()
+        self.__cutup_len = 64
 
     def verifyAgentLocation(self):
         '''
@@ -336,16 +337,18 @@ class LeeCommon:
         self.cleanScreen()
         if not title is None:
             titleFmt = '= %s%-' + str(60 - self.getStringWidthLen(title)) + 's ='
-            print('================================================================')
+            print('=' * self.__cutup_len)
             print(titleFmt % (title, ''))
-            print('================================================================')
+            print('=' * self.__cutup_len)
 
         for line in lines:
             print(line)
 
         print('')
+        print('=' * self.__cutup_len)
+        print('')
         user_select = input(prompt + ' [Y/N]: ')
-        print('----------------------------------------------------------------')
+        print('')
 
         if user_select in ('N', 'n'):
             if menus is not None:
@@ -368,9 +371,9 @@ class LeeCommon:
         self.cleanScreen()
         if not title is None:
             titleFmt = '= %s%-' + str(60 - self.getStringWidthLen(title)) + 's ='
-            print('================================================================')
+            print('=' * self.__cutup_len)
             print(titleFmt % (title, ''))
-            print('================================================================')
+            print('=' * self.__cutup_len)
 
         print('')
 
@@ -383,8 +386,10 @@ class LeeCommon:
         if withCancel:
             print('%d - %s' % (index, '取消'))
         print('')
+        print('=' * self.__cutup_len)
+        print('')
         userSelect = input('%s (%d - %d): ' % (prompt, 0, len(items) - 1))
-        print('----------------------------------------------------------------')
+        print('')
 
         if (not self.atoi(userSelect) and userSelect != '0'):
             self.exitWithMessage('请填写正确的菜单编号(纯数字), 不要填写其他字符')
@@ -418,16 +423,18 @@ class LeeCommon:
         self.cleanScreen()
         if not title is None:
             titleFmt = '= %s%-' + str(60 - self.getStringWidthLen(title)) + 's ='
-            print('================================================================')
+            print('=' * self.__cutup_len)
             print(titleFmt % (title, ''))
-            print('================================================================')
+            print('=' * self.__cutup_len)
 
         for line in lines:
             print(line)
 
         print('')
+        print('=' * self.__cutup_len)
+        print('')
         user_input = input(prompt + ': ')
-        print('----------------------------------------------------------------')
+        print('')
 
         if evalcmd is not None:
             exec(evalcmd)
