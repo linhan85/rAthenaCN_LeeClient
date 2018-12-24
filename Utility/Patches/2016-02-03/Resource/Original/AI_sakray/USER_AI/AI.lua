@@ -1,6 +1,6 @@
 
-dofile("./AI/Const.lua")
-dofile("./AI/Util.lua")
+dofile("./AI_sakray/USER_AI/Const.lua")
+dofile("./AI_sakray/USER_AI/Util.lua")
 
 -----------------------------
 -- state

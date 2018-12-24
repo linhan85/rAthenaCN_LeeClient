@@ -1,5 +1,5 @@
 
-dofile("./AI/Const.lua")
+dofile("./AI_sakray/Const.lua")
 
 --------------------------------------------
 -- List utility
