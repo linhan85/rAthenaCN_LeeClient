@@ -63,7 +63,7 @@ end
                     tagtype = g.mapNPCInfoTable[mapname][tagid]['TYPE']
                 )
                 self.towninfoDict[mapname].append(singleItem)
-    
+
     def save(self, savepath):
         fullMapsText = []
 
@@ -75,9 +75,9 @@ end
                     self.leeCommon.isLastReturn(self.towninfoDict[mapname], taginfo, '', ',')
                 )
                 singleItemText.append(infoText)
-            
+
             singleMapText = self.singleMapFormat % (
-                mapname, '\r\n'.join(singleItemText), 
+                mapname, '\r\n'.join(singleItemText),
                 self.leeCommon.isLastReturn(sorted(self.towninfoDict), mapname, '', ',')
             )
             fullMapsText.append(singleMapText)

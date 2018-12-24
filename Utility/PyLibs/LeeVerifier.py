@@ -141,7 +141,7 @@ class LeeVerifier:
         if isCompatible(1, 9):
             _AnimSpeed = struct.unpack("1I", rswfile.read(struct.calcsize("1I")))[0]
 
-        # ShowInfo('WaterData: Level %f | Type %d | WaveHeight %f | WaveSpeed %f | WavePitch %f | AnimSpeed %d' % 
+        # ShowInfo('WaterData: Level %f | Type %d | WaveHeight %f | WaveSpeed %f | WavePitch %f | AnimSpeed %d' %
         #     (_Level, _Type, _WaveHeight, _WaveSpeed, _WavePitch, _AnimSpeed))
 
         # ==================== LightData ====================
@@ -508,7 +508,7 @@ class LeeVerifier:
 
         # 校验动画效果索引文件 str 中所需的贴图
         strFilepathList = []
-        for dirpath, _dirnames, filenames in os.walk(('%s/data' % leeClientDir)): 
+        for dirpath, _dirnames, filenames in os.walk(('%s/data' % leeClientDir)):
             for filename in filenames:
                 fullpath = os.path.join(dirpath, filename)
                 if fullpath.lower().endswith('.str'):

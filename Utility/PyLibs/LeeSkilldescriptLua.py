@@ -19,14 +19,14 @@ class LeeSkilldescriptLua:
         self.SKID = []
         self.singleSkilldescriptFormat = '\t[SKID.%s] = {\r\n%s\r\n\t}%s'
         self.skillDescriptFormat = 'SKILL_DESCRIPT = {\r\n%s\r\n}\r\n'
-    
+
     def createLuaTable(self, luaContent, regex, pos, tableName):
         matches = re.finditer(regex, luaContent, re.MULTILINE | re.IGNORECASE | re.DOTALL)
 
         tables = []
         for match in matches:
             tables.append(match.group(pos))
-        
+
         tables = set(tables)
         setattr(self, tableName, list(tables))
 
@@ -54,7 +54,7 @@ class LeeSkilldescriptLua:
         # 读取上面构建的常量列表
         lua = LuaRuntime(unpack_returned_tuples=True)
         lua.execute(SKIDTableContent)
-    
+
         # 然后正式载入 skillinfolist 接下来进行处理
         lua.execute(content)
 
@@ -68,14 +68,14 @@ class LeeSkilldescriptLua:
             descriptLines = []
             for descriptLine in list(skillDescriptLuaObject):
                  descriptLines.append(skillDescriptLuaObject[descriptLine])
-            
+
             descriptSingleItem = LeeSkilldescriptSingleItem(
                 Constant = skillConstant,
                 Description = '\r\n'.join(descriptLines)
             )
 
             self.skilldescriptDict[skillConstant] = descriptSingleItem
-    
+
     def save(self, savepath):
         fullSkilldescriptText = []
 
@@ -88,7 +88,7 @@ class LeeSkilldescriptLua:
                     line,
                     self.leeCommon.isLastReturn(skillDescriptList, line, '', ',')
                 ))
-            
+
             singleSkilldescriptText = self.singleSkilldescriptFormat % (
                 skillConstant,
                 '\r\n'.join(skillDescriptLines),
@@ -96,18 +96,18 @@ class LeeSkilldescriptLua:
             )
 
             fullSkilldescriptText.append(singleSkilldescriptText)
-        
+
         luaContent = self.skillDescriptFormat % ('\r\n'.join(fullSkilldescriptText))
 
         fullSavePath = os.path.abspath(savepath)
         os.makedirs(os.path.dirname(fullSavePath), exist_ok = True)
         luafile = open(fullSavePath, 'w', encoding = 'latin1', newline = '')
         luafile.write(luaContent.replace('\r\r', '\r'))
-        luafile.close
+        luafile.close()
 
     def clear(self):
         self.skilldescriptDict.clear()
-    
+
     def items(self):
         return self.skilldescriptDict
 

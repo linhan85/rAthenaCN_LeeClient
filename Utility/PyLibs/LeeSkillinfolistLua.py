@@ -65,7 +65,7 @@ class LeeSkillinfolistLua:
         tables = []
         for match in matches:
             tables.append(match.group(pos))
-        
+
         tables = set(tables)
         setattr(self, tableName, list(tables))
 
@@ -180,12 +180,12 @@ class LeeSkillinfolistLua:
                     self.leeCommon.exitWithMessage('技能 %s 存在未知的属性 "%s", 请进行处理' % (
                         self.getSkillConstant(skillFakeID), attributeName
                     ))
-        
+
             self.skillinfolistDict[skillConstant] = copy.deepcopy(dummyClass)
-    
+
     def save(self, savepath):
         fullSkillinfolistText = []
-        
+
         for skillConstant in self.skillinfolistDict:
             _needSkillContent = []
             for needskill in self.skillinfolistDict[skillConstant]._NeedSkillList:
@@ -229,7 +229,7 @@ class LeeSkillinfolistLua:
                     self.leeCommon.isLastReturn(self.skillinfolistDict[skillConstant].SkillScale, scaleInfo, '', ',')
                 )
                 skillScaleContent.append(skillScaleItemText)
-            
+
             skillScaleText = '' if len(self.skillinfolistDict[skillConstant].SkillScale) <= 0 else \
             self.skillScaleListFormat % (
                 '\r\n'.join(skillScaleContent)
@@ -268,7 +268,7 @@ class LeeSkillinfolistLua:
 
     def getSkillinfo(self, skillConstant):
         return None if skillConstant not in self.skillinfolistDict else self.skillinfolistDict[skillConstant]
-    
+
     def getItemAttribute(self, skillConstant, attribname, dstEncode = 'gbk'):
         try:
             skilldata = self.getSkillinfo(skillConstant)
