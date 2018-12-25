@@ -127,13 +127,20 @@ class LeeCommon:
         '''
         return os.path.normpath(path.replace('\\', os.path.sep).replace('/', os.path.sep))
 
-    def getEncoding(self, filepath, byte_str = None, byte_len = 2048):
-        if byte_str is None:
-            f = open(filepath, 'rb')
-            byte_str = f.read(byte_len)
-            f.close()
+    def getEncoding(self, filepath, byteBuffer = None, byteLength = 2048):
+        if byteBuffer is None:
+            with open(filepath, 'rb') as lubfile:
+                lubfile.seek(0, 2)
+                filelen = lubfile.tell()
+                lubfile.seek(0)
+                byteLength = byteLength if filelen > 1024 * 100 else filelen
+                byteBuffer = lubfile.read(byteLength)
 
-        return chardet.detect(byte_str)['encoding']
+        encoding = chardet.detect(byteBuffer)['encoding']
+
+        if encoding is None:
+            return None
+        return encoding.upper()
 
     def getRagexeClientList(self, dirpath):
         '''
@@ -340,6 +347,8 @@ class LeeCommon:
             print('=' * self.__cutup_len)
             print(titleFmt % (title, ''))
             print('=' * self.__cutup_len)
+
+        print('')
 
         for line in lines:
             print(line)

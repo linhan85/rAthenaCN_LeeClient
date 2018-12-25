@@ -75,6 +75,12 @@ class LeeLua:
         savefile.write('\n')
         savefile.close()
 
+    def getLubEncoding(self, filepath):
+        if not self.__isTrulyLubFile(filepath):
+            return True, self.leeCommon.getEncoding(filepath)
+        else:
+            return False, None
+
     def decodeFile(self, lubSourcePath, lubOutputPath):
         grfCLProc = subprocess.Popen('%s %s' % (
             self.grfCLFilepath,

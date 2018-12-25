@@ -246,6 +246,33 @@ class LeeMenu:
         print('')
         LeeLua().decodeDir(lubSourceDirectory, lubOutputDirectory)
 
+    def maintenanceDetectLubEncoding(self):
+        '''
+        扫描整个 Patches 目录下的 lub 文件
+        检测他们的文件编码, 并列出非 ANSI 编码的文件
+        '''
+        scriptDir = self.leeCommon.getScriptDirectory()
+        patchesDir = os.path.normpath('%s/Patches/' % scriptDir)
+        allowANSI = [
+            'ASCII',
+            'EUC-KR',
+            'GB2312',
+            'CP949',        # EUC-KR
+            'ISO-8859-1'    # Latin1
+        ]
+
+        for dirpath, _dirnames, filenames in os.walk(patchesDir):
+            for filename in filenames:
+                if not filename.lower().endswith('.lub'):
+                    continue
+                fullpath = os.path.normpath('%s/%s' % (dirpath, filename))
+                result, encoding = LeeLua().getLubEncoding(fullpath)
+                if result and encoding not in allowANSI:
+                    print('%s - %s' % (encoding, os.path.relpath(fullpath, patchesDir)))
+
+        print('扫描并检测完毕, 已列出所有不符合 ANSI 编码的文件.')
+        print('')
+
     def item_SwitchWorkshop(self):
         '''
         菜单处理函数
@@ -303,8 +330,7 @@ class LeeMenu:
 
         lines = [
             '已汉化的内容将会被自动继承, 请不用担心',
-            '涉及的数据库文件为: Resources/Databases/ButtonTranslate.json',
-            ''
+            '涉及的数据库文件为: Resources/Databases/ButtonTranslate.json'
         ]
         title = '更新客户端按钮的翻译数据库'
         prompt = '是否执行更新操作?'
@@ -320,7 +346,6 @@ class LeeMenu:
         lines = [
             '此过程可以协助排除可能的一些图档丢失情况.',
             '不过由于需要对客户端的大量文件进行判断, 时间可能会比较长.'
-            ''
         ]
         title = '对客户端资源进行完整性校验'
         prompt = '是否确认执行?'
@@ -394,6 +419,24 @@ class LeeMenu:
             lines, title, prompt, self, 'menus.maintenanceBatchDecompileLub(user_input)'
         )
 
+    def item_MaintenanceDetectLubEncoding(self):
+        '''
+        菜单处理函数
+        当选择“维护 - 扫描并列出所有 lub 文件的文件编码”时执行
+        '''
+        self.leeCommon.cleanScreen()
+
+        lines = [
+            '此操作会将 Patches 目录中的 lub 文件全部找出',
+            '然后探测其文件编码, 将所有非 ANSI 类型编码的文件都列出来.',
+            '',
+            '注意: GBK 和 EUC-KR 都属于 ANSI 类型编码, 而 UTF8 则不是.',
+            '这里的 lub 文件实际上是 lua 的明文脚本文件.'
+        ]
+        title = '扫描并列出所有 lub 文件的文件编码'
+        prompt = '是否立刻执行扫描操作?'
+        self.leeCommon.simpleConfirm(lines, title, prompt, self, 'menus.maintenanceDetectLubEncoding()')
+
     def item_End(self):
         '''
         菜单处理函数
@@ -452,6 +495,11 @@ def main():
         [
             '维护 - 批量反编译某个目录中的 lub 文件',
             'injectClass.item_MaintenanceBatchDecompileLub()',
+            None
+        ],
+        [
+            '维护 - 扫描并列出所有 lub 文件的文件编码',
+            'injectClass.item_MaintenanceDetectLubEncoding()',
             None
         ],
         # [
