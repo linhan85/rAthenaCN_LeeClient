@@ -1,5 +1,6 @@
-lupa==1.7
 pygame==1.9.4
+lupa==1.7
+chardet==3.0.4
 Pillow==5.3.0
 dataclasses==0.6
 PyYAML==3.13
