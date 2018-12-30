@@ -247,6 +247,25 @@ class LeeMenu:
         print('')
         LeeLua().decodeDir(lubSourceDirectory, lubOutputDirectory)
 
+    def maintenanceBatchAmendmentsLub(self):
+        '''
+        将 Patches 目录下的 lub 文件批量进行整理
+        '''
+        scriptDir = self.leeCommon.getScriptDirectory()
+        patchesDir = os.path.normpath('%s/Patches/' % scriptDir)
+
+        for dirpath, _dirnames, filenames in os.walk(patchesDir):
+            for filename in filenames:
+                fullpath = os.path.normpath('%s/%s' % (dirpath, filename))
+                if not filename.lower().endswith('.lub'):
+                    continue
+                if LeeLua().isTrulyLubFile(fullpath):
+                    continue
+                if not LeeLua().lubAmendments(fullpath, fullpath):
+                    self.leeCommon.exitWithMessage('整理 %s 时发生错误, 请确认.' % fullpath)
+                else:
+                    print('已整理: %s' % os.path.relpath(fullpath, patchesDir))
+
     def maintenanceDetectLubEncoding(self):
         '''
         扫描整个 Patches 目录下的 lub 文件
@@ -534,6 +553,11 @@ def main():
         [
             '维护 - 扫描并列出所有 lub 文件的文件编码',
             'injectClass.item_MaintenanceDetectLubEncoding()',
+            None
+        ],
+        [
+            '维护 - 批量整理所有 lub 文件的内容',
+            'injectClass.item_MaintenanceBatchAmendmentsLub()',
             None
         ],
         # [
