@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+import timeit
 
 from PyLibs import (LeeButtonTranslator, LeeCommon, LeeConstant, LeeGrf,
                     LeeIteminfoTranslator, LeeLua, LeePatchManager,
@@ -256,21 +257,33 @@ class LeeMenu:
         allowANSI = [
             'ASCII',
             'EUC-KR',
+            'LATIN1',
+            'GBK',
             'GB2312',
-            'CP949',        # EUC-KR
-            'ISO-8859-1'    # Latin1
+            'CP949',
+            'ISO-8859-1',
+            'WINDOWS-1252'
         ]
+
+        print('正在扫描, 可能会花几分钟时间, 请耐心等待...')
+        print('')
+        work_start = timeit.default_timer()
 
         for dirpath, _dirnames, filenames in os.walk(patchesDir):
             for filename in filenames:
+                fullpath = os.path.normpath('%s/%s' % (dirpath, filename))
                 if not filename.lower().endswith('.lub'):
                     continue
-                fullpath = os.path.normpath('%s/%s' % (dirpath, filename))
+
                 result, encoding = LeeLua().getLubEncoding(fullpath)
                 if result and encoding not in allowANSI:
-                    print('%s - %s' % (encoding, os.path.relpath(fullpath, patchesDir)))
+                    print('%s - %s' % (
+                        encoding, os.path.relpath(fullpath, patchesDir)
+                    ))
 
-        print('扫描并检测完毕, 已列出所有不符合 ANSI 编码的文件.')
+        work_elapsed = (timeit.default_timer() - work_start)
+
+        print('扫描并检测完毕, 耗时: %0.2f 秒' % work_elapsed)
         print('')
 
     def item_SwitchWorkshop(self):
@@ -410,13 +423,32 @@ class LeeMenu:
             '程序只转换后缀为 lub 的文件, 并将反编译后的文件保存到平级目录下.',
             '',
             '比如你填写的路径是: C:\\luafiles 那么输出会在 C:\\luafiles_output',
-            '程序会将无需反编译的文件, 也一起复制到输出目录(保持目录结构).',
-            ''
+            '程序会将无需反编译的文件, 也一起复制到输出目录(保持目录结构).'
         ]
         title = '批量反编译指定目录下的 lub 文件'
         prompt = '请填写目录路径'
         self.leeCommon.simpleInput(
             lines, title, prompt, self, 'menus.maintenanceBatchDecompileLub(user_input)'
+        )
+    
+    def item_MaintenanceBatchAmendmentsLub(self):
+        '''
+        菜单处理函数
+        当选择“维护 - 批量整理所有 lub 文件的内容”时执行
+        '''
+        self.leeCommon.cleanScreen()
+
+        lines = [
+            '此操作会将 Patches 目录中的 lub 文件全部找出',
+            '然后移除 lub 文件中的一些多余的注释, 并纠正一些格式错误等等.',
+            '',
+            '程序只转换后缀为 lub 的文件, 并将处理后的文件直接进行替换.',
+            '注意: 由于会直接进行替换, 所以请您一定先自己做好备份! 避免意外.',
+        ]
+        title = '批量整理所有 lub 文件的内容'
+        prompt = '是否立刻执行整理操作?'
+        self.leeCommon.simpleConfirm(
+            lines, title, prompt, self, 'menus.maintenanceBatchAmendmentsLub()'
         )
 
     def item_MaintenanceDetectLubEncoding(self):
@@ -435,7 +467,9 @@ class LeeMenu:
         ]
         title = '扫描并列出所有 lub 文件的文件编码'
         prompt = '是否立刻执行扫描操作?'
-        self.leeCommon.simpleConfirm(lines, title, prompt, self, 'menus.maintenanceDetectLubEncoding()')
+        self.leeCommon.simpleConfirm(
+            lines, title, prompt, self, 'menus.maintenanceDetectLubEncoding()'
+        )
 
     def item_End(self):
         '''

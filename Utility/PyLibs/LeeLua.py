@@ -24,7 +24,7 @@ class LeeLua:
         ))
         return outputpath
 
-    def __isTrulyLubFile(self, filepath):
+    def isTrulyLubFile(self, filepath):
         rawfile = open(filepath, 'rb')
         magicHeader = rawfile.read(6)
         rawfile.close()
@@ -47,37 +47,80 @@ class LeeLua:
             return None
         return line
 
-    def __lubAmendmentsFile(self, filename, content):
-        if filename.lower() == 'kaframovemapservicelist.lub':
-            pass
+    def __lubAmendmentsByFile(self, filename, content):
+
+        # 移除 GRF Editor Decompiler 标记
+        markRemoveIndex = []
+        for index, line in enumerate(content):
+            if re.match('^-- Using GRF Editor Decompiler.*?$', line):
+                content[index] = None
+                markRemoveIndex.append(index + 1)
+            if index in markRemoveIndex:
+                content[index] = None
+
+        # 若文件的末尾没有空行的话, 补加一个空行
+        if not content:
+            content.append('')
+        if str(content[-1]).strip() != '' and not str(content[-1]).endswith('\n'):
+            content.append('')
+
+        # if filename.lower() == 'kaframovemapservicelist.lub':
+        #     pass
+
+        content = [x for x in content if x is not None]
         return content
 
-    def __lubAmendments(self, filepath):
-        luafile = open(filepath, 'r', encoding='latin1')
-        content = luafile.readlines()
-        luafile.close()
+    def lubAmendments(self, srcfilepath, dstfilepath):
+        encoding = self.leeCommon.getEncodingByFile(srcfilepath)
+        encoding = 'latin1' if encoding is None else encoding
 
-        # 按行进行处理
-        content = [x.replace('\n', '') for x in content]
-        for index, line in enumerate(content):
-            line = self.__replaceFunctionStruct(line)
-            line = self.__removeFunctionNote(line)
-            content[index] = line
-        content = [x for x in content if x is not None]
+        try:
+            luafile = open(srcfilepath, 'r', encoding=encoding)
+            content = luafile.readlines()
+            luafile.close()
 
-        # 按文件进行处理
-        content = self.__lubAmendmentsFile(
-            os.path.basename(filepath), content
-        )
+            # 按行进行处理
+            content = [x.replace('\r\n', '\n').replace('\n', '') for x in content]
+            for index, line in enumerate(content):
+                line = self.__replaceFunctionStruct(line)
+                line = self.__removeFunctionNote(line)
+                content[index] = line
+            content = [x for x in content if x is not None]
 
-        savefile = open(filepath, 'w', encoding='latin1')
-        savefile.write('\n'.join(content))
-        savefile.write('\n')
-        savefile.close()
+            # 按文件进行处理
+            content = self.__lubAmendmentsByFile(
+                os.path.basename(srcfilepath), content
+            )
+
+            savefile = open(dstfilepath, 'w', encoding=encoding)
+            savefile.write('\r\n'.join(content))
+            savefile.close()
+            return True
+        except Exception as _err:
+            print('对 lub 文件进行处理时发生错误: %s' % srcfilepath)
+            raise
+
+    def amendmentsDir(self, lubSourceDirectory, lubOutputDirectory):
+        self.sourceDirectory = lubSourceDirectory
+        self.outputDirectory = lubOutputDirectory
+        self.baseDirectory = os.path.dirname(self.sourceDirectory)
+
+        for dirpath, _dirnames, filenames in os.walk(lubSourceDirectory):
+            for filename in filenames:
+                fullpath = os.path.normpath('%s/%s' % (dirpath, filename))
+                destpath = self.__getOutputFilePath(fullpath)
+                os.makedirs(os.path.dirname(destpath), exist_ok=True)
+
+                if fullpath.lower().endswith('.lub') and not self.isTrulyLubFile(fullpath):
+                    self.lubAmendments(fullpath, destpath)
+                    print('整理完毕: ' + os.path.relpath(fullpath, self.baseDirectory))
+                else:
+                    shutil.copyfile(fullpath, destpath)
+                    print('已经复制: ' + os.path.relpath(fullpath, self.baseDirectory))
 
     def getLubEncoding(self, filepath):
-        if not self.__isTrulyLubFile(filepath):
-            return True, self.leeCommon.getEncoding(filepath)
+        if not self.isTrulyLubFile(filepath):
+            return True, self.leeCommon.getEncodingByFile(filepath)
         else:
             return False, None
 
@@ -93,7 +136,7 @@ class LeeLua:
         # 确认结果并输出提示信息表示反编译结束
         if grfCLProc.returncode == 0 and self.leeCommon.isFileExists(lubOutputPath):
             print('已输出到: ' + os.path.relpath(lubOutputPath, self.baseDirectory))
-            self.__lubAmendments(lubOutputPath)
+            self.__lubAmendments(lubOutputPath, lubOutputPath)
             return True
 
         print('进行反编译时发生错误: ' + os.path.relpath(lubSourcePath, self.baseDirectory))
@@ -129,7 +172,7 @@ class LeeLua:
                 os.makedirs(os.path.dirname(destpath), exist_ok=True)
 
                 print('')
-                if fullpath.lower().endswith('.lub') and self.__isTrulyLubFile(fullpath):
+                if fullpath.lower().endswith('.lub') and self.isTrulyLubFile(fullpath):
                     print('需反编译: ' + os.path.relpath(fullpath, self.baseDirectory))
                     if not self.decodeFile(fullpath, destpath):
                         print('失败复制: ' + os.path.relpath(fullpath, self.baseDirectory))

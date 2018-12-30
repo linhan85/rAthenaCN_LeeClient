@@ -5,6 +5,7 @@ import hashlib
 import os
 import platform
 import sys
+from functools import partial
 
 import chardet
 
@@ -127,20 +128,117 @@ class LeeCommon:
         '''
         return os.path.normpath(path.replace('\\', os.path.sep).replace('/', os.path.sep))
 
-    def getEncoding(self, filepath, byteBuffer = None, byteLength = 2048):
-        if byteBuffer is None:
-            with open(filepath, 'rb') as lubfile:
-                lubfile.seek(0, 2)
-                filelen = lubfile.tell()
-                lubfile.seek(0)
-                byteLength = byteLength if filelen > 1024 * 100 else filelen
-                byteBuffer = lubfile.read(byteLength)
+    def __encodingMaps(self, encoding):
+        '''
+        对一些编码的超集进行转换,
+        比如 CP949 是 EUC-KR 的超集, GBK 是 GB2312 的超集
+        '''
+        encodeingMaps = {
+            'EUC-KR': 'CP949',
+            'GB2312': 'GBK'
+        }
 
-        encoding = chardet.detect(byteBuffer)['encoding']
+        if encoding.upper() in encodeingMaps:
+            encoding = encodeingMaps[encoding.upper()]
 
-        if encoding is None:
-            return None
-        return encoding.upper()
+        return encoding
+
+    def getEncodingByByte(self, bytebuffer):
+        if bytebuffer is not None:
+            response = chardet.detect(bytebuffer)
+            encoding = response['encoding']
+            return None if encoding is None else self.__encodingMaps(encoding)
+        return None
+
+    def getEncodingByFile(self, filepath):
+        def analysisBlocksEncoding(blocks_encoding):
+            validEncoding = {}
+
+            for encoding in blocks_encoding:
+                # 检测不到编码内容, 或者概率小于 50% 的过滤掉
+                if encoding is None or encoding['confidence'] < 0.5:
+                    continue
+                # 记录这个编码出现的次数, 后续推断使用
+                codepage = encoding['encoding']
+                if codepage is not None:
+                    codepage = codepage.upper()
+                codepage = self.__encodingMaps(codepage)
+                if codepage not in validEncoding:
+                    validEncoding[codepage] = 1
+                else:
+                    validEncoding[codepage] = validEncoding[codepage] + 1
+
+            validEncodingList = sorted(validEncoding, reverse=True)
+
+            if 'CP949' in validEncodingList or 'EUC-KR' in validEncodingList:
+                validEncodingList.append('GBK')
+                validEncodingList.append('LATIN1')
+
+            return validEncodingList
+
+        def tryUseingEncoding(filepath, encoding):
+            try:
+                encoding = self.__encodingMaps(encoding)
+                f = open(filepath, 'r', encoding = encoding)
+                _content = f.readlines()
+                f.close()
+                return True
+            except UnicodeDecodeError as _err:
+                return False
+
+        f = open(filepath, 'rb')
+
+        # 获取文件的总长度
+        f.seek(0, 2)
+        filesize = f.tell()
+        f.seek(0, 0)
+
+        # 初始化的块长度为 1024 * 4
+        blocksize = 1024 * 4
+
+        # 文件大小和块大小相比, 取最小那个值, 作为新的块大小
+        blocksize = filesize if filesize < blocksize else blocksize
+
+        # 每次读取 blocksize 长度的数据
+        blocks = iter(partial(f.read, blocksize), b'')
+
+        # 记录每个块的编码检测结果, 和判断准确率
+        blocks_encoding = []
+        failed_encoding = []
+
+        for block in blocks:
+            response = chardet.detect(block)
+            if response is not None and \
+                response['encoding'] not in failed_encoding:
+                blocks_encoding.append(response)
+
+            # 当获得的块结果小于 10 次, 那么继续分析
+            if len(blocks_encoding) < 10:
+                continue
+
+            # 如果大于等于 10 次, 那么对内容进行一次排重整理
+            validEncodingList = analysisBlocksEncoding(blocks_encoding)
+            vaildEncoding = None
+
+            for encoding in validEncodingList:
+                if tryUseingEncoding(filepath, encoding):
+                    vaildEncoding = self.__encodingMaps(encoding)
+                    break
+                else:
+                    failed_encoding.append(encoding)
+
+            if vaildEncoding is not None:
+                return vaildEncoding
+            blocks_encoding.clear()
+
+        if blocks_encoding is not None:
+            validEncodingList = analysisBlocksEncoding(blocks_encoding)
+            for encoding in validEncodingList:
+                if tryUseingEncoding(filepath, encoding):
+                    return self.__encodingMaps(encoding)
+
+        f.close()
+        return None
 
     def getRagexeClientList(self, dirpath):
         '''
