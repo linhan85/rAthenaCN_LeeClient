@@ -19,6 +19,12 @@ __pycache__
 /*.grf
 /licence.txt
 
+# 使用 NEMO 进行 DIFF 后产生的文件
+*.exe.secure.txt
+
+# 使用 C32ASM 生成的备份文件
+*.exe.b*
+
 # 使用 GrfCL 时会自动释放的文件
 /Utility/Bin/GrfCL/msvcp100.dll
 /Utility/Bin/GrfCL/msvcr100.dll
