@@ -1,13 +1,9 @@
--- Using GRF Editor Decompiler (beta 1.0.3)
 
-
--- Function #0
-GetValue = function(valueName)
+function GetValue(valueName)
 	return _G[valueName]
 end
 
--- Function #1
-IsExistValue = function(valueName)
+function IsExistValue(valueName)
 	local value = _G[valueName]
 	if value ~= nil then
 		return true
@@ -15,8 +11,7 @@ IsExistValue = function(valueName)
 	return false
 end
 
--- Function #2
-IsOpenedEmitterInfoFiles = function(InfoTableName)
+function IsOpenedEmitterInfoFiles(InfoTableName)
 	local EmitterInfoTable = _G[InfoTableName]
 	if EmitterInfoTable ~= nil then
 		return true

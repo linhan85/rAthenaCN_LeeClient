@@ -1,5 +1,3 @@
--- Using GRF Editor Decompiler (beta 1.0.3)
-
 SEX_FEMALE = 0
 SEX_MALE = 1
 LAYER_BIG = 0
@@ -174,8 +172,7 @@ LAYER_ALL_TABLE_LIST = {
 	[JOBID.JT_FROG_OBORO] = JOBID.JT_FROG_NINJA
 }
 
--- Function #0
-_New_GetLayerDirTbl = function(sex, robeID)
+function _New_GetLayerDirTbl(sex, robeID)
 	local sizeType = GetLayerSizeType(robeID)
 	if LAYER_SMALL == sizeType then
 		if SEX_FEMALE == sex then
@@ -188,16 +185,14 @@ _New_GetLayerDirTbl = function(sex, robeID)
 	return _New_BigLayerDir_M
 end
 
--- Function #1
-GetSpriteInherite2Job = function(jobID)
+function GetSpriteInherite2Job(jobID)
 	if LAYER_ALL_TABLE_LIST ~= nil and LAYER_ALL_TABLE_LIST[jobID] ~= nil then
 		jobID = LAYER_ALL_TABLE_LIST[jobID]
 	end
 	return jobID
 end
 
--- Function #2
-_New_DrawOnTop = function(robeID, sex, jobID, actNum, motNum)
+function _New_DrawOnTop(robeID, sex, jobID, actNum, motNum)
 	local LayerDirTbl = _New_GetLayerDirTbl(sex, robeID)
 	jobID = GetSpriteInherite2Job(jobID)
 	if LayerDirTbl ~= nil and LayerDirTbl[jobID] ~= nil then

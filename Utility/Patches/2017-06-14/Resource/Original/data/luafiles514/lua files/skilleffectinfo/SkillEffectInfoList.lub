@@ -1,5 +1,3 @@
--- Using GRF Editor Decompiler (beta 1.0.3)
-
 SKILL_EFFECT_INFO_LIST = {
 	[SKID.NJ_KUNAI] = {
 		waveFileName = "effect\\닌자_던지기.wav",

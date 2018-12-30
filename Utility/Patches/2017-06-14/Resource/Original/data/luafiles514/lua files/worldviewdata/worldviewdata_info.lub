@@ -1,5 +1,3 @@
--- Using GRF Editor Decompiler (beta 1.0.3)
-
 worldview_info = {
 	DungeonBox_ColorR = 255,
 	DungeonBox_ColorG = 0,
@@ -89,58 +87,47 @@ worldview_info = {
 	SelectBox_Alpha = 70
 }
 
--- Function #0
-Get_Worldview_info_Dungeon = function()
+function Get_Worldview_info_Dungeon()
 	return worldview_info.DungeonBox_ColorR, worldview_info.DungeonBox_ColorG, worldview_info.DungeonBox_ColorB, worldview_info.DungeonBox_Alpha
 end
 
--- Function #1
-Get_Worldview_info_Dungeon_FontColor = function()
+function Get_Worldview_info_Dungeon_FontColor()
 	return worldview_info.Dungeon_FontColorR, worldview_info.Dungeon_FontColorG, worldview_info.Dungeon_FontColorB, worldview_info.Dungeon_FontColorRS, worldview_info.Dungeon_FontColorGS, worldview_info.Dungeon_FontColorBS
 end
 
--- Function #2
-Get_Worldview_info_Dungeon_FontSize = function()
+function Get_Worldview_info_Dungeon_FontSize()
 	return worldview_info.Dungeon_fontSize0, worldview_info.Dungeon_fontSize1, worldview_info.Dungeon_fontSize2, worldview_info.Dungeon_fontSize3
 end
 
--- Function #3
-Get_Worldview_info_Dungeon_SelectColor = function()
+function Get_Worldview_info_Dungeon_SelectColor()
 	return worldview_info.Dungeon_SelectColorR, worldview_info.Dungeon_SelectColorG, worldview_info.Dungeon_SelectColorB
 end
 
--- Function #4
-Get_Worldview_info_Mob_Color = function()
+function Get_Worldview_info_Mob_Color()
 	return worldview_info.MobName_fontColorR, worldview_info.MobName_fontColorG, worldview_info.MobName_fontColorB
 end
 
--- Function #5
-Get_Worldview_info_Mob_font = function()
+function Get_Worldview_info_Mob_font()
 	return worldview_info.MobName_fontSize0, worldview_info.MobName_fontSize1, worldview_info.MobName_fontSize2, worldview_info.MobName_fontSize3
 end
 
--- Function #6
-Get_Worldview_info_MobLv_Color = function()
+function Get_Worldview_info_MobLv_Color()
 	return worldview_info.MobLv_fontColorR, worldview_info.MobLv_fontColorG, worldview_info.MobLv_fontColorB
 end
 
--- Function #7
-Get_Worldview_info_MobLv_font = function()
+function Get_Worldview_info_MobLv_font()
 	return worldview_info.MobLv_fontSize0, worldview_info.MobLv_fontSize1, worldview_info.MobLv_fontSize2, worldview_info.MobLv_fontSize3
 end
 
--- Function #8
-Get_Worldview_info_BoxLine_Color = function()
+function Get_Worldview_info_BoxLine_Color()
 	return worldview_info.MobBoxLine_ColorR, worldview_info.MobBoxLine_ColorG, worldview_info.MobBoxLine_ColorB
 end
 
--- Function #9
-Get_Worldview_info_Sreach_Alpha = function()
+function Get_Worldview_info_Sreach_Alpha()
 	return worldview_info.SreachMap_Alpha, worldview_info.SreachMob1_Alpha, worldview_info.SreachMob2_Alpha, worldview_info.SreachMob3_Alpha, worldview_info.SreachMob4_Alpha, worldview_info.SreachMob5_Alpha, worldview_info.SreachNpc_Alpha
 end
 
--- Function #10
-Get_Worldview_info_Sreach_Color = function(Index)
+function Get_Worldview_info_Sreach_Color(Index)
 	if 0 == Index then
 		return worldview_info.SreachMap_ColorR, worldview_info.SreachMap_ColorG, worldview_info.SreachMap_ColorB
 	elseif 1 == Index then
@@ -169,22 +156,18 @@ Get_Worldview_info_Sreach_Color = function(Index)
 	return Index, Index, Index
 end
 
--- Function #11
-Get_Worldview_info_Run = function()
+function Get_Worldview_info_Run()
 	return worldview_info.Run_ColorR, worldview_info.Run_ColorG, worldview_info.Run_ColorB, worldview_info.Run_Alpha
 end
 
--- Function #12
-Get_Worldview_info_Run_fontColor = function()
+function Get_Worldview_info_Run_fontColor()
 	return worldview_info.Run_fontColorR, worldview_info.Run_fontColorG, worldview_info.Run_fontColorB, worldview_info.Run_fontColorRS, worldview_info.Run_fontColorGS, worldview_info.Run_fontColorBS
 end
 
--- Function #13
-Get_Worldview_info_Run_font = function()
+function Get_Worldview_info_Run_font()
 	return worldview_info.Run_fontSize0, worldview_info.Run_fontSize1, worldview_info.Run_fontSize2, worldview_info.Run_fontSize3
 end
 
--- Function #14
-Get_Worldview_info_SelectBox_Color = function()
+function Get_Worldview_info_SelectBox_Color()
 	return worldview_info.SelectBox_ColorR, worldview_info.SelectBox_ColorG, worldview_info.SelectBox_ColorB, worldview_info.SelectBox_Alpha
 end

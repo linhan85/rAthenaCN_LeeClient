@@ -1,7 +1,5 @@
--- Using GRF Editor Decompiler (beta 1.0.3)
 
-
-ReqshadowFactor = function(shadowID)
+function ReqshadowFactor(shadowID)
 	if ShadowFactorTable == nil then
 		return -1
 	elseif ShadowFactorTable[shadowID] ~= nil then

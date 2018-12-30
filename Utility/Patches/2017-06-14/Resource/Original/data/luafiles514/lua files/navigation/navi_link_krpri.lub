@@ -1,5 +1,3 @@
--- Using GRF Editor Decompiler (beta 1.0.3)
-
 Navi_Link = {
 	{ "abbey01", 14763, 200, 99999, "Abbey01Step_Abbey01Farm", "", 87, 122, "abbey01", 12, 200 },
 	{ "abbey01", 14764, 200, 99999, "Abbey01Dorm_Abbey02SGate", "", 322, 101, "abbey02", 149, 12 },

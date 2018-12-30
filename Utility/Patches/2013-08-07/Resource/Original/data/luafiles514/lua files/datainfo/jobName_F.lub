@@ -1,14 +1,12 @@
--- Using GRF Editor Decompiler (beta 1.0.3)
 
-
-ReqJobName = function(jobID)
+function ReqJobName(jobID)
 	if JobNameTable[jobID] ~= nil then
 		return JobNameTable[jobID]
 	end
 	return ""
 end
 
-GetJobString = function(jobID)
+function GetJobString(jobID)
 	for k, v in pairs(jobtbl) do
 		if v == jobID then
 			return k
@@ -17,7 +15,7 @@ GetJobString = function(jobID)
 	return ""
 end
 
-GetPetIllustName = function(jobID)
+function GetPetIllustName(jobID)
 	filePath = "유저인터페이스\\illust\\"
 	fileName = "펫_포링.bmp"
 	if PetIllustNameTable[jobID] ~= nil then
@@ -26,7 +24,7 @@ GetPetIllustName = function(jobID)
 	return filePath .. fileName
 end
 
-GetPetIllustName_V2 = function(jobID, in_bResEnglishName)
+function GetPetIllustName_V2(jobID, in_bResEnglishName)
 	local filePath = "UserInterface\\illust\\"
 	local fileName = "PET_PORING.bmp"
 	if in_bResEnglishName == true then
@@ -38,7 +36,7 @@ GetPetIllustName_V2 = function(jobID, in_bResEnglishName)
 	return GetPetIllustName(jobID)
 end
 
-GetPetIllustName_V3 = function(jobID)
+function GetPetIllustName_V3(jobID)
 	local filePath = "UserInterface\\illust\\"
 	local fileName = "PET_NOIMAGE.bmp"
 	if PetIllustNameTable_Eng[jobID] ~= nil then
@@ -47,7 +45,7 @@ GetPetIllustName_V3 = function(jobID)
 	return filePath .. fileName
 end
 
-GetPetAccActName = function(accID)
+function GetPetAccActName(accID)
 	local filePath = "몬스터\\"
 	local fileName = "chocho_방독면.act"
 	if PetAccActNameTable[accID] ~= nil then
@@ -56,7 +54,7 @@ GetPetAccActName = function(accID)
 	return filePath .. fileName
 end
 
-GetPetAccActName_V2 = function(accID, in_bResEnglishName)
+function GetPetAccActName_V2(accID, in_bResEnglishName)
 	local filePath = "Monster\\"
 	local fileName = "ACC_CHOCHO.act"
 	if in_bResEnglishName == true then
@@ -68,7 +66,7 @@ GetPetAccActName_V2 = function(accID, in_bResEnglishName)
 	return GetPetAccActName(accID)
 end
 
-IsPetAccessory = function(accID)
+function IsPetAccessory(accID)
 	if PetAccIDs.ACC_FIRST < accID and accID < PetAccIDs.ACC_LAST then
 		return true
 	end

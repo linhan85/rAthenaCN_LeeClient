@@ -1,5 +1,3 @@
--- Using GRF Editor Decompiler (beta 1.0.3)
-
 HatEFID = {
 	HAT_EF_Blossom_Fluttering = 1,
 	HAT_EF_MERMAID_LONGING = 2,
@@ -89,7 +87,7 @@ hatEffectTable = {
 	[HatEFID.HAT_EF_Feather_Fluttering] = { resourceFileName = "efst_feather_fluttering\\feath.str", hatEffectPos = -4 }
 }
 
-GetHatEfResName = function(index)
+function GetHatEfResName(index)
 	if hatEffectTable == nil then
 		return ""
 	else
@@ -101,7 +99,7 @@ GetHatEfResName = function(index)
 	end
 end
 
-GetHatEfPos = function(index)
+function GetHatEfPos(index)
 	if hatEffectTable == nil then
 		return 0
 	else
@@ -113,7 +111,7 @@ GetHatEfPos = function(index)
 	end
 end
 
-GetHatEffectID = function(index)
+function GetHatEffectID(index)
 	if hatEffectTable == nil then
 		return -1
 	else

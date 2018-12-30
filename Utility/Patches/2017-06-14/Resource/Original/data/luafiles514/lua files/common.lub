@@ -1,24 +1,19 @@
--- Using GRF Editor Decompiler (beta 1.0.3)
 
-
--- Function #0
-toInt = function(value)
+function toInt(value)
 	if value ~= nill then
 		return value
 	end
 	return 0
 end
 
--- Function #1
-toStr = function(value)
+function toStr(value)
 	if value ~= nill then
 		return value
 	end
 	return ""
 end
 
--- Function #2
-getTableSize = function(t)
+function getTableSize(t)
 	local size = 0
 	for _, _ in pairs(t) do
 		size = size + 1
@@ -26,8 +21,7 @@ getTableSize = function(t)
 	return size
 end
 
--- Function #3
-GetTableSizeForC = function(tableName)
+function GetTableSizeForC(tableName)
 	local t = _G[tableName]
 	local size = 0
 	if t ~= nil then
@@ -38,8 +32,7 @@ GetTableSizeForC = function(tableName)
 	return size
 end
 
--- Function #4
-getHelpMsg = function(idx)
+function getHelpMsg(idx)
 	if HelpMsgStr == nil then
 		return ""
 	elseif HelpMsgStr[idx] == nil then

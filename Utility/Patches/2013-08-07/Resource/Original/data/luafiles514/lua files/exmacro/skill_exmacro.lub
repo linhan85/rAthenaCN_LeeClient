@@ -1,10 +1,8 @@
--- Using GRF Editor Decompiler (beta 1.0.3)
-
 FirstAttackSkillList = {}
 AttackSkillList = {}
 BuffSkillList = {}
 
-InsertNewSkillInfo = function(self, skillID, level, nTime)
+function InsertNewSkillInfo(self, skillID, level, nTime)
 	local nListSize = getTableSize(self)
 	self[getTableSize(self) + 1] = {}
 	self[nListSize + 1].nSkillID = skillID
@@ -12,7 +10,7 @@ InsertNewSkillInfo = function(self, skillID, level, nTime)
 	self[nListSize + 1].nReuseTime = nTime
 end
 
-GetFirstAttackSkillInfo = function(nIndex)
+function GetFirstAttackSkillInfo(nIndex)
 	local obj = FirstAttackSkillList[nIndex]
 	if obj ~= nil then
 		return obj.nSkillID, obj.nSkillLevel
@@ -20,7 +18,7 @@ GetFirstAttackSkillInfo = function(nIndex)
 	return -1, 1
 end
 
-GetAttackSkillInfo = function(nIndex)
+function GetAttackSkillInfo(nIndex)
 	local obj = AttackSkillList[nIndex]
 	if obj ~= nil then
 		return obj.nSkillID, obj.nSkillLevel
@@ -28,7 +26,7 @@ GetAttackSkillInfo = function(nIndex)
 	return -1, 1
 end
 
-GetBuffSkillInfo = function(nIndex)
+function GetBuffSkillInfo(nIndex)
 	local obj = BuffSkillList[nIndex]
 	if obj ~= nil then
 		return obj.nSkillID, obj.nSkillLevel, obj.nReuseTime

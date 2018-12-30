@@ -1,7 +1,5 @@
--- Using GRF Editor Decompiler (beta 1.0.3)
 
-
-GetExMacroFileName = function(index, str)
+function GetExMacroFileName(index, str)
 	if index ~= 0 then
 		if 9 < index then
 			index = 1

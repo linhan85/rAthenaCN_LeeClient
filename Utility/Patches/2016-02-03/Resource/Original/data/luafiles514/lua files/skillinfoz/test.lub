@@ -1,9 +1,7 @@
--- Using GRF Editor Decompiler (beta 1.0.3)
-
 math.randomseed(os.time())
 JOBID = {}
 setmetatable(JOBID, {
-__index = function()
+function __index()
 	return math.ceil(math.random() * 100)
 end
 })

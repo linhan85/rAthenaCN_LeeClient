@@ -1558,8 +1558,7 @@ mapNPCInfoTable = {
 -- -----------------------------------------------------------------------------
 }
 
--- Function #0
-main = function()
+function main()
 	for mapName, info in pairs(mapNPCInfoTable) do
 		for k, v in pairs(info) do
 			result, msg = AddTownInfo(mapName, v.name, v.X, v.Y, v.TYPE)
@@ -1570,4 +1569,3 @@ main = function()
 	end
 	return true, "good"
 end
-

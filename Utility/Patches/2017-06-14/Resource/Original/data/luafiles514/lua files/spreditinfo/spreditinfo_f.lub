@@ -1,9 +1,6 @@
--- Using GRF Editor Decompiler (beta 1.0.3)
-
 SprEditInfoList = {}
 
--- Function #0
-GetSprEditInfo = function(strJobIDnSprName, nCurAction, nCurMotion)
+function GetSprEditInfo(strJobIDnSprName, nCurAction, nCurMotion)
 	obj = SprEditInfoList[strJobIDnSprName]
 	local x = 0
 	local y = 0
@@ -36,8 +33,7 @@ GetSprEditInfo = function(strJobIDnSprName, nCurAction, nCurMotion)
 	return x, y, oow, bFlip, bHide
 end
 
--- Function #1
-GetRecommendList = function(nIdx)
+function GetRecommendList(nIdx)
 	obj = SprRecommendList
 	if obj ~= nil then
 		obj = obj[nIdx]
@@ -50,8 +46,7 @@ GetRecommendList = function(nIdx)
 	end
 end
 
--- Function #2
-IsExistTable = function(strJobIDnSprName)
+function IsExistTable(strJobIDnSprName)
 	obj = SprEditInfoList[strJobIDnSprName]
 	if obj ~= nil then
 		return true
@@ -59,8 +54,7 @@ IsExistTable = function(strJobIDnSprName)
 	return false
 end
 
--- Function #3
-GetSavedActionNum = function(strJobIDnSprName)
+function GetSavedActionNum(strJobIDnSprName)
 	obj = SprEditInfoList[strJobIDnSprName]
 	if obj ~= nil then
 		obj = obj.savedActionNum
@@ -71,16 +65,14 @@ GetSavedActionNum = function(strJobIDnSprName)
 	return 0
 end
 
--- Function #4
-SetSavedActionNum = function(strJobIDnSprName, savedActionNum)
+function SetSavedActionNum(strJobIDnSprName, savedActionNum)
 	if SprEditInfoList[strJobIDnSprName] == nil then
 		SprEditInfoList[strJobIDnSprName] = {}
 	end
 	SprEditInfoList[strJobIDnSprName].savedActionNum = savedActionNum
 end
 
--- Function #5
-SetSprEditInfo = function(strJobIDnSprName, nActionNum, nMotionNum, xGap, yGap, oowGap, bFlip, bHide)
+function SetSprEditInfo(strJobIDnSprName, nActionNum, nMotionNum, xGap, yGap, oowGap, bFlip, bHide)
 	objTable = SprEditInfoList[strJobIDnSprName]
 	if objTable == nil then
 		objTable = {}

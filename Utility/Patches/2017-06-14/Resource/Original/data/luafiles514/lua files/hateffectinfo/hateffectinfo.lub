@@ -1,5 +1,3 @@
--- Using GRF Editor Decompiler (beta 1.0.3)
-
 HatEFID = {
 	HAT_EF_Blossom_Fluttering = 1,
 	HAT_EF_MERMAID_LONGING = 2,
@@ -138,8 +136,7 @@ effectHatItemTable = {
 	20600
 }
 
--- Function #0
-GetHatEfResName = function(index)
+function GetHatEfResName(index)
 	if hatEffectTable == nil then
 		return ""
 	else
@@ -151,8 +148,7 @@ GetHatEfResName = function(index)
 	end
 end
 
--- Function #1
-GetHatEfPos = function(index)
+function GetHatEfPos(index)
 	if hatEffectTable == nil then
 		return 0
 	else
@@ -164,8 +160,7 @@ GetHatEfPos = function(index)
 	end
 end
 
--- Function #2
-GetHatEffectID = function(index)
+function GetHatEffectID(index)
 	if hatEffectTable == nil then
 		return -1
 	else
@@ -177,8 +172,7 @@ GetHatEffectID = function(index)
 	end
 end
 
--- Function #3
-IsEffectHatItem = function(itemID)
+function IsEffectHatItem(itemID)
 	for k, v in pairs(effectHatItemTable) do
 		if v == itemID then
 			return true

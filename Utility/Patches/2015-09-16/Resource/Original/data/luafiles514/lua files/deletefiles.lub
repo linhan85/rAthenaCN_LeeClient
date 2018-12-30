@@ -1,3 +1,1 @@
--- Using GRF Editor Decompiler (beta 1.0.3)
-
 DELETE_FILES = { "System\\SetupInfo.lua", "System\\MsgString.lua", "System\\CmdInfo.lub" }

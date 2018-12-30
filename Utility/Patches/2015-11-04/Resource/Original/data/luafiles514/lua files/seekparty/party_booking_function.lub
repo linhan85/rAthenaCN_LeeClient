@@ -1,8 +1,6 @@
--- Using GRF Editor Decompiler (beta 1.0.3)
-
 __mapList = {}
 
-makeMapList = function()
+function makeMapList()
 	for regionId, region in ipairs(map_list) do
 		__mapList[regionId] = region
 		region.id = regionId
@@ -14,14 +12,14 @@ makeMapList = function()
 	end
 end
 
-queryRegionInfo = function(regionId)
+function queryRegionInfo(regionId)
 	if __mapList[regionId] == nil then
 		return nil, nil, nil, nil
 	end
 	return regionId, __mapList[regionId].name, getMapIterator(regionId), __mapList[regionId].ignore_recruit_window
 end
 
-queryMapInfo = function(regionId, mapId)
+function queryMapInfo(regionId, mapId)
 	if __mapList[regionId] == nil then
 		return nil, nil, nil, nil, nil, nil
 	elseif __mapList[regionId][mapId] == nil then
@@ -30,7 +28,7 @@ queryMapInfo = function(regionId, mapId)
 	return regionId, mapId, __mapList[regionId][mapId].name, __mapList[regionId][mapId].colorR, __mapList[regionId][mapId].colorG, __mapList[regionId][mapId].colorB
 end
 
-getRegionIterator = function()
+function getRegionIterator()
 	local pos = 1
 	return {
 		hasNext = function()
@@ -44,7 +42,7 @@ getRegionIterator = function()
 	}
 end
 
-getMapIterator = function(regionId)
+function getMapIterator(regionId)
 	local pos = 1
 	return {
 		hasNext = function()
@@ -62,7 +60,7 @@ getMapIterator = function(regionId)
 end
 makeMapList()
 
-GetPartyBookingHelp = function()
+function GetPartyBookingHelp()
 	local descript = ""
 	local obj = PartyBookingHelp
 	if obj ~= nil then

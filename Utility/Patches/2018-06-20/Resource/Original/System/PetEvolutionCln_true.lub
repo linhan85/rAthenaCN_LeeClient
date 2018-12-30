@@ -1,7 +1,5 @@
--- Using GRF Editor Decompiler (beta 1.0.4)
 
-
-main = function()
+function main()
 	InsertEvolutionRecipeLGU(9001, 9069, 610, 10)
 	InsertEvolutionRecipeLGU(9001, 9069, 619, 3)
 	InsertPetAutoFeeding(9069)

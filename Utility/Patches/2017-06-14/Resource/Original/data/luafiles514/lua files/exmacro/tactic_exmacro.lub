@@ -1,5 +1,3 @@
--- Using GRF Editor Decompiler (beta 1.0.3)
-
 TACTIC_SUB_SELECT_LIST = {
 	{
 		strMsg = MsgStrID.MSI_EX_MACRO_TACTIC_SUB_1,
@@ -121,12 +119,10 @@ TACTIC_MAIN_SELECT_LIST = {
 }
 UserTacticInfoList = {}
 
--- Function #0
-CreateTacticTable = function(nMaxCountTacicList)
+function CreateTacticTable(nMaxCountTacicList)
 end
 
--- Function #1
-GetMainTacticInfo = function(nIndex)
+function GetMainTacticInfo(nIndex)
 	local mainObj = TACTIC_MAIN_SELECT_LIST[nIndex]
 	if mainObj ~= nil then
 		return mainObj.strMsg, mainObj.whatToView, mainObj.bViewPercentage
@@ -134,8 +130,7 @@ GetMainTacticInfo = function(nIndex)
 	return "", WHAT_CONTROL_TO_VIEW.VIEW_NONE, false
 end
 
--- Function #2
-GetSelectMainEditBoxInfo = function(nIndex)
+function GetSelectMainEditBoxInfo(nIndex)
 	local mainObj = TACTIC_MAIN_SELECT_LIST[nIndex]
 	if mainObj ~= nil then
 		if mainObj.whatToView ~= WHAT_CONTROL_TO_VIEW.VIEW_EDITBOX and mainObj.whatToView ~= WHAT_CONTROL_TO_VIEW.VIEW_ITEM_EDIT then
@@ -146,8 +141,7 @@ GetSelectMainEditBoxInfo = function(nIndex)
 	-- GRF Editor Decompiler : CodeReconstructor has failed to identify the usage of this goto 3_[18]
 end
 
--- Function #3
-GetSubListSize = function(nIndex)
+function GetSubListSize(nIndex)
 	local mainObj = TACTIC_MAIN_SELECT_LIST[nIndex]
 	if mainObj ~= nil then
 		return getTableSize(mainObj.nSubIdxList)
@@ -155,8 +149,7 @@ GetSubListSize = function(nIndex)
 	return 0
 end
 
--- Function #4
-GetSubTacticInfo = function(nMainIndex, nSubIndex)
+function GetSubTacticInfo(nMainIndex, nSubIndex)
 	local mainObj = TACTIC_MAIN_SELECT_LIST[nMainIndex]
 	if mainObj ~= nil then
 		local nSubSelNum = mainObj.nSubIdxList[nSubIndex]
@@ -169,8 +162,7 @@ GetSubTacticInfo = function(nMainIndex, nSubIndex)
 	return "", WHAT_CONTROL_TO_VIEW.VIEW_NONE
 end
 
--- Function #5
-GetTacticInfo = function(nIndex)
+function GetTacticInfo(nIndex)
 	local obj = UserTacticInfoList[nIndex]
 	if obj == nil then
 		obj = TacticInfo
@@ -178,8 +170,7 @@ GetTacticInfo = function(nIndex)
 	return obj.bUsing, obj.nMainSelNum, obj.nSubSelNum, obj.strMainValue, obj.nMainValue, obj.strSubValue, obj.nSubValue1, obj.nSubValue2
 end
 
--- Function #6
-SetTacticInfo = function(nIndex, bUsing, nMainSelNum, nSubSelNum, strMainValue, nMainValue, strSubValue, nSubValue1, nSubValue2)
+function SetTacticInfo(nIndex, bUsing, nMainSelNum, nSubSelNum, strMainValue, nMainValue, strSubValue, nSubValue1, nSubValue2)
 	local obj = UserTacticInfoList[nIndex]
 	if obj ~= nil then
 		obj.bUsing = bUsing

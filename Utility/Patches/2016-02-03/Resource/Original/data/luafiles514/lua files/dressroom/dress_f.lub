@@ -1,5 +1,4 @@
--- Function #0
-_get_dresslist = function(sex, job, index)
+function _get_dresslist(sex, job, index)
 	if 0 == sex then
 		if nil == _DressList_f[job] then
 			return nil, nil
@@ -15,8 +14,7 @@ _get_dresslist = function(sex, job, index)
 	return _DressList_m[job][index][1], _DressList_m[job][index][2]
 end
 
--- Function #1
-_get_Headstylelist = function(sex, index)
+function _get_Headstylelist(sex, index)
 	if 0 == sex then
 		if nil == _DressHeadstyleList_f[index] then
 			return nil, nil
@@ -28,8 +26,7 @@ _get_Headstylelist = function(sex, index)
 	return _DressHeadstyleList_m[index][1], _DressHeadstyleList_m[index][2]
 end
 
--- Function #2
-_get_DressHeadPaletteList = function(sex, index)
+function _get_DressHeadPaletteList(sex, index)
 	if 0 == sex then
 		if nil == _DressHeadPaletteList_f[index] then
 			return nil, nil
@@ -41,8 +38,7 @@ _get_DressHeadPaletteList = function(sex, index)
 	return _DressHeadPaletteList_m[index][1], _DressHeadPaletteList_m[index][2]
 end
 
--- Function #3
-_get_DressBodyPaletteList = function(sex, index)
+function _get_DressBodyPaletteList(sex, index)
 	if 0 == sex then
 		if nil == _DressBodyPaletteList_f[index] then
 			return nil, nil

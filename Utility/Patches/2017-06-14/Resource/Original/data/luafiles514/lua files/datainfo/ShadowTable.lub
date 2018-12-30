@@ -1,5 +1,3 @@
--- Using GRF Editor Decompiler (beta 1.0.3)
-
 ShadowFactorTable = {
 	[jobtbl.JT_FACEWORM_QUEEN_Y] = 2,
 	[jobtbl.JT_FACEWORM_QUEEN_B] = 2,

@@ -1,5 +1,3 @@
--- Using GRF Editor Decompiler (beta 1.0.3)
-
 SmallLayerDir_M = {
 	[JOBID.JT_ROYAL_GUARD] = { [18] = { 0, 1, 2 }, [22] = { 0, 1, 2 } },
 	[JOBID.JT_GUNSLINGER] = { [2] = { 0, 1, 2 }, [6] = { 0, 1, 2 }, [10] = { 0, 1, 2, 3, 4 }, [14] = { 0, 1, 2, 3, 4 } },

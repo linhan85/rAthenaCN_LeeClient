@@ -1,8 +1,5 @@
--- Using GRF Editor Decompiler (beta 1.0.3)
 
-
--- Function #0
-ReadKafraMoveMapServiceInfo = function()
+function ReadKafraMoveMapServiceInfo()
 	for startMapName, table in pairs(KafraMoveMapServiceList) do
 		for key, destMapName in pairs(table) do
 			AddItmeTokafraServiceMapList(startMapName, destMapName)
@@ -10,8 +7,7 @@ ReadKafraMoveMapServiceInfo = function()
 	end
 end
 
--- Function #1
-ReadKafraMiniMapPosInfo = function()
+function ReadKafraMiniMapPosInfo()
 	for k, v in pairs(KafraMiniMapPos) do
 		AddItmeToExceptionMiniMapPosList(k, v[1], v[2])
 	end

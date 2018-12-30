@@ -1,5 +1,3 @@
--- Using GRF Editor Decompiler (beta 1.0.3)
-
 BATTLE_FIELD_ID = { HELP = -1, TIERA = 11, FLAVIUS = 21, KVM = 31 }
 BATTLE_FIELD_NAME = {
 	[BATTLE_FIELD_ID.FLAVIUS] = "Flavian_Help",
@@ -168,16 +166,14 @@ BATTLE_FIELD_HELP = {
 	}
 }
 
--- Function #0
-SetBattleFieldNo = function(battleFieldNo)
+function SetBattleFieldNo(battleFieldNo)
 	if battleFieldNo == -1 then
 		return battleFieldNo
 	end
 	return (math.floor(battleFieldNo / 10) * 10) + 1
 end
 
--- Function #1
-GetBattleFieldName = function(battleFieldNo)
+function GetBattleFieldName(battleFieldNo)
 	local fieldName = ""
 	battleFieldNo = SetBattleFieldNo(battleFieldNo)
 	if BATTLE_FIELD_NAME[SetBattleFieldNo(battleFieldNo)] ~= nil then
@@ -186,8 +182,7 @@ GetBattleFieldName = function(battleFieldNo)
 	return fieldName
 end
 
--- Function #2
-GetBattleFieldHelp = function(battleFieldNo)
+function GetBattleFieldHelp(battleFieldNo)
 	local descript = ""
 	local help = BATTLE_FIELD_HELP[SetBattleFieldNo(battleFieldNo)]
 	battleFieldNo = SetBattleFieldNo(battleFieldNo)

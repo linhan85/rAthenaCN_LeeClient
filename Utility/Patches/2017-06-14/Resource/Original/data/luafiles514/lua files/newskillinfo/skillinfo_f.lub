@@ -1,8 +1,5 @@
--- Using GRF Editor Decompiler (beta 1.0.3)
 
-
--- Function #0
-GetInheritJob = function(job)
+function GetInheritJob(job)
 	JobInheritTable = nil
 	JobInheritTable = {}
 	if job == nil then
@@ -19,8 +16,7 @@ GetInheritJob = function(job)
 end
 All_NeedSkillList = {}
 
--- Function #1
-CheckNeedSkillList = function(skillInfo, skillDepth)
+function CheckNeedSkillList(skillInfo, skillDepth)
 	if All_NeedSkillList ~= nil and skillInfo ~= nil then
 		local depth = 0
 		while All_NeedSkillList[depth] == true do
@@ -44,8 +40,7 @@ CheckNeedSkillList = function(skillInfo, skillDepth)
 	return false
 end
 
--- Function #2
-SetNeedSkillList = function(SKID, depth)
+function SetNeedSkillList(SKID, depth)
 	local skillInfo = SKILL_INFO_LIST[SKID]
 	if skillInfo ~= nill then
 		local bIsNeedSkillList = false
@@ -82,8 +77,7 @@ SetNeedSkillList = function(SKID, depth)
 	end
 end
 
--- Function #3
-GetSkillInfo = function(SKID)
+function GetSkillInfo(SKID)
 	All_NeedSkillList = nil
 	All_NeedSkillList = {}
 	local skillInfo = SKILL_INFO_LIST[SKID]
@@ -104,8 +98,7 @@ GetSkillInfo = function(SKID)
 	return "", "", -1, -1
 end
 
--- Function #4
-AddNeedSkillList = function(SKID)
+function AddNeedSkillList(SKID)
 	if All_NeedSkillList ~= nil then
 		local depth = 0
 		while All_NeedSkillList[depth] == true do
@@ -124,8 +117,7 @@ AddNeedSkillList = function(SKID)
 	end
 end
 
--- Function #5
-InitSkillTreeView = function(jobID, arrayNum)
+function InitSkillTreeView(jobID, arrayNum)
 	local skillList = SKILL_TREEVIEW_FOR_JOB[jobID]
 	if skillList ~= nil then
 		local skillPos = 0
@@ -146,8 +138,7 @@ InitSkillTreeView = function(jobID, arrayNum)
 	end
 end
 
--- Function #6
-GetSkillIdName = function(SkillID)
+function GetSkillIdName(SkillID)
 	local obj = SKILL_INFO_LIST[SkillID]
 	if obj ~= nil then
 		obj = SKILL_INFO_LIST[SkillID][1]
@@ -158,8 +149,7 @@ GetSkillIdName = function(SkillID)
 	return ""
 end
 
--- Function #7
-GetSkillName = function(SkillID)
+function GetSkillName(SkillID)
 	local obj = SKILL_INFO_LIST[SkillID]
 	if obj ~= nil then
 		obj = SKILL_INFO_LIST[SkillID].SkillName
@@ -170,8 +160,7 @@ GetSkillName = function(SkillID)
 	return ""
 end
 
--- Function #8
-IsLevelUseSkill = function(SkillID)
+function IsLevelUseSkill(SkillID)
 	local skillInfo = SKILL_INFO_LIST[SkillID]
 	local rst = nil
 	if skillInfo ~= nil then
@@ -188,8 +177,7 @@ IsLevelUseSkill = function(SkillID)
 	return false
 end
 
--- Function #9
-GetLevelUseSpAmount = function(SkillID, idx)
+function GetLevelUseSpAmount(SkillID, idx)
 	local obj = SKILL_INFO_LIST[SkillID]
 	if obj ~= nil then
 		obj = SKILL_INFO_LIST[SkillID].SpAmount
@@ -203,8 +191,7 @@ GetLevelUseSpAmount = function(SkillID, idx)
 	return 0
 end
 
--- Function #10
-GetSkillDescript = function(JobID, SKID, bChangeColor)
+function GetSkillDescript(JobID, SKID, bChangeColor)
 	local descript = ""
 	local obj = SKILL_DESCRIPT[SKID]
 	if obj ~= nil then
@@ -239,8 +226,7 @@ GetSkillDescript = function(JobID, SKID, bChangeColor)
 	return descript
 end
 
--- Function #11
-TestFile = function(saveFileName)
+function TestFile(saveFileName)
 	saveFile = io.open(saveFileName, "w")
 	if saveFile ~= nil and All_NeedSkillList ~= nil then
 		local depth = 0
@@ -258,8 +244,7 @@ TestFile = function(saveFileName)
 	io.close(saveFile)
 end
 
--- Function #12
-GetSkillAttackRange = function(in_SKID, in_Level, in_curMaxLv)
+function GetSkillAttackRange(in_SKID, in_Level, in_curMaxLv)
 	local attackRange = 1
 	local attackRangeOfMaxLv = 0
 	local maxLv = 0

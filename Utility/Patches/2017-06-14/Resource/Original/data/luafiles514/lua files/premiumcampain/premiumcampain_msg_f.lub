@@ -1,8 +1,5 @@
--- Using GRF Editor Decompiler (beta 1.0.3)
 
-
--- Function #0
-GetPremiumCampain_Bar_Color = function()
+function GetPremiumCampain_Bar_Color()
 	local r = PREMIUM_CAMPAIN_BAR_COLOR[1]
 	if r == nil then
 		r = 255
@@ -18,8 +15,7 @@ GetPremiumCampain_Bar_Color = function()
 	return r, g, b
 end
 
--- Function #1
-GetPremiumCampain = function(idx)
+function GetPremiumCampain(idx)
 	local msg = PREMIUM_CAMPAIN_MSG[idx][1]
 	if msg ~= nil then
 		local r = PREMIUM_CAMPAIN_MSG[idx][2]

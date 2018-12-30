@@ -1,7 +1,5 @@
--- Using GRF Editor Decompiler (beta 1.0.3)
 
-
-ReqWeaponName = function(index)
+function ReqWeaponName(index)
 	if WeaponNameTable == nil then
 		return ""
 	else
@@ -13,7 +11,7 @@ ReqWeaponName = function(index)
 	end
 end
 
-ReqWeaponNameByClassNum = function(classNum)
+function ReqWeaponNameByClassNum(classNum)
 	if classNum == nil then
 		return ""
 	else
@@ -25,7 +23,7 @@ ReqWeaponNameByClassNum = function(classNum)
 	end
 end
 
-GetRealWeaponId = function(weaponId)
+function GetRealWeaponId(weaponId)
 	if weaponId == nil then
 		return 0
 	else
@@ -37,7 +35,7 @@ GetRealWeaponId = function(weaponId)
 	end
 end
 
-ReqWeaponHitWaveName = function(index)
+function ReqWeaponHitWaveName(index)
 	if WeaponHitWaveNameTable == nil then
 		return ""
 	else

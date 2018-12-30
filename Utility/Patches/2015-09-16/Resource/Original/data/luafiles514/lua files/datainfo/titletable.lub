@@ -1,5 +1,3 @@
--- Using GRF Editor Decompiler (beta 1.0.3)
-
 title_tbl = {
 	[1000] = "인생의 분기점",
 	[1001] = "달인",
@@ -38,7 +36,7 @@ title_tbl = {
 	[1034] = "VIP"
 }
 
-GetTitleString = function(titleID)
+function GetTitleString(titleID)
 	if title_tbl[titleID] ~= nil then
 		return title_tbl[titleID]
 	end

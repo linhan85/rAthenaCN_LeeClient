@@ -1,16 +1,12 @@
--- Using GRF Editor Decompiler (beta 1.0.3)
 
-
--- Function #0
-ReqJobName = function(jobID)
+function ReqJobName(jobID)
 	if JobNameTable[jobID] ~= nil then
 		return JobNameTable[jobID]
 	end
 	return ""
 end
 
--- Function #1
-GetJobString = function(jobID)
+function GetJobString(jobID)
 	for k, v in pairs(jobtbl) do
 		if v == jobID then
 			return k
@@ -19,8 +15,7 @@ GetJobString = function(jobID)
 	return ""
 end
 
--- Function #2
-GetPetIllustName = function(jobID)
+function GetPetIllustName(jobID)
 	filePath = "유저인터페이스\\illust\\"
 	fileName = "펫_포링.bmp"
 	if PetIllustNameTable[jobID] ~= nil then
@@ -29,8 +24,7 @@ GetPetIllustName = function(jobID)
 	return filePath .. fileName
 end
 
--- Function #3
-GetPetIllustName_V2 = function(jobID, in_bResEnglishName)
+function GetPetIllustName_V2(jobID, in_bResEnglishName)
 	local filePath = "UserInterface\\illust\\"
 	local fileName = "PET_PORING.bmp"
 	if in_bResEnglishName == true then
@@ -42,8 +36,7 @@ GetPetIllustName_V2 = function(jobID, in_bResEnglishName)
 	return GetPetIllustName(jobID)
 end
 
--- Function #4
-GetPetIllustName_V3 = function(jobID)
+function GetPetIllustName_V3(jobID)
 	local filePath = "UserInterface\\illust\\"
 	local fileName = "PET_NOIMAGE.bmp"
 	if PetIllustNameTable_Eng[jobID] ~= nil then
@@ -52,8 +45,7 @@ GetPetIllustName_V3 = function(jobID)
 	return filePath .. fileName
 end
 
--- Function #5
-GetPetAccActName = function(accID)
+function GetPetAccActName(accID)
 	local filePath = "몬스터\\"
 	local fileName = "chocho_방독면.act"
 	if PetAccActNameTable[accID] ~= nil then
@@ -62,8 +54,7 @@ GetPetAccActName = function(accID)
 	return filePath .. fileName
 end
 
--- Function #6
-GetPetAccActName_V2 = function(accID, in_bResEnglishName)
+function GetPetAccActName_V2(accID, in_bResEnglishName)
 	local filePath = "Monster\\"
 	local fileName = "ACC_CHOCHO.act"
 	if in_bResEnglishName == true then
@@ -75,16 +66,14 @@ GetPetAccActName_V2 = function(accID, in_bResEnglishName)
 	return GetPetAccActName(accID)
 end
 
--- Function #7
-IsPetAccessory = function(accID)
+function IsPetAccessory(accID)
 	if PetAccIDs.ACC_FIRST < accID and accID < PetAccIDs.ACC_LAST then
 		return true
 	end
 	return false
 end
 
--- Function #8
-GetPetName = function(jobID)
+function GetPetName(jobID)
 	petName = "poring"
 	if PetNameTable[jobID] ~= nil then
 		petName = PetNameTable[jobID]
@@ -92,24 +81,21 @@ GetPetName = function(jobID)
 	return petName
 end
 
--- Function #9
-GetPetString = function(jobID)
+function GetPetString(jobID)
 	if PetStringTable[jobID] ~= nil then
 		return PetStringTable[jobID]
 	end
 	return ""
 end
 
--- Function #10
-GetPetJTID_by_PetEggITID = function(petEggITID)
+function GetPetJTID_by_PetEggITID(petEggITID)
 	if PetEggItemID_PetJobID[petEggITID] ~= nil then
 		return PetEggItemID_PetJobID[petEggITID]
 	end
 	return -1
 end
 
--- Function #11
-GetPetFood = function(jobID)
+function GetPetFood(jobID)
 	if PetFoodTable[jobID] ~= nil then
 		return PetFoodTable[jobID]
 	end

@@ -1,5 +1,3 @@
--- Using GRF Editor Decompiler (beta 1.0.3)
-
 RobeNameTable = {
 	[SPRITE_ROBE_IDs.ROBE_WINGS] = "천사날개",
 	[SPRITE_ROBE_IDs.ROBE_BAG_OF_ADVENTURER] = "모험가배낭",

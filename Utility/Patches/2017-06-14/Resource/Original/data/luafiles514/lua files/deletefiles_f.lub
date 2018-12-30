@@ -1,8 +1,5 @@
--- Using GRF Editor Decompiler (beta 1.0.3)
 
-
--- Function #0
-GetDeleteFileName = function(idx)
+function GetDeleteFileName(idx)
 	if DELETE_FILES ~= nil then
 		local file = DELETE_FILES[idx]
 		if file ~= nil then
@@ -11,7 +8,6 @@ GetDeleteFileName = function(idx)
 	end
 end
 
--- Function #1
-GetDeleteFileListSize = function()
+function GetDeleteFileListSize()
 	return getTableSize(DELETE_FILES)
 end

@@ -1,5 +1,3 @@
--- Using GRF Editor Decompiler (beta 1.0.3)
-
 EFFECT = {}
 EFFECT["EF_NONE"] = -1
 EFFECT["EF_HIT1"] = 0
@@ -1469,7 +1467,7 @@ tbl = {
 }
 
 
-main = function()
+function main()
 	for MonsterID, info in pairs(tbl) do
 		result, msg = AddItem(MonsterID, info.MonsterSize, info.MonsterEff)
 		if not result == true then
@@ -1478,4 +1476,3 @@ main = function()
 	end
 	return true, "good"
 end
-

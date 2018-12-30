@@ -1,5 +1,3 @@
--- Using GRF Editor Decompiler (beta 1.0.3)
-
 SEX_FEMALE = 0
 SEX_MALE = 1
 LAYER_BIG = 0
@@ -147,7 +145,7 @@ RIDING_SPRITE_INHERIT_LIST = {
 	[JOBID.JT_FROG_OBORO] = JOBID.JT_FROG_NINJA
 }
 
-GetLayerSizeType = function(robeID)
+function GetLayerSizeType(robeID)
 	if LayerSizeTypeList[robeID] == nil then
 		return LAYER_BIG
 	else
@@ -159,7 +157,7 @@ GetLayerSizeType = function(robeID)
 	end
 end
 
-GetLayerDirTbl = function(sex, robeID)
+function GetLayerDirTbl(sex, robeID)
 	local sizeType = GetLayerSizeType(robeID)
 	if sizeType == LAYER_BIG then
 		if sex == SEX_FEMALE then
@@ -174,7 +172,7 @@ GetLayerDirTbl = function(sex, robeID)
 	end
 end
 
-GetSpriteInheriteJob = function(jobID)
+function GetSpriteInheriteJob(jobID)
 	if RIDING_SPRITE_INHERIT_LIST ~= nil and RIDING_SPRITE_INHERIT_LIST[jobID] ~= nil then
 		jobID = RIDING_SPRITE_INHERIT_LIST[jobID]
 	end
@@ -193,7 +191,7 @@ GetSpriteInheriteJob = function(jobID)
 	return jobID
 end
 
-DrawOnTop = function(robeID, sex, jobID, actNum, motNum)
+function DrawOnTop(robeID, sex, jobID, actNum, motNum)
 	local LayerDirTbl = GetLayerDirTbl(sex, robeID)
 	jobID = GetSpriteInheriteJob(jobID)
 	if LayerDirTbl ~= nil and LayerDirTbl[jobID] ~= nil then

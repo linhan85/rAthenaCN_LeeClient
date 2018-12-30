@@ -1,5 +1,3 @@
--- Using GRF Editor Decompiler (beta 1.0.3)
-
 WHAT_CONTROL_TO_VIEW = {
 	VIEW_NONE = 0,
 	VIEW_EDITBOX = 1,
@@ -23,8 +21,7 @@ ITEM_SELECT_LIST = {
 	}
 }
 
--- Function #0
-GetItemSelectInfo = function(nIndex)
+function GetItemSelectInfo(nIndex)
 	local obj = ITEM_SELECT_LIST[nIndex]
 	if obj ~= nil then
 		return obj.strMsg, obj.whatToView, obj.bViewPercentage
@@ -34,8 +31,7 @@ end
 CombatItemList = {}
 NonCombatITemList = {}
 
--- Function #1
-InsertNewCombatItemInfo = function(self, nForWhatType, nPercentage, nItemID1, nItemID2)
+function InsertNewCombatItemInfo(self, nForWhatType, nPercentage, nItemID1, nItemID2)
 	local nListSize = getTableSize(self)
 	self[getTableSize(self) + 1] = {}
 	self[nListSize + 1].nForWhatType = nForWhatType
@@ -44,8 +40,7 @@ InsertNewCombatItemInfo = function(self, nForWhatType, nPercentage, nItemID1, nI
 	self[nListSize + 1].nItemID2 = nItemID2
 end
 
--- Function #2
-GetItemInfo = function(self, nIndex)
+function GetItemInfo(self, nIndex)
 	local obj = self[nIndex]
 	if obj ~= nil then
 		return obj.nForWhatType, obj.nPercentage, obj.nItemID1, obj.nItemID2
@@ -53,19 +48,16 @@ GetItemInfo = function(self, nIndex)
 	return 0, -1, -1, -1
 end
 
--- Function #3
-GetCombatItemInfo = function(nIndex)
+function GetCombatItemInfo(nIndex)
 	return GetItemInfo(CombatItemList, nIndex)
 end
 
--- Function #4
-GetNonCombatItemInfo = function(nIndex)
+function GetNonCombatItemInfo(nIndex)
 	return GetItemInfo(NonCombatITemList, nIndex)
 end
 BuffItemList = {}
 
--- Function #5
-GetBuffItemInfo = function(nIndex)
+function GetBuffItemInfo(nIndex)
 	local obj = BuffItemList[nIndex]
 	if obj ~= nil then
 		return obj.nItemID, obj.bReuseWhenDie, obj.nReuseTime
@@ -73,8 +65,7 @@ GetBuffItemInfo = function(nIndex)
 	return -1, false, 0
 end
 
--- Function #6
-InsertNewBuffItemInfo = function(itemID, nTime, bReuseWhenDie)
+function InsertNewBuffItemInfo(itemID, nTime, bReuseWhenDie)
 	local nListSize = getTableSize(BuffItemList)
 	BuffItemList[nListSize + 1] = {}
 	BuffItemList[nListSize + 1].nItemID = itemID
@@ -83,16 +74,14 @@ InsertNewBuffItemInfo = function(itemID, nTime, bReuseWhenDie)
 end
 AutoEquipmentList = {}
 
--- Function #7
-InsertNewAutoEquipmentInfo = function(strEnemyName)
+function InsertNewAutoEquipmentInfo(strEnemyName)
 	local nListSize = getTableSize(AutoEquipmentList)
 	AutoEquipmentList[nListSize + 1] = {}
 	AutoEquipmentList[nListSize + 1].strEnemyName = strEnemyName
 	AutoEquipmentList[nListSize + 1].equipmentInfo = {}
 end
 
--- Function #8
-InsertNewEquipmentInfo = function(tableIdx, idx, itemID, refiningLevel, nSlot1, nSlot2, nSlot3, nSlot4)
+function InsertNewEquipmentInfo(tableIdx, idx, itemID, refiningLevel, nSlot1, nSlot2, nSlot3, nSlot4)
 	local obj = AutoEquipmentList[tableIdx]
 	if obj ~= nil then
 		obj.equipmentInfo[idx] = {}
@@ -108,8 +97,7 @@ InsertNewEquipmentInfo = function(tableIdx, idx, itemID, refiningLevel, nSlot1, 
 	end
 end
 
--- Function #9
-GetAutoEquipmentInfo = function(tableIdx)
+function GetAutoEquipmentInfo(tableIdx)
 	local obj = AutoEquipmentList[tableIdx]
 	if obj ~= nil then
 		return obj.strEnemyName
@@ -117,8 +105,7 @@ GetAutoEquipmentInfo = function(tableIdx)
 	return ""
 end
 
--- Function #10
-GetEquipmentInfo = function(tableIdx, idx)
+function GetEquipmentInfo(tableIdx, idx)
 	local obj = AutoEquipmentList[tableIdx]
 	if obj ~= nil then
 		obj = obj.equipmentInfo[idx]

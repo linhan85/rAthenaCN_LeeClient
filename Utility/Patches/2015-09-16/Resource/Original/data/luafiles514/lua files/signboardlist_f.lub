@@ -1,5 +1,3 @@
--- Using GRF Editor Decompiler (beta 1.0.3)
-
 local MAPNAME = 1
 local CELLX = 2
 local CELLY = 3
@@ -16,6 +14,6 @@ MAPNAME = 6
 MAPNAME = 7
 MAPNAME = 8
 
-GetSignBoardListTable = function(idx)
+function GetSignBoardListTable(idx)
 	return SignBoardList[idx][MAPNAME], SignBoardList[idx][CELLX], SignBoardList[idx][CELLY], SignBoardList[idx][HEIGHT], SignBoardList[idx][ICONID], SignBoardList[idx][FILEPATH], SignBoardList[idx][CONTENTS], SignBoardList[idx][CHARCOLOR]
 end

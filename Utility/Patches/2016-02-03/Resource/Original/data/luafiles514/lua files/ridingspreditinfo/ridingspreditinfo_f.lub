@@ -1,17 +1,15 @@
--- Using GRF Editor Decompiler (beta 1.0.3)
-
 HeadSprEditInfo = {}
 BodySprEditInfo = {}
 
-GetHeadSprEditInfo = function(jobID, curAction, curMotion)
+function GetHeadSprEditInfo(jobID, curAction, curMotion)
 	return GetRidingSprEditInfo(HeadSprEditInfo, jobID, curAction, curMotion)
 end
 
-GetBodySprEditInfo = function(jobID, curAction, curMotion)
+function GetBodySprEditInfo(jobID, curAction, curMotion)
 	return GetRidingSprEditInfo(BodySprEditInfo, jobID, curAction, curMotion)
 end
 
-GetRidingSprEditInfo = function(RidingSprEditInfoTable, jobID, curAction, curMotion)
+function GetRidingSprEditInfo(RidingSprEditInfoTable, jobID, curAction, curMotion)
 	local xGap = 0
 	local yGap = 0
 	if RidingSprEditInfoTable[jobID] ~= nil and RidingSprEditInfoTable[jobID][curAction] ~= nil then
@@ -27,15 +25,15 @@ GetRidingSprEditInfo = function(RidingSprEditInfoTable, jobID, curAction, curMot
 	return xGap, yGap
 end
 
-SetHeadSprEditInfo = function(jobID, nStartAction, nFinishAction, nStartMotion, nFinishMotion, xGap, yGap)
+function SetHeadSprEditInfo(jobID, nStartAction, nFinishAction, nStartMotion, nFinishMotion, xGap, yGap)
 	SetRidingSprEditInfo(HeadSprEditInfo, jobID, nStartAction, nFinishAction, nStartMotion, nFinishMotion, xGap, yGap)
 end
 
-SetBodySprEditInfo = function(jobID, nStartAction, nFinishAction, nStartMotion, nFinishMotion, xGap, yGap)
+function SetBodySprEditInfo(jobID, nStartAction, nFinishAction, nStartMotion, nFinishMotion, xGap, yGap)
 	SetRidingSprEditInfo(BodySprEditInfo, jobID, nStartAction, nFinishAction, nStartMotion, nFinishMotion, xGap, yGap)
 end
 
-SetRidingSprEditInfo = function(RidingSprEditInfoTable, jobID, nStartAction, nFinishAction, nStartMotion, nFinishMotion, xGap, yGap)
+function SetRidingSprEditInfo(RidingSprEditInfoTable, jobID, nStartAction, nFinishAction, nStartMotion, nFinishMotion, xGap, yGap)
 	if RidingSprEditInfoTable[jobID] == nil then
 		RidingSprEditInfoTable[jobID] = {}
 	end
@@ -59,15 +57,15 @@ SetRidingSprEditInfo = function(RidingSprEditInfoTable, jobID, nStartAction, nFi
 	end
 end
 
-GetHeadOow = function(jobID, curAction, curMotion)
+function GetHeadOow(jobID, curAction, curMotion)
 	return 0
 end
 
-GetBodyOow = function(jobID, curAction, curMotion)
+function GetBodyOow(jobID, curAction, curMotion)
 	return 0
 end
 
-SetBodySprEditInfo_THIEFS = function()
+function SetBodySprEditInfo_THIEFS()
 	SetBodySprEditInfo_SETA(pcJobTbl.JT_SORCERER)
 	SetBodySprEditInfo_SETA(pcJobTbl.JT_SORCERER_B)
 	SetBodySprEditInfo_SETA(pcJobTbl.JT_SORCERER_H)
@@ -105,7 +103,7 @@ SetBodySprEditInfo_THIEFS = function()
 	SetBodySprEditInfo_SETC(4185)
 end
 
-SetBodySprEditInfo_SETA = function(jobID)
+function SetBodySprEditInfo_SETA(jobID)
 	SetBodySprEditInfo(jobID, 0, 7, 0, 2, 0, 15)
 	SetBodySprEditInfo(jobID, 8, 15, 0, 7, 0, 15)
 	SetBodySprEditInfo(jobID, 17, 23, 0, 2, 0, 20)
@@ -120,7 +118,7 @@ SetBodySprEditInfo_SETA = function(jobID)
 	SetBodySprEditInfo(jobID, 96, 103, 0, 5, 0, 15)
 end
 
-SetBodySprEditInfo_SETC = function(jobID)
+function SetBodySprEditInfo_SETC(jobID)
 	SetBodySprEditInfo(jobID, 0, 7, 0, 2, 0, 10)
 	SetBodySprEditInfo(jobID, 8, 15, 0, 7, 0, 10)
 	SetBodySprEditInfo(jobID, 17, 23, 0, 2, 0, 10)
@@ -135,7 +133,7 @@ SetBodySprEditInfo_SETC = function(jobID)
 	SetBodySprEditInfo(jobID, 96, 103, 0, 5, 0, 10)
 end
 
-SetBodySprEditInfo_ACOLYTES = function()
+function SetBodySprEditInfo_ACOLYTES()
 	SetBodySprEditInfo_SETB(pcJobTbl.JT_ACOLYTE)
 	SetBodySprEditInfo_SETB(pcJobTbl.JT_ACOLYTE_B)
 	SetBodySprEditInfo_SETB(pcJobTbl.JT_ACOLYTE_H)
@@ -165,7 +163,7 @@ SetBodySprEditInfo_ACOLYTES = function()
 	SetBodySprEditInfo_SETB(4139)
 end
 
-SetBodySprEditInfo_SETB = function(jobID)
+function SetBodySprEditInfo_SETB(jobID)
 	SetBodySprEditInfo(jobID, 0, 7, 0, 2, 0, 10)
 	SetBodySprEditInfo(jobID, 8, 15, 0, 7, 0, 15)
 	SetBodySprEditInfo(jobID, 32, 39, 0, 5, 0, 5)

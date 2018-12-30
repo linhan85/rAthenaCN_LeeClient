@@ -1,8 +1,5 @@
--- Using GRF Editor Decompiler (beta 1.0.3)
 
-
--- Function #0
-InitExMacroInfo = function()
+function InitExMacroInfo()
 	SaveData_ExMacro_FileNames = nil
 	SaveData_ExMacro_FileNames = {}
 	CombatItemList = nil

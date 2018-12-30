@@ -1,9 +1,7 @@
--- Using GRF Editor Decompiler (beta 1.0.3)
-
 local resultDesInfos = {}
 setmetatable(resultDesInfos, { __mode = "v" })
 
-GetTimeLimitInfo = function(EFST_ID)
+function GetTimeLimitInfo(EFST_ID)
 	local key = EFST_ID .. "-haveTimeLimit"
 	local timeInfo = resultDesInfos[key]
 	if timeInfo == nil then
@@ -27,7 +25,7 @@ GetTimeLimitInfo = function(EFST_ID)
 	return timeInfo[1], timeInfo[2]
 end
 
-SetDefaultDesInfo = function(des, r, g, b)
+function SetDefaultDesInfo(des, r, g, b)
 	if des == nil then
 		des = ""
 	end
@@ -49,7 +47,7 @@ SetDefaultDesInfo = function(des, r, g, b)
 end
 local defaultInfo = SetDefaultDesInfo
 
-GetStateIconDescript = function(EFST_ID, idx)
+function GetStateIconDescript(EFST_ID, idx)
 	local key = EFST_ID .. "-" .. idx
 	local desInfo = resultDesInfos[key]
 	if desInfo == nil then
@@ -69,7 +67,7 @@ GetStateIconDescript = function(EFST_ID, idx)
 	return desInfo[1], desInfo[2], desInfo[3], desInfo[4]
 end
 
-MakeBuffIconInfoFile = function()
+function MakeBuffIconInfoFile()
 	makeFile = io.open("data\\StateIconInfo_n.lua", "w")
 	if makeFile ~= nil then
 		makeFile:write("data\\StateIconInfo_n.lua", "StateIconList = {}\n\n")
@@ -92,7 +90,7 @@ MakeBuffIconInfoFile = function()
 	io.close(makeFile)
 end
 
-GetStrEFSTID = function(EFSTID)
+function GetStrEFSTID(EFSTID)
 	for j, k in pairs(EFST_IDs) do
 		if k == EFSTID then
 			return j
@@ -101,7 +99,7 @@ GetStrEFSTID = function(EFSTID)
 	return ""
 end
 
-GetEFSTID = function(EFSTID)
+function GetEFSTID(EFSTID)
 	if EFSTID ~= 0 then
 		local efst = EFST_IDs[EFSTID]
 		if efst ~= nil then
@@ -111,7 +109,7 @@ GetEFSTID = function(EFSTID)
 	return 0
 end
 
-GetEFSTImgFileName = function(EFSTID, priority)
+function GetEFSTImgFileName(EFSTID, priority)
 	if StateIconImgList ~= nil then
 		local obj = StateIconImgList[priority]
 		if obj ~= nil then
@@ -463,7 +461,7 @@ HaveEfstImgTable = {
 	EFST_IDs.EFST_GM_BATTLE2
 }
 
-HaveEfstImg = function(EFSTID)
+function HaveEfstImg(EFSTID)
 	if HaveEfstImgTable[EFSTID] ~= nil then
 		return true
 	end

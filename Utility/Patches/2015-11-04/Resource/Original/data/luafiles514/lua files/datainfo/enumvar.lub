@@ -1,5 +1,3 @@
--- Using GRF Editor Decompiler (beta 1.0.3)
-
 EnumVAR = {
 	VAR_MAXHPAMOUNT = { 1, 109 },
 	VAR_MAXSPAMOUNT = { 2, 110 },

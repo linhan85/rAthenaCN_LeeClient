@@ -1,7 +1,5 @@
--- Using GRF Editor Decompiler (beta 1.0.3)
 
-
-GetNpcLocationRadius = function(jobID)
+function GetNpcLocationRadius(jobID)
 	if NpcLocationRadius[jobID] ~= nil then
 		return NpcLocationRadius[jobID]
 	end

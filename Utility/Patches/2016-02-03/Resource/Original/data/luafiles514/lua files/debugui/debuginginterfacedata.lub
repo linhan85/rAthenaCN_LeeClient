@@ -1,115 +1,113 @@
--- Using GRF Editor Decompiler (beta 1.0.3)
-
 SEX_FEMALE = 0
 SEX_MALE = 1
 eventReceiverTable = {}
 
-buttonEvent = function(str)
+function buttonEvent(str)
 	receiver = eventReceiverTable[str]
 	if receiver ~= nil then
 		receiver()
 	end
 end
 
-AddString = function(title)
+function AddString(title)
 	if title == nil then
 		title = "untitled"
 	end
 	SetAddItemToListBox(title)
 end
 
-AddMenu = function(strMenuName, receiver)
+function AddMenu(strMenuName, receiver)
 	AddString(strMenuName)
 	eventReceiverTable[strMenuName] = receiver
 end
 
-Command = function(str)
+function Command(str)
 	SetAddOrderToList_Command(str)
 end
 
-UseItem = function(itemName, num)
+function UseItem(itemName, num)
 	SetAddOrderToList_CreateItem(itemName, num)
 	SetAddOrderToList_UseItem(itemName, num)
 end
 
-BaseLevelUp = function(amount)
+function BaseLevelUp(amount)
 	UseItem("삼겹살", amount)
 end
 
-JobLevelUp = function(amount)
+function JobLevelUp(amount)
 	UseItem("갈비살", amount)
 end
 
-UpgradeSkill = function(skillid, amount)
+function UpgradeSkill(skillid, amount)
 	SetAddOrderToList_UpgradeSkill(skillid, amount)
 end
 
-MoveMap = function(name)
+function MoveMap(name)
 	Command("/mm " .. name .. ".gat")
 end
 
-ChangeJob = function(jobName)
+function ChangeJob(jobName)
 	SetAddOrderToList_ChangeJob(jobName)
 end
 
-StatusUp_STR = function(amount)
+function StatusUp_STR(amount)
 	SetAddOrderToList_StatusChange_STR(amount)
 end
 
-StatusUp_AGI = function(amount)
+function StatusUp_AGI(amount)
 	SetAddOrderToList_StatusChange_AGI(amount)
 end
 
-StatusUp_VIT = function(amount)
+function StatusUp_VIT(amount)
 	SetAddOrderToList_StatusChange_VIT(amount)
 end
 
-StatusUp_INT = function(amount)
+function StatusUp_INT(amount)
 	SetAddOrderToList_StatusChange_INT(amount)
 end
 
-StatusUp_DEX = function(amount)
+function StatusUp_DEX(amount)
 	SetAddOrderToList_StatusChange_DEX(amount)
 end
 
-StatusUp_LUK = function(amount)
+function StatusUp_LUK(amount)
 	SetAddOrderToList_StatusChange_LUK(amount)
 end
 
-IdentifyItems = function()
+function IdentifyItems()
 	SetAddOrderToList_ItemIdentify()
 end
 
-upgradeLevel_Novice = function()
+function upgradeLevel_Novice()
 	BaseLevelUp(9)
 	JobLevelUp(9)
 end
 
-upgradeLevel_1stChangeJob = function()
+function upgradeLevel_1stChangeJob()
 	BaseLevelUp(90)
 	JobLevelUp(50)
 end
 
-upgradeLevel_2ndChangeJob = function()
+function upgradeLevel_2ndChangeJob()
 	JobLevelUp(50)
 end
 
-upgradeLevel_2ndChangeJob_H = function()
+function upgradeLevel_2ndChangeJob_H()
 	JobLevelUp(70)
 end
 
-upgradeLevel_3rdChangeJob = function()
+function upgradeLevel_3rdChangeJob()
 	BaseLevelUp(70)
 	JobLevelUp(70)
 end
 
-upgradeSkill_Novice = function()
+function upgradeSkill_Novice()
 	UpgradeSkill(SKID.NV_BASIC, 10)
 	UpgradeSkill(SKID.NV_FIRSTAID, 10)
 	UpgradeSkill(SKID.NV_TRICKDEAD, 10)
 end
 
-upgradeSkill_Swordman = function()
+function upgradeSkill_Swordman()
 	UpgradeSkill(SKID.SM_SWORD, 10)
 	UpgradeSkill(SKID.SM_RECOVERY, 10)
 	UpgradeSkill(SKID.SM_BASH, 10)
@@ -122,7 +120,7 @@ upgradeSkill_Swordman = function()
 	UpgradeSkill(SKID.SM_FATALBLOW, 10)
 end
 
-upgradeSkill_Knight = function()
+function upgradeSkill_Knight()
 	UpgradeSkill(SKID.KN_TWOHANDQUICKEN, 10)
 	UpgradeSkill(SKID.KN_AUTOCOUNTER, 10)
 	UpgradeSkill(SKID.KN_RIDING, 10)
@@ -137,7 +135,7 @@ upgradeSkill_Knight = function()
 	UpgradeSkill(SKID.KN_BRANDISHSPEAR, 10)
 end
 
-upgradeSkill_Crusader = function()
+function upgradeSkill_Crusader()
 	UpgradeSkill(SKID.CR_TRUST, 10)
 	UpgradeSkill(SKID.CR_AUTOGUARD, 10)
 	UpgradeSkill(SKID.KN_SPEARMASTERY, 10)
@@ -159,7 +157,7 @@ upgradeSkill_Crusader = function()
 	UpgradeSkill(SKID.CR_PROVIDENCE, 10)
 end
 
-upgradeSkill_MerChant = function()
+function upgradeSkill_MerChant()
 	UpgradeSkill(SKID.MC_INCCARRY, 10)
 	UpgradeSkill(SKID.MC_MAMMONITE, 10)
 	UpgradeSkill(SKID.MC_IDENTIFY, 10)
@@ -172,7 +170,7 @@ upgradeSkill_MerChant = function()
 	UpgradeSkill(SKID.MC_CARTREVOLUTION, 10)
 end
 
-upgradeSkill_BlackSmith = function()
+function upgradeSkill_BlackSmith()
 	UpgradeSkill(SKID.BS_HILTBINDING, 10)
 	UpgradeSkill(SKID.BS_SKINTEMPER, 10)
 	UpgradeSkill(SKID.BS_HAMMERFALL, 10)
@@ -198,7 +196,7 @@ upgradeSkill_BlackSmith = function()
 	UpgradeSkill(SKID.BS_UNFAIRLYTRICK, 10)
 end
 
-upgradeSkill_Alchemist = function()
+function upgradeSkill_Alchemist()
 	UpgradeSkill(SKID.AM_LEARNINGPOTION, 10)
 	UpgradeSkill(SKID.AM_SPHEREMINE, 10)
 	UpgradeSkill(SKID.AM_AXEMASTERY, 10)
@@ -221,7 +219,7 @@ upgradeSkill_Alchemist = function()
 	UpgradeSkill(SKID.AM_CANNIBALIZE, 10)
 end
 
-upgradeSkill_Acolyte = function()
+function upgradeSkill_Acolyte()
 	UpgradeSkill(SKID.AL_RUWACH, 10)
 	UpgradeSkill(SKID.AL_HEAL, 10)
 	UpgradeSkill(SKID.AL_HOLYWATER, 10)
@@ -240,7 +238,7 @@ upgradeSkill_Acolyte = function()
 	UpgradeSkill(SKID.AL_DECAGI, 10)
 end
 
-upgradeSkill_Priest = function()
+function upgradeSkill_Priest()
 	UpgradeSkill(SKID.PR_KYRIE, 10)
 	UpgradeSkill(SKID.PR_MAGNIFICAT, 10)
 	UpgradeSkill(SKID.PR_STRECOVERY, 10)
@@ -262,7 +260,7 @@ upgradeSkill_Priest = function()
 	UpgradeSkill(SKID.PR_REDEMPTIO, 10)
 end
 
-upgradeSkill_Monk = function()
+function upgradeSkill_Monk()
 	UpgradeSkill(SKID.MO_IRONHAND, 10)
 	UpgradeSkill(SKID.MO_CALLSPIRITS, 10)
 	UpgradeSkill(SKID.MO_DODGE, 10)
@@ -282,7 +280,7 @@ upgradeSkill_Monk = function()
 	UpgradeSkill(SKID.MO_BODYRELOCATION, 10)
 end
 
-upgradeSkill_Thief = function()
+function upgradeSkill_Thief()
 	UpgradeSkill(SKID.TF_DOUBLE, 10)
 	UpgradeSkill(SKID.TF_STEAL, 10)
 	UpgradeSkill(SKID.TF_POISON, 10)
@@ -295,7 +293,7 @@ upgradeSkill_Thief = function()
 	UpgradeSkill(SKID.TF_PICKSTONE, 10)
 end
 
-upgradeSkill_Assassin = function()
+function upgradeSkill_Assassin()
 	UpgradeSkill(SKID.AS_RIGHT, 10)
 	UpgradeSkill(SKID.AS_KATAR, 10)
 	UpgradeSkill(SKID.AS_CLOAKING, 10)
@@ -310,7 +308,7 @@ upgradeSkill_Assassin = function()
 	UpgradeSkill(SKID.AS_SPLASHER, 10)
 end
 
-upgradeSkill_Rogue = function()
+function upgradeSkill_Rogue()
 	UpgradeSkill(SKID.AC_VULTURE, 10)
 	UpgradeSkill(SKID.RG_TUNNELDRIVE, 10)
 	UpgradeSkill(SKID.RG_SNATCHER, 10)
@@ -334,7 +332,7 @@ upgradeSkill_Rogue = function()
 	UpgradeSkill(SKID.RG_PLAGIARISM, 10)
 end
 
-upgradeSkill_Magician = function()
+function upgradeSkill_Magician()
 	UpgradeSkill(SKID.MG_STONECURSE, 10)
 	UpgradeSkill(SKID.MG_COLDBOLT, 10)
 	UpgradeSkill(SKID.MG_LIGHTNINGBOLT, 10)
@@ -351,7 +349,7 @@ upgradeSkill_Magician = function()
 	UpgradeSkill(SKID.MG_FIREWALL, 10)
 end
 
-upgradeSkill_Wizard = function()
+function upgradeSkill_Wizard()
 	UpgradeSkill(SKID.WZ_ESTIMATION, 10)
 	UpgradeSkill(SKID.WZ_ICEWALL, 10)
 	UpgradeSkill(SKID.WZ_JUPITEL, 10)
@@ -368,7 +366,7 @@ upgradeSkill_Wizard = function()
 	UpgradeSkill(SKID.WZ_STORMGUST, 10)
 end
 
-upgradeSkill_Sage = function()
+function upgradeSkill_Sage()
 	UpgradeSkill(SKID.SA_ADVANCEDBOOK, 10)
 	UpgradeSkill(SKID.SA_ELEMENTWATER, 10)
 	UpgradeSkill(SKID.SA_ELEMENTWIND, 10)
@@ -393,7 +391,7 @@ upgradeSkill_Sage = function()
 	UpgradeSkill(SKID.SA_ABRACADABRA, 10)
 end
 
-upgradeSkill_Archer = function()
+function upgradeSkill_Archer()
 	UpgradeSkill(SKID.AC_DOUBLE, 10)
 	UpgradeSkill(SKID.AC_OWL, 10)
 	UpgradeSkill(SKID.AC_CHARGEARROW, 10)
@@ -403,7 +401,7 @@ upgradeSkill_Archer = function()
 	UpgradeSkill(SKID.AC_CONCENTRATION, 10)
 end
 
-upgradeSkill_Hunter = function()
+function upgradeSkill_Hunter()
 	UpgradeSkill(SKID.HT_BEASTBANE, 10)
 	UpgradeSkill(SKID.HT_SKIDTRAP, 10)
 	UpgradeSkill(SKID.HT_LANDMINE, 10)
@@ -425,7 +423,7 @@ upgradeSkill_Hunter = function()
 	UpgradeSkill(SKID.HT_CLAYMORETRAP, 10)
 end
 
-upgradeSkill_Bard = function()
+function upgradeSkill_Bard()
 	UpgradeSkill(SKID.BD_ADAPTATION, 10)
 	UpgradeSkill(SKID.BA_MUSICALLESSON, 10)
 	UpgradeSkill(SKID.BA_DISSONANCE, 10)
@@ -448,7 +446,7 @@ upgradeSkill_Bard = function()
 	UpgradeSkill(SKID.BD_RINGNIBELUNGEN, 10)
 end
 
-upgradeSkill_Dancer = function()
+function upgradeSkill_Dancer()
 	UpgradeSkill(SKID.BD_ADAPTATION, 10)
 	UpgradeSkill(SKID.DC_DANCINGLESSON, 10)
 	UpgradeSkill(SKID.DC_UGLYDANCE, 10)
@@ -469,7 +467,7 @@ upgradeSkill_Dancer = function()
 	UpgradeSkill(SKID.BD_RINGNIBELUNGEN, 10)
 end
 
-upgradeSkill_Taekwon = function()
+function upgradeSkill_Taekwon()
 	UpgradeSkill(SKID.TK_STORMKICK, 10)
 	UpgradeSkill(SKID.TK_DOWNKICK, 10)
 	UpgradeSkill(SKID.TK_TURNKICK, 10)
@@ -488,7 +486,7 @@ upgradeSkill_Taekwon = function()
 	UpgradeSkill(SKID.TK_MISSION, 10)
 end
 
-upgradeSkill_RuneKnight = function()
+function upgradeSkill_RuneKnight()
 	UpgradeSkill(SKID.RK_RUNEMASTERY, 10)
 	UpgradeSkill(SKID.RK_PHANTOMTHRUST, 10)
 	UpgradeSkill(SKID.RK_DRAGONTRAINING, 10)
@@ -502,7 +500,7 @@ upgradeSkill_RuneKnight = function()
 	UpgradeSkill(SKID.RK_IGNITIONBREAK, 10)
 end
 
-upgradeSkill_RoyalGuard = function()
+function upgradeSkill_RoyalGuard()
 	UpgradeSkill(SKID.LG_MOONSLASHER, 10)
 	UpgradeSkill(SKID.LG_BANISHINGPOINT, 10)
 	UpgradeSkill(SKID.LG_FORCEOFVANGUARD, 10)
@@ -526,7 +524,7 @@ upgradeSkill_RoyalGuard = function()
 	UpgradeSkill(SKID.TK_STORMKICK, 10)
 end
 
-upgradeSkill_LordKnight = function()
+function upgradeSkill_LordKnight()
 	UpgradeSkill(SKID.LK_BERSERK, 10)
 	UpgradeSkill(SKID.LK_TENSIONRELAX, 10)
 	UpgradeSkill(SKID.LK_PARRYING, 10)
@@ -537,14 +535,14 @@ upgradeSkill_LordKnight = function()
 	UpgradeSkill(SKID.LK_JOINTBEAT, 10)
 end
 
-upgradeSkill_Paladin = function()
+function upgradeSkill_Paladin()
 	UpgradeSkill(SKID.PA_PRESSURE, 10)
 	UpgradeSkill(SKID.PA_SHIELDCHAIN, 10)
 	UpgradeSkill(SKID.PA_GOSPEL, 10)
 	UpgradeSkill(SKID.PA_SACRIFICE, 10)
 end
 
-upgradeSkill_Mechanic = function()
+function upgradeSkill_Mechanic()
 	UpgradeSkill(SKID.NC_MADOLICENCE, 10)
 	UpgradeSkill(SKID.NC_TRAININGAXE, 10)
 	UpgradeSkill(SKID.NC_RESEARCHFE, 10)
@@ -576,7 +574,7 @@ upgradeSkill_Mechanic = function()
 	UpgradeSkill(SKID.NC_STEALTHFIELD, 10)
 end
 
-upgradeSkill_Genetic = function()
+function upgradeSkill_Genetic()
 	UpgradeSkill(SKID.GN_CHANGEMATERIAL, 10)
 	UpgradeSkill(SKID.GN_TRAINING_SWORD, 10)
 	UpgradeSkill(SKID.GN_S_PHARMACY, 10)
@@ -598,7 +596,7 @@ upgradeSkill_Genetic = function()
 	UpgradeSkill(SKID.GN_CARTBOOST, 10)
 end
 
-upgradeSkill_WhiteSmith = function()
+function upgradeSkill_WhiteSmith()
 	UpgradeSkill(SKID.WS_CARTBOOST, 10)
 	UpgradeSkill(SKID.WS_CARTTERMINATION, 10)
 	UpgradeSkill(SKID.WS_MELTDOWN, 10)
@@ -606,14 +604,14 @@ upgradeSkill_WhiteSmith = function()
 	UpgradeSkill(SKID.WS_WEAPONREFINE, 10)
 end
 
-upgradeSkill_Creater = function()
+function upgradeSkill_Creater()
 	UpgradeSkill(SKID.CR_CULTIVATION, 10)
 	UpgradeSkill(SKID.CR_SLIMPITCHER, 10)
 	UpgradeSkill(SKID.CR_ACIDDEMONSTRATION, 10)
 	UpgradeSkill(SKID.CR_FULLPROTECTION, 10)
 end
 
-upgradeSkill_ArchBishop = function()
+function upgradeSkill_ArchBishop()
 	UpgradeSkill(SKID.AB_JUDEX, 10)
 	UpgradeSkill(SKID.AB_CHEAL, 10)
 	UpgradeSkill(SKID.AB_CLEMENTIA, 10)
@@ -635,7 +633,7 @@ upgradeSkill_ArchBishop = function()
 	UpgradeSkill(SKID.AB_SECRAMENT, 10)
 end
 
-upgradeSkill_Sura = function()
+function upgradeSkill_Sura()
 	UpgradeSkill(SKID.SR_POWERVELOCITY, 10)
 	UpgradeSkill(SKID.SR_RIDEINLIGHTNING, 10)
 	UpgradeSkill(SKID.SR_DRAGONCOMBO, 10)
@@ -660,21 +658,21 @@ upgradeSkill_Sura = function()
 	UpgradeSkill(SKID.SR_GATEOFHELL, 10)
 end
 
-upgradeSkill_HighPriest = function()
+function upgradeSkill_HighPriest()
 	UpgradeSkill(SKID.HP_ASSUMPTIO, 10)
 	UpgradeSkill(SKID.HP_BASILICA, 10)
 	UpgradeSkill(SKID.HP_MANARECHARGE, 10)
 	UpgradeSkill(SKID.HP_MEDITATIO, 10)
 end
 
-upgradeSkill_Champion = function()
+function upgradeSkill_Champion()
 	UpgradeSkill(SKID.CH_PALMSTRIKE, 10)
 	UpgradeSkill(SKID.CH_SOULCOLLECT, 10)
 	UpgradeSkill(SKID.CH_TIGERFIST, 10)
 	UpgradeSkill(SKID.CH_CHAINCRUSH, 10)
 end
 
-upgradeSkill_GuillotineCross = function()
+function upgradeSkill_GuillotineCross()
 	UpgradeSkill(SKID.GC_CROSSIMPACT, 10)
 	UpgradeSkill(SKID.GC_CLOAKINGEXCEED, 10)
 	UpgradeSkill(SKID.GC_ROLLINGCUTTER, 10)
@@ -694,7 +692,7 @@ upgradeSkill_GuillotineCross = function()
 	UpgradeSkill(SKID.GC_POISONSMOKE, 10)
 end
 
-upgradeSkill_ShadowChaser = function()
+function upgradeSkill_ShadowChaser()
 	UpgradeSkill(SKID.SC_REPRODUCE, 10)
 	UpgradeSkill(SKID.SC_SHADOWFORM, 10)
 	UpgradeSkill(SKID.SC_FATALMENACE, 10)
@@ -718,7 +716,7 @@ upgradeSkill_ShadowChaser = function()
 	UpgradeSkill(SKID.SC_MAELSTROM, 10)
 end
 
-upgradeSkill_AssassinCross = function()
+function upgradeSkill_AssassinCross()
 	UpgradeSkill(SKID.ASC_BREAKER, 10)
 	UpgradeSkill(SKID.ASC_CDP, 10)
 	UpgradeSkill(SKID.ASC_EDP, 10)
@@ -726,14 +724,14 @@ upgradeSkill_AssassinCross = function()
 	UpgradeSkill(SKID.ASC_METEORASSAULT, 10)
 end
 
-upgradeSkill_Stalker = function()
+function upgradeSkill_Stalker()
 	UpgradeSkill(SKID.ST_CHASEWALK, 10)
 	UpgradeSkill(SKID.ST_FULLSTRIP, 10)
 	UpgradeSkill(SKID.ST_PRESERVE, 10)
 	UpgradeSkill(SKID.ST_REJECTSWORD, 10)
 end
 
-upgradeSkill_Warlock = function()
+function upgradeSkill_Warlock()
 	UpgradeSkill(SKID.WL_MARSHOFABYSS, 10)
 	UpgradeSkill(SKID.WL_RADIUS, 10)
 	UpgradeSkill(SKID.WL_RELEASE, 10)
@@ -759,7 +757,7 @@ upgradeSkill_Warlock = function()
 	UpgradeSkill(SKID.WL_TETRAVORTEX, 10)
 end
 
-upgradeSkill_Sorcerer = function()
+function upgradeSkill_Sorcerer()
 	UpgradeSkill(SKID.SO_VACUUM_EXTREME, 10)
 	UpgradeSkill(SKID.SO_STRIKING, 10)
 	UpgradeSkill(SKID.SO_ELECTRICWALK, 10)
@@ -788,7 +786,7 @@ upgradeSkill_Sorcerer = function()
 	UpgradeSkill(SKID.SO_EARTH_INSIGNIA, 10)
 end
 
-upgradeSkill_HighWizard = function()
+function upgradeSkill_HighWizard()
 	UpgradeSkill(SKID.HW_GANBANTEIN, 10)
 	UpgradeSkill(SKID.HW_MAGICCRASHER, 10)
 	UpgradeSkill(SKID.HW_SOULDRAIN, 10)
@@ -797,7 +795,7 @@ upgradeSkill_HighWizard = function()
 	UpgradeSkill(SKID.HW_GRAVITATION, 10)
 end
 
-upgradeSkill_Professor = function()
+function upgradeSkill_Professor()
 	UpgradeSkill(SKID.PF_SPIDERWEB, 10)
 	UpgradeSkill(SKID.PF_SOULCHANGE, 10)
 	UpgradeSkill(SKID.PF_FOGWALL, 10)
@@ -808,7 +806,7 @@ upgradeSkill_Professor = function()
 	UpgradeSkill(SKID.PF_MINDBREAKER, 10)
 end
 
-upgradeSkill_Ranger = function()
+function upgradeSkill_Ranger()
 	UpgradeSkill(SKID.RA_AIMEDBOLT, 10)
 	UpgradeSkill(SKID.RA_RESEARCHTRAP, 10)
 	UpgradeSkill(SKID.RA_RANGERMAIN, 10)
@@ -833,7 +831,7 @@ upgradeSkill_Ranger = function()
 	UpgradeSkill(SKID.RA_VERDURETRAP, 10)
 end
 
-upgradeSkill_Minstrel = function()
+function upgradeSkill_Minstrel()
 	UpgradeSkill(SKID.WM_SEVERE_RAINSTORM, 10)
 	UpgradeSkill(SKID.WM_REVERBERATION, 10)
 	UpgradeSkill(SKID.WM_LESSON, 10)
@@ -860,7 +858,7 @@ upgradeSkill_Minstrel = function()
 	UpgradeSkill(SKID.WM_UNLIMITED_HUMMING_VOICE, 10)
 end
 
-upgradeSkill_Wanderer = function()
+function upgradeSkill_Wanderer()
 	UpgradeSkill(SKID.WM_SEVERE_RAINSTORM, 10)
 	UpgradeSkill(SKID.WM_REVERBERATION, 10)
 	UpgradeSkill(SKID.WM_LESSON, 10)
@@ -887,14 +885,14 @@ upgradeSkill_Wanderer = function()
 	UpgradeSkill(SKID.WM_UNLIMITED_HUMMING_VOICE, 10)
 end
 
-upgradeSkill_Sniper = function()
+function upgradeSkill_Sniper()
 	UpgradeSkill(SKID.SN_FALCONASSAULT, 10)
 	UpgradeSkill(SKID.SN_SHARPSHOOTING, 10)
 	UpgradeSkill(SKID.SN_SIGHT, 10)
 	UpgradeSkill(SKID.SN_WINDWALK, 10)
 end
 
-upgradeSkill_Crown = function()
+function upgradeSkill_Crown()
 	UpgradeSkill(SKID.CG_ARROWVULCAN, 10)
 	UpgradeSkill(SKID.CG_MOONLIT, 10)
 	UpgradeSkill(SKID.CG_MARIONETTE, 10)
@@ -903,7 +901,7 @@ upgradeSkill_Crown = function()
 	UpgradeSkill(SKID.CG_TAROTCARD, 10)
 end
 
-upgradeSkill_Gipsy = function()
+function upgradeSkill_Gipsy()
 	UpgradeSkill(SKID.CG_ARROWVULCAN, 10)
 	UpgradeSkill(SKID.CG_MOONLIT, 10)
 	UpgradeSkill(SKID.CG_MARIONETTE, 10)
@@ -912,7 +910,7 @@ upgradeSkill_Gipsy = function()
 	UpgradeSkill(SKID.CG_TAROTCARD, 10)
 end
 
-upgradeSkill_SuperNovice = function()
+function upgradeSkill_SuperNovice()
 	UpgradeSkill(SKID.SM_SWORD, 10)
 	UpgradeSkill(SKID.SM_BASH, 10)
 	UpgradeSkill(SKID.SM_PROVOKE, 10)
@@ -964,7 +962,7 @@ upgradeSkill_SuperNovice = function()
 	UpgradeSkill(SKID.MC_VENDING, 10)
 end
 
-upgradeSkill_Ninja = function()
+function upgradeSkill_Ninja()
 	UpgradeSkill(SKID.NJ_TOBIDOUGU, 10)
 	UpgradeSkill(SKID.NJ_TATAMIGAESHI, 10)
 	UpgradeSkill(SKID.NJ_NINPOU, 10)
@@ -990,7 +988,7 @@ upgradeSkill_Ninja = function()
 	UpgradeSkill(SKID.NJ_ISSEN, 10)
 end
 
-upgradeSkill_GunSlinger = function()
+function upgradeSkill_GunSlinger()
 	UpgradeSkill(SKID.GS_GLITTERING, 10)
 	UpgradeSkill(SKID.GS_MAGICALBULLET, 10)
 	UpgradeSkill(SKID.GS_SINGLEACTION, 10)
@@ -1015,7 +1013,7 @@ upgradeSkill_GunSlinger = function()
 	UpgradeSkill(SKID.GS_MADNESSCANCEL, 10)
 end
 
-upgradeSkill_Taekwon = function()
+function upgradeSkill_Taekwon()
 	UpgradeSkill(SKID.TK_RUN, 10)
 	UpgradeSkill(SKID.TK_STORMKICK, 10)
 	UpgradeSkill(SKID.TK_DOWNKICK, 10)
@@ -1035,7 +1033,7 @@ upgradeSkill_Taekwon = function()
 	UpgradeSkill(SKID.TK_MISSION, 10)
 end
 
-upgradeSkill_Star = function()
+function upgradeSkill_Star()
 	UpgradeSkill(SKID.SG_FEEL, 10)
 	UpgradeSkill(SKID.SG_HATE, 10)
 	UpgradeSkill(SKID.SG_DEVIL, 10)
@@ -1056,7 +1054,7 @@ upgradeSkill_Star = function()
 	UpgradeSkill(SKID.SG_STAR_BLESS, 10)
 end
 
-upgradeSkill_Linker = function()
+function upgradeSkill_Linker()
 	UpgradeSkill(SKID.SL_ALCHEMIST, 10)
 	UpgradeSkill(SKID.SL_STAR, 10)
 	UpgradeSkill(SKID.SL_ASSASIN, 10)
@@ -1086,41 +1084,41 @@ upgradeSkill_Linker = function()
 	UpgradeSkill(SKID.SL_SMA, 10)
 end
 
-buttonEventReceiver_makeNovice = function()
+function buttonEventReceiver_makeNovice()
 	ChangeJob("NOVICE_H")
 	ChangeJob("NOVICE")
 	upgradeLevel_Novice()
 	upgradeSkill_Novice()
 end
 
-buttonEventReceiver_makeNovice_H = function()
+function buttonEventReceiver_makeNovice_H()
 	ChangeJob("NOVICE_H")
 	upgradeLevel_Novice()
 	upgradeSkill_Novice()
 end
 
-buttonEventReceiver_makeSwordman = function()
+function buttonEventReceiver_makeSwordman()
 	buttonEventReceiver_makeNovice()
 	ChangeJob("SWORDMAN")
 	upgradeLevel_1stChangeJob()
 	upgradeSkill_Swordman()
 end
 
-buttonEventReceiver_makeKnight = function()
+function buttonEventReceiver_makeKnight()
 	buttonEventReceiver_makeSwordman()
 	ChangeJob("KNIGHT")
 	upgradeLevel_2ndChangeJob()
 	upgradeSkill_Knight()
 end
 
-buttonEventReceiver_makeCrusader = function()
+function buttonEventReceiver_makeCrusader()
 	buttonEventReceiver_makeSwordman()
 	ChangeJob("CRUSADER")
 	upgradeLevel_2ndChangeJob()
 	upgradeSkill_Crusader()
 end
 
-buttonEventReceiver_makeRuneKnight = function()
+function buttonEventReceiver_makeRuneKnight()
 	buttonEventReceiver_makeKnight()
 	ChangeJob("RUNE_KNIGHT")
 	upgradeLevel_3rdChangeJob()
@@ -1129,7 +1127,7 @@ buttonEventReceiver_makeRuneKnight = function()
 	upgradeSkill_Swordman()
 end
 
-buttonEventReceiver_makeRuneKnight_H = function()
+function buttonEventReceiver_makeRuneKnight_H()
 	buttonEventReceiver_makeLordKnight()
 	ChangeJob("RUNE_KNIGHT_H")
 	upgradeLevel_3rdChangeJob()
@@ -1138,7 +1136,7 @@ buttonEventReceiver_makeRuneKnight_H = function()
 	upgradeSkill_Swordman()
 end
 
-buttonEventReceiver_makeRoyalGuard = function()
+function buttonEventReceiver_makeRoyalGuard()
 	buttonEventReceiver_makeCrusader()
 	ChangeJob("ROYAL_GUARD")
 	upgradeLevel_3rdChangeJob()
@@ -1147,7 +1145,7 @@ buttonEventReceiver_makeRoyalGuard = function()
 	upgradeSkill_RoyalGuard()
 end
 
-buttonEventReceiver_makeRoyalGuard_H = function()
+function buttonEventReceiver_makeRoyalGuard_H()
 	buttonEventReceiver_makePaladin()
 	ChangeJob("ROYAL_GUARD_H")
 	upgradeLevel_3rdChangeJob()
@@ -1156,14 +1154,14 @@ buttonEventReceiver_makeRoyalGuard_H = function()
 	upgradeSkill_RoyalGuard()
 end
 
-buttonEventReceiver_makeSwordman_H = function()
+function buttonEventReceiver_makeSwordman_H()
 	buttonEventReceiver_makeNovice_H()
 	ChangeJob("SWORDMAN_H")
 	upgradeLevel_1stChangeJob()
 	upgradeSkill_Swordman()
 end
 
-buttonEventReceiver_makeLordKnight = function()
+function buttonEventReceiver_makeLordKnight()
 	buttonEventReceiver_makeSwordman_H()
 	ChangeJob("KNIGHT_H")
 	upgradeLevel_2ndChangeJob_H()
@@ -1172,7 +1170,7 @@ buttonEventReceiver_makeLordKnight = function()
 	upgradeSkill_LordKnight()
 end
 
-buttonEventReceiver_makePaladin = function()
+function buttonEventReceiver_makePaladin()
 	buttonEventReceiver_makeSwordman_H()
 	ChangeJob("CRUSADER_H")
 	upgradeLevel_2ndChangeJob_H()
@@ -1181,14 +1179,14 @@ buttonEventReceiver_makePaladin = function()
 	upgradeSkill_Paladin()
 end
 
-buttonEventReceiver_makeSWORDMAN_B = function()
+function buttonEventReceiver_makeSWORDMAN_B()
 	buttonEventReceiver_makeNovice_H()
 	ChangeJob("SWORDMAN_B")
 	upgradeLevel_1stChangeJob()
 	upgradeSkill_Swordman()
 end
 
-buttonEventReceiver_makeKNIGHT_B = function()
+function buttonEventReceiver_makeKNIGHT_B()
 	buttonEventReceiver_makeNovice_H()
 	ChangeJob("KNIGHT_B")
 	upgradeLevel_1stChangeJob()
@@ -1196,7 +1194,7 @@ buttonEventReceiver_makeKNIGHT_B = function()
 	upgradeSkill_Knight()
 end
 
-buttonEventReceiver_makeRUNEKNIGHT_B = function()
+function buttonEventReceiver_makeRUNEKNIGHT_B()
 	buttonEventReceiver_makeKNIGHT_B()
 	ChangeJob("RUNE_KNIGHT_B")
 	upgradeLevel_3rdChangeJob()
@@ -1205,7 +1203,7 @@ buttonEventReceiver_makeRUNEKNIGHT_B = function()
 	upgradeSkill_RuneKnight()
 end
 
-buttonEventReceiver_makeCRUSADER_B = function()
+function buttonEventReceiver_makeCRUSADER_B()
 	buttonEventReceiver_makeNovice_H()
 	ChangeJob("CRUSADER_B")
 	upgradeLevel_1stChangeJob()
@@ -1213,7 +1211,7 @@ buttonEventReceiver_makeCRUSADER_B = function()
 	upgradeSkill_Crusader()
 end
 
-buttonEventReceiver_makeROYAL_GUARD_B = function()
+function buttonEventReceiver_makeROYAL_GUARD_B()
 	buttonEventReceiver_makeCRUSADER_B()
 	ChangeJob("ROYAL_GUARD_B")
 	upgradeLevel_3rdChangeJob()
@@ -1222,63 +1220,63 @@ buttonEventReceiver_makeROYAL_GUARD_B = function()
 	upgradeSkill_RoyalGuard()
 end
 
-buttonEventReceiver_makeMerChant = function()
+function buttonEventReceiver_makeMerChant()
 	buttonEventReceiver_makeNovice()
 	ChangeJob("MERCHANT")
 	upgradeLevel_1stChangeJob()
 	upgradeSkill_MerChant()
 end
 
-buttonEventReceiver_makeBlackSmith = function()
+function buttonEventReceiver_makeBlackSmith()
 	buttonEventReceiver_makeMerChant()
 	ChangeJob("BLACKSMITH")
 	upgradeLevel_2ndChangeJob()
 	upgradeSkill_BlackSmith()
 end
 
-buttonEventReceiver_makeAlchemist = function()
+function buttonEventReceiver_makeAlchemist()
 	buttonEventReceiver_makeMerChant()
 	ChangeJob("ALCHEMIST")
 	upgradeLevel_2ndChangeJob()
 	upgradeSkill_Alchemist()
 end
 
-buttonEventReceiver_makeMechanic = function()
+function buttonEventReceiver_makeMechanic()
 	buttonEventReceiver_makeBlackSmith()
 	ChangeJob("MECHANIC")
 	upgradeLevel_3rdChangeJob()
 	upgradeSkill_Mechanic()
 end
 
-buttonEventReceiver_makeMechanic_H = function()
+function buttonEventReceiver_makeMechanic_H()
 	buttonEventReceiver_makeWhiteSmith()
 	ChangeJob("MECHANIC_H")
 	upgradeLevel_3rdChangeJob()
 	upgradeSkill_Mechanic()
 end
 
-buttonEventReceiver_makeGenetic = function()
+function buttonEventReceiver_makeGenetic()
 	buttonEventReceiver_makeAlchemist()
 	ChangeJob("GENETIC")
 	upgradeLevel_3rdChangeJob()
 	upgradeSkill_Genetic()
 end
 
-buttonEventReceiver_makeGenetic_H = function()
+function buttonEventReceiver_makeGenetic_H()
 	buttonEventReceiver_makeCreater()
 	ChangeJob("GENETIC_H")
 	upgradeLevel_3rdChangeJob()
 	upgradeSkill_Genetic()
 end
 
-buttonEventReceiver_makeMerChant_H = function()
+function buttonEventReceiver_makeMerChant_H()
 	buttonEventReceiver_makeNovice_H()
 	ChangeJob("MERCHANT_H")
 	upgradeLevel_1stChangeJob()
 	upgradeSkill_MerChant()
 end
 
-buttonEventReceiver_makeWhiteSmith = function()
+function buttonEventReceiver_makeWhiteSmith()
 	buttonEventReceiver_makeMerChant_H()
 	ChangeJob("BLACKSMITH_H")
 	upgradeLevel_2ndChangeJob_H()
@@ -1287,7 +1285,7 @@ buttonEventReceiver_makeWhiteSmith = function()
 	upgradeSkill_WhiteSmith()
 end
 
-buttonEventReceiver_makeCreater = function()
+function buttonEventReceiver_makeCreater()
 	buttonEventReceiver_makeMerChant_H()
 	ChangeJob("ALCHEMIST_H")
 	upgradeLevel_2ndChangeJob_H()
@@ -1296,14 +1294,14 @@ buttonEventReceiver_makeCreater = function()
 	upgradeSkill_Creater()
 end
 
-buttonEventReceiver_makeMERCHANT_B = function()
+function buttonEventReceiver_makeMERCHANT_B()
 	buttonEventReceiver_makeNovice_H()
 	ChangeJob("MERCHANT_B")
 	upgradeLevel_1stChangeJob()
 	upgradeSkill_MerChant()
 end
 
-buttonEventReceiver_makeBLACKSMITH_B = function()
+function buttonEventReceiver_makeBLACKSMITH_B()
 	buttonEventReceiver_makeNovice_H()
 	ChangeJob("BLACKSMITH_B")
 	upgradeLevel_1stChangeJob()
@@ -1311,7 +1309,7 @@ buttonEventReceiver_makeBLACKSMITH_B = function()
 	upgradeSkill_BlackSmith()
 end
 
-buttonEventReceiver_makeMECHANIC_B = function()
+function buttonEventReceiver_makeMECHANIC_B()
 	buttonEventReceiver_makeBLACKSMITH_B()
 	ChangeJob("MECHANIC_B")
 	upgradeLevel_3rdChangeJob()
@@ -1320,7 +1318,7 @@ buttonEventReceiver_makeMECHANIC_B = function()
 	upgradeSkill_Mechanic()
 end
 
-buttonEventReceiver_makeALCHEMIST_B = function()
+function buttonEventReceiver_makeALCHEMIST_B()
 	buttonEventReceiver_makeNovice_H()
 	ChangeJob("ALCHEMIST_B")
 	upgradeLevel_1stChangeJob()
@@ -1328,7 +1326,7 @@ buttonEventReceiver_makeALCHEMIST_B = function()
 	upgradeSkill_Alchemist()
 end
 
-buttonEventReceiver_makeGENETIC_B = function()
+function buttonEventReceiver_makeGENETIC_B()
 	buttonEventReceiver_makeALCHEMIST_B()
 	ChangeJob("GENETIC_B")
 	upgradeLevel_3rdChangeJob()
@@ -1337,21 +1335,21 @@ buttonEventReceiver_makeGENETIC_B = function()
 	upgradeSkill_Genetic()
 end
 
-buttonEventReceiver_makeAcolyte = function()
+function buttonEventReceiver_makeAcolyte()
 	buttonEventReceiver_makeNovice()
 	ChangeJob("ACOLYTE")
 	upgradeLevel_1stChangeJob()
 	upgradeSkill_Acolyte()
 end
 
-buttonEventReceiver_makePriest = function()
+function buttonEventReceiver_makePriest()
 	buttonEventReceiver_makeAcolyte()
 	ChangeJob("PRIEST")
 	upgradeLevel_2ndChangeJob()
 	upgradeSkill_Priest()
 end
 
-buttonEventReceiver_makeMonk = function()
+function buttonEventReceiver_makeMonk()
 	buttonEventReceiver_makeAcolyte()
 	ChangeJob("MONK")
 	upgradeLevel_2ndChangeJob()
@@ -1359,7 +1357,7 @@ buttonEventReceiver_makeMonk = function()
 	upgradeSkill_Monk()
 end
 
-buttonEventReceiver_makeArchBishop = function()
+function buttonEventReceiver_makeArchBishop()
 	buttonEventReceiver_makePriest()
 	ChangeJob("ARCHBISHOP")
 	upgradeLevel_3rdChangeJob()
@@ -1367,7 +1365,7 @@ buttonEventReceiver_makeArchBishop = function()
 	upgradeSkill_Priest()
 end
 
-buttonEventReceiver_makeArchBishop_H = function()
+function buttonEventReceiver_makeArchBishop_H()
 	buttonEventReceiver_makeHighPriest()
 	ChangeJob("ARCHBISHOP_H")
 	upgradeLevel_3rdChangeJob()
@@ -1375,7 +1373,7 @@ buttonEventReceiver_makeArchBishop_H = function()
 	upgradeSkill_Priest()
 end
 
-buttonEventReceiver_makeSura = function()
+function buttonEventReceiver_makeSura()
 	buttonEventReceiver_makeMonk()
 	ChangeJob("SURA")
 	upgradeLevel_3rdChangeJob()
@@ -1383,7 +1381,7 @@ buttonEventReceiver_makeSura = function()
 	upgradeSkill_Monk()
 end
 
-buttonEventReceiver_makeSura_H = function()
+function buttonEventReceiver_makeSura_H()
 	buttonEventReceiver_makeChampion()
 	ChangeJob("SURA_H")
 	upgradeLevel_3rdChangeJob()
@@ -1391,14 +1389,14 @@ buttonEventReceiver_makeSura_H = function()
 	upgradeSkill_Monk()
 end
 
-buttonEventReceiver_makeAcolyte_H = function()
+function buttonEventReceiver_makeAcolyte_H()
 	buttonEventReceiver_makeNovice_H()
 	ChangeJob("ACOLYTE_H")
 	upgradeLevel_1stChangeJob()
 	upgradeSkill_Acolyte()
 end
 
-buttonEventReceiver_makeHighPriest = function()
+function buttonEventReceiver_makeHighPriest()
 	buttonEventReceiver_makeAcolyte_H()
 	ChangeJob("PRIEST_H")
 	upgradeLevel_2ndChangeJob_H()
@@ -1407,7 +1405,7 @@ buttonEventReceiver_makeHighPriest = function()
 	upgradeSkill_HighPriest()
 end
 
-buttonEventReceiver_makeChampion = function()
+function buttonEventReceiver_makeChampion()
 	buttonEventReceiver_makeAcolyte_H()
 	ChangeJob("MONK_H")
 	upgradeLevel_2ndChangeJob_H()
@@ -1416,14 +1414,14 @@ buttonEventReceiver_makeChampion = function()
 	upgradeSkill_Champion()
 end
 
-buttonEventReceiver_makeACOLYTE_B = function()
+function buttonEventReceiver_makeACOLYTE_B()
 	buttonEventReceiver_makeNovice_H()
 	ChangeJob("ACOLYTE_B")
 	upgradeLevel_1stChangeJob()
 	upgradeSkill_Acolyte()
 end
 
-buttonEventReceiver_makePRIEST_B = function()
+function buttonEventReceiver_makePRIEST_B()
 	buttonEventReceiver_makeNovice_H()
 	ChangeJob("PRIEST_B")
 	upgradeLevel_1stChangeJob()
@@ -1431,7 +1429,7 @@ buttonEventReceiver_makePRIEST_B = function()
 	upgradeSkill_Priest()
 end
 
-buttonEventReceiver_makeARCHBISHOP_B = function()
+function buttonEventReceiver_makeARCHBISHOP_B()
 	buttonEventReceiver_makePRIEST_B()
 	ChangeJob("ARCHBISHOP_B")
 	upgradeLevel_3rdChangeJob()
@@ -1440,7 +1438,7 @@ buttonEventReceiver_makeARCHBISHOP_B = function()
 	upgradeSkill_ArchBishop()
 end
 
-buttonEventReceiver_makeMONK_B = function()
+function buttonEventReceiver_makeMONK_B()
 	buttonEventReceiver_makeNovice_H()
 	ChangeJob("MONK_B")
 	upgradeLevel_1stChangeJob()
@@ -1448,7 +1446,7 @@ buttonEventReceiver_makeMONK_B = function()
 	upgradeSkill_Monk()
 end
 
-buttonEventReceiver_makeSURA_B = function()
+function buttonEventReceiver_makeSURA_B()
 	buttonEventReceiver_makeMONK_B()
 	ChangeJob("SURA_B")
 	upgradeLevel_3rdChangeJob()
@@ -1457,28 +1455,28 @@ buttonEventReceiver_makeSURA_B = function()
 	upgradeSkill_Sura()
 end
 
-buttonEventReceiver_makeThief = function()
+function buttonEventReceiver_makeThief()
 	buttonEventReceiver_makeNovice()
 	ChangeJob("THIEF")
 	upgradeLevel_1stChangeJob()
 	upgradeSkill_Thief()
 end
 
-buttonEventReceiver_makeAssassin = function()
+function buttonEventReceiver_makeAssassin()
 	buttonEventReceiver_makeThief()
 	ChangeJob("ASSASSIN")
 	upgradeLevel_2ndChangeJob()
 	upgradeSkill_Assassin()
 end
 
-buttonEventReceiver_makeRogue = function()
+function buttonEventReceiver_makeRogue()
 	buttonEventReceiver_makeThief()
 	ChangeJob("ROGUE")
 	upgradeLevel_2ndChangeJob()
 	upgradeSkill_Rogue()
 end
 
-buttonEventReceiver_makeGuillotineCross = function()
+function buttonEventReceiver_makeGuillotineCross()
 	buttonEventReceiver_makeAssassin()
 	ChangeJob("GUILLOTINE_CROSS")
 	upgradeLevel_3rdChangeJob()
@@ -1486,7 +1484,7 @@ buttonEventReceiver_makeGuillotineCross = function()
 	upgradeSkill_Assassin()
 end
 
-buttonEventReceiver_makeGuillotineCross_H = function()
+function buttonEventReceiver_makeGuillotineCross_H()
 	buttonEventReceiver_makeAssassinCross()
 	ChangeJob("GUILLOTINE_CROSS_H")
 	upgradeLevel_3rdChangeJob()
@@ -1494,7 +1492,7 @@ buttonEventReceiver_makeGuillotineCross_H = function()
 	upgradeSkill_Assassin()
 end
 
-buttonEventReceiver_makeShadowChaser = function()
+function buttonEventReceiver_makeShadowChaser()
 	buttonEventReceiver_makeRogue()
 	ChangeJob("SHADOW_CHASER")
 	upgradeLevel_3rdChangeJob()
@@ -1502,7 +1500,7 @@ buttonEventReceiver_makeShadowChaser = function()
 	upgradeSkill_Rogue()
 end
 
-buttonEventReceiver_makeShadowChaser_H = function()
+function buttonEventReceiver_makeShadowChaser_H()
 	buttonEventReceiver_makeStalker()
 	ChangeJob("SHADOW_CHASER_H")
 	upgradeLevel_3rdChangeJob()
@@ -1510,14 +1508,14 @@ buttonEventReceiver_makeShadowChaser_H = function()
 	upgradeSkill_Rogue()
 end
 
-buttonEventReceiver_makeThief_H = function()
+function buttonEventReceiver_makeThief_H()
 	buttonEventReceiver_makeNovice_H()
 	ChangeJob("THIEF_H")
 	upgradeLevel_1stChangeJob()
 	upgradeSkill_Thief()
 end
 
-buttonEventReceiver_makeAssassinCross = function()
+function buttonEventReceiver_makeAssassinCross()
 	buttonEventReceiver_makeThief_H()
 	ChangeJob("ASSASSIN_H")
 	upgradeLevel_2ndChangeJob_H()
@@ -1526,7 +1524,7 @@ buttonEventReceiver_makeAssassinCross = function()
 	upgradeSkill_AssassinCross()
 end
 
-buttonEventReceiver_makeStalker = function()
+function buttonEventReceiver_makeStalker()
 	buttonEventReceiver_makeThief_H()
 	ChangeJob("ROGUE_H")
 	upgradeLevel_2ndChangeJob_H()
@@ -1535,14 +1533,14 @@ buttonEventReceiver_makeStalker = function()
 	upgradeSkill_Stalker()
 end
 
-buttonEventReceiver_makeTHIEF_B = function()
+function buttonEventReceiver_makeTHIEF_B()
 	buttonEventReceiver_makeNovice_H()
 	ChangeJob("THIEF_B")
 	upgradeLevel_1stChangeJob()
 	upgradeSkill_Thief()
 end
 
-buttonEventReceiver_makeASSASSIN_B = function()
+function buttonEventReceiver_makeASSASSIN_B()
 	buttonEventReceiver_makeNovice_H()
 	ChangeJob("ASSASSIN_B")
 	upgradeLevel_1stChangeJob()
@@ -1550,7 +1548,7 @@ buttonEventReceiver_makeASSASSIN_B = function()
 	upgradeSkill_Assassin()
 end
 
-buttonEventReceiver_makeGUILLOTINECROSS_B = function()
+function buttonEventReceiver_makeGUILLOTINECROSS_B()
 	buttonEventReceiver_makeASSASSIN_B()
 	ChangeJob("GUILLOTINE_CROSS_B")
 	upgradeLevel_3rdChangeJob()
@@ -1559,7 +1557,7 @@ buttonEventReceiver_makeGUILLOTINECROSS_B = function()
 	upgradeSkill_GuillotineCross()
 end
 
-buttonEventReceiver_makeROGUE_B = function()
+function buttonEventReceiver_makeROGUE_B()
 	buttonEventReceiver_makeNovice_H()
 	ChangeJob("ROGUE_B")
 	upgradeLevel_1stChangeJob()
@@ -1567,7 +1565,7 @@ buttonEventReceiver_makeROGUE_B = function()
 	upgradeSkill_Rogue()
 end
 
-buttonEventReceiver_makeSHADOWCHASER_B = function()
+function buttonEventReceiver_makeSHADOWCHASER_B()
 	buttonEventReceiver_makeROGUE_B()
 	ChangeJob("SHADOW_CHASER_B")
 	upgradeLevel_3rdChangeJob()
@@ -1576,14 +1574,14 @@ buttonEventReceiver_makeSHADOWCHASER_B = function()
 	upgradeSkill_ShadowChaser()
 end
 
-buttonEventReceiver_makeMagician = function()
+function buttonEventReceiver_makeMagician()
 	buttonEventReceiver_makeNovice()
 	ChangeJob("MAGICIAN")
 	upgradeLevel_1stChangeJob()
 	upgradeSkill_Magician()
 end
 
-buttonEventReceiver_makeWizard = function()
+function buttonEventReceiver_makeWizard()
 	buttonEventReceiver_makeMagician()
 	ChangeJob("WIZARD")
 	upgradeLevel_2ndChangeJob()
@@ -1591,14 +1589,14 @@ buttonEventReceiver_makeWizard = function()
 	upgradeSkill_Magician()
 end
 
-buttonEventReceiver_makeSage = function()
+function buttonEventReceiver_makeSage()
 	buttonEventReceiver_makeMagician()
 	ChangeJob("SAGE")
 	upgradeLevel_2ndChangeJob()
 	upgradeSkill_Sage()
 end
 
-buttonEventReceiver_makeWarlock = function()
+function buttonEventReceiver_makeWarlock()
 	buttonEventReceiver_makeWizard()
 	ChangeJob("WARLOCK")
 	upgradeLevel_3rdChangeJob()
@@ -1606,7 +1604,7 @@ buttonEventReceiver_makeWarlock = function()
 	upgradeSkill_Warlock()
 end
 
-buttonEventReceiver_makeWarlock_H = function()
+function buttonEventReceiver_makeWarlock_H()
 	buttonEventReceiver_makeHighWizard()
 	ChangeJob("WARLOCK_H")
 	upgradeLevel_3rdChangeJob()
@@ -1614,7 +1612,7 @@ buttonEventReceiver_makeWarlock_H = function()
 	upgradeSkill_Warlock()
 end
 
-buttonEventReceiver_makeSorcerer = function()
+function buttonEventReceiver_makeSorcerer()
 	buttonEventReceiver_makeSage()
 	ChangeJob("SORCERER")
 	upgradeLevel_3rdChangeJob()
@@ -1622,7 +1620,7 @@ buttonEventReceiver_makeSorcerer = function()
 	upgradeSkill_Sage()
 end
 
-buttonEventReceiver_makeSorcerer_H = function()
+function buttonEventReceiver_makeSorcerer_H()
 	buttonEventReceiver_makeProfessor()
 	ChangeJob("SORCERER_H")
 	upgradeLevel_3rdChangeJob()
@@ -1630,14 +1628,14 @@ buttonEventReceiver_makeSorcerer_H = function()
 	upgradeSkill_Sage()
 end
 
-buttonEventReceiver_makeMagician_H = function()
+function buttonEventReceiver_makeMagician_H()
 	buttonEventReceiver_makeNovice_H()
 	ChangeJob("MAGICIAN_H")
 	upgradeLevel_1stChangeJob()
 	upgradeSkill_Magician()
 end
 
-buttonEventReceiver_makeHighWizard = function()
+function buttonEventReceiver_makeHighWizard()
 	buttonEventReceiver_makeMagician_H()
 	ChangeJob("WIZARD_H")
 	upgradeLevel_2ndChangeJob_H()
@@ -1646,7 +1644,7 @@ buttonEventReceiver_makeHighWizard = function()
 	upgradeSkill_HighWizard()
 end
 
-buttonEventReceiver_makeProfessor = function()
+function buttonEventReceiver_makeProfessor()
 	buttonEventReceiver_makeMagician_H()
 	ChangeJob("SAGE_H")
 	upgradeLevel_2ndChangeJob_H()
@@ -1655,14 +1653,14 @@ buttonEventReceiver_makeProfessor = function()
 	upgradeSkill_Professor()
 end
 
-buttonEventReceiver_makeMAGICIAN_B = function()
+function buttonEventReceiver_makeMAGICIAN_B()
 	buttonEventReceiver_makeNovice_H()
 	ChangeJob("MAGICIAN_B")
 	upgradeLevel_1stChangeJob()
 	upgradeSkill_Magician()
 end
 
-buttonEventReceiver_makeWIZARD_B = function()
+function buttonEventReceiver_makeWIZARD_B()
 	buttonEventReceiver_makeNovice_H()
 	ChangeJob("WIZARD_B")
 	upgradeLevel_1stChangeJob()
@@ -1670,7 +1668,7 @@ buttonEventReceiver_makeWIZARD_B = function()
 	upgradeSkill_Wizard()
 end
 
-buttonEventReceiver_makeWARLOCK_B = function()
+function buttonEventReceiver_makeWARLOCK_B()
 	buttonEventReceiver_makeWIZARD_B()
 	ChangeJob("WARLOCK_B")
 	upgradeLevel_3rdChangeJob()
@@ -1679,7 +1677,7 @@ buttonEventReceiver_makeWARLOCK_B = function()
 	upgradeSkill_Warlock()
 end
 
-buttonEventReceiver_makeSAGE_B = function()
+function buttonEventReceiver_makeSAGE_B()
 	buttonEventReceiver_makeNovice_H()
 	ChangeJob("SAGE_B")
 	upgradeLevel_1stChangeJob()
@@ -1687,7 +1685,7 @@ buttonEventReceiver_makeSAGE_B = function()
 	upgradeSkill_Sage()
 end
 
-buttonEventReceiver_makeSORCERER_B = function()
+function buttonEventReceiver_makeSORCERER_B()
 	buttonEventReceiver_makeSAGE_B()
 	ChangeJob("SORCERER_B")
 	upgradeLevel_3rdChangeJob()
@@ -1696,84 +1694,84 @@ buttonEventReceiver_makeSORCERER_B = function()
 	upgradeSkill_Sorcerer()
 end
 
-buttonEventReceiver_makeArcher = function()
+function buttonEventReceiver_makeArcher()
 	buttonEventReceiver_makeNovice()
 	ChangeJob("ARCHER")
 	upgradeLevel_1stChangeJob()
 	upgradeSkill_Archer()
 end
 
-buttonEventReceiver_makeHunter = function()
+function buttonEventReceiver_makeHunter()
 	buttonEventReceiver_makeArcher()
 	ChangeJob("HUNTER")
 	upgradeLevel_2ndChangeJob()
 	upgradeSkill_Hunter()
 end
 
-buttonEventReceiver_makeBard = function()
+function buttonEventReceiver_makeBard()
 	buttonEventReceiver_makeArcher()
 	ChangeJob("BARD")
 	upgradeLevel_2ndChangeJob()
 	upgradeSkill_Bard()
 end
 
-buttonEventReceiver_makeDancer = function()
+function buttonEventReceiver_makeDancer()
 	buttonEventReceiver_makeArcher()
 	ChangeJob("DANCER")
 	upgradeLevel_2ndChangeJob()
 	upgradeSkill_Dancer()
 end
 
-buttonEventReceiver_makeRanger = function()
+function buttonEventReceiver_makeRanger()
 	buttonEventReceiver_makeHunter()
 	ChangeJob("RANGER")
 	upgradeLevel_3rdChangeJob()
 	upgradeSkill_Ranger()
 end
 
-buttonEventReceiver_makeRanger_H = function()
+function buttonEventReceiver_makeRanger_H()
 	buttonEventReceiver_makeSniper()
 	ChangeJob("RANGER_H")
 	upgradeLevel_3rdChangeJob()
 	upgradeSkill_Ranger()
 end
 
-buttonEventReceiver_makeMinstrel = function()
+function buttonEventReceiver_makeMinstrel()
 	buttonEventReceiver_makeBard()
 	ChangeJob("MINSTREL")
 	upgradeLevel_3rdChangeJob()
 	upgradeSkill_Minstrel()
 end
 
-buttonEventReceiver_makeMinstrel_H = function()
+function buttonEventReceiver_makeMinstrel_H()
 	buttonEventReceiver_makeCrown()
 	ChangeJob("MINSTREL_H")
 	upgradeLevel_3rdChangeJob()
 	upgradeSkill_Minstrel()
 end
 
-buttonEventReceiver_makeWanderer = function()
+function buttonEventReceiver_makeWanderer()
 	buttonEventReceiver_makeDancer()
 	ChangeJob("WANDERER")
 	upgradeLevel_3rdChangeJob()
 	upgradeSkill_Wanderer()
 end
 
-buttonEventReceiver_makeWanderer_H = function()
+function buttonEventReceiver_makeWanderer_H()
 	buttonEventReceiver_makeGipsy()
 	ChangeJob("WANDERER_H")
 	upgradeLevel_3rdChangeJob()
 	upgradeSkill_Wanderer()
 end
 
-buttonEventReceiver_makeArcher_H = function()
+function buttonEventReceiver_makeArcher_H()
 	buttonEventReceiver_makeNovice_H()
 	ChangeJob("ARCHER_H")
 	upgradeLevel_1stChangeJob()
 	upgradeSkill_Archer()
 end
 
-buttonEventReceiver_makeSniper = function()
+function buttonEventReceiver_makeSniper()
 	buttonEventReceiver_makeArcher_H()
 	ChangeJob("HUNTER_H")
 	upgradeLevel_2ndChangeJob_H()
@@ -1782,7 +1780,7 @@ buttonEventReceiver_makeSniper = function()
 	upgradeSkill_Sniper()
 end
 
-buttonEventReceiver_makeCrown = function()
+function buttonEventReceiver_makeCrown()
 	buttonEventReceiver_makeArcher_H()
 	ChangeJob("BARD_H")
 	upgradeLevel_2ndChangeJob_H()
@@ -1791,7 +1789,7 @@ buttonEventReceiver_makeCrown = function()
 	upgradeSkill_Crown()
 end
 
-buttonEventReceiver_makeGipsy = function()
+function buttonEventReceiver_makeGipsy()
 	buttonEventReceiver_makeArcher_H()
 	ChangeJob("DANCER_H")
 	upgradeLevel_2ndChangeJob()
@@ -1800,14 +1798,14 @@ buttonEventReceiver_makeGipsy = function()
 	upgradeSkill_Gipsy()
 end
 
-buttonEventReceiver_makeARCHER_B = function()
+function buttonEventReceiver_makeARCHER_B()
 	buttonEventReceiver_makeNovice_H()
 	ChangeJob("ARCHER_B")
 	upgradeLevel_1stChangeJob()
 	upgradeSkill_Archer()
 end
 
-buttonEventReceiver_makeHUNTER_B = function()
+function buttonEventReceiver_makeHUNTER_B()
 	buttonEventReceiver_makeNovice_H()
 	ChangeJob("HUNTER_B")
 	upgradeLevel_1stChangeJob()
@@ -1815,7 +1813,7 @@ buttonEventReceiver_makeHUNTER_B = function()
 	upgradeSkill_Hunter()
 end
 
-buttonEventReceiver_makeRANGER_B = function()
+function buttonEventReceiver_makeRANGER_B()
 	buttonEventReceiver_makeHUNTER_B()
 	ChangeJob("RANGER_B")
 	upgradeLevel_3rdChangeJob()
@@ -1824,7 +1822,7 @@ buttonEventReceiver_makeRANGER_B = function()
 	upgradeSkill_Ranger()
 end
 
-buttonEventReceiver_makeBARD_B = function()
+function buttonEventReceiver_makeBARD_B()
 	buttonEventReceiver_makeNovice_H()
 	ChangeJob("BARD_B")
 	upgradeLevel_1stChangeJob()
@@ -1832,7 +1830,7 @@ buttonEventReceiver_makeBARD_B = function()
 	upgradeSkill_Bard()
 end
 
-buttonEventReceiver_makeMINSTREL_B = function()
+function buttonEventReceiver_makeMINSTREL_B()
 	buttonEventReceiver_makeBARD_B()
 	ChangeJob("MINSTREL_B")
 	upgradeLevel_3rdChangeJob()
@@ -1841,7 +1839,7 @@ buttonEventReceiver_makeMINSTREL_B = function()
 	upgradeSkill_Minstrel()
 end
 
-buttonEventReceiver_makeDANCER_B = function()
+function buttonEventReceiver_makeDANCER_B()
 	buttonEventReceiver_makeNovice_H()
 	ChangeJob("DANCER_B")
 	upgradeLevel_1stChangeJob()
@@ -1849,7 +1847,7 @@ buttonEventReceiver_makeDANCER_B = function()
 	upgradeSkill_Dancer()
 end
 
-buttonEventReceiver_makeWANDERER_B = function()
+function buttonEventReceiver_makeWANDERER_B()
 	buttonEventReceiver_makeDANCER_B()
 	ChangeJob("WANDERER_B")
 	upgradeLevel_3rdChangeJob()
@@ -1858,7 +1856,7 @@ buttonEventReceiver_makeWANDERER_B = function()
 	upgradeSkill_Wanderer()
 end
 
-buttonEventReceiver_makeSuperNovice = function()
+function buttonEventReceiver_makeSuperNovice()
 	ChangeJob("NOVICE_H")
 	upgradeLevel_Novice()
 	upgradeSkill_Novice()
@@ -1868,42 +1866,42 @@ buttonEventReceiver_makeSuperNovice = function()
 	upgradeSkill_SuperNovice()
 end
 
-buttonEventReceiver_makeNinja = function()
+function buttonEventReceiver_makeNinja()
 	buttonEventReceiver_makeNovice()
 	ChangeJob("NINJA")
 	upgradeLevel_1stChangeJob()
 	upgradeSkill_Ninja()
 end
 
-buttonEventReceiver_makeGunSlinger = function()
+function buttonEventReceiver_makeGunSlinger()
 	buttonEventReceiver_makeNovice()
 	ChangeJob("GUNSLINGER")
 	upgradeLevel_1stChangeJob()
 	upgradeSkill_GunSlinger()
 end
 
-buttonEventReceiver_makeTaekwon = function()
+function buttonEventReceiver_makeTaekwon()
 	buttonEventReceiver_makeNovice()
 	ChangeJob("TAEKWON")
 	upgradeLevel_1stChangeJob()
 	upgradeSkill_Taekwon()
 end
 
-buttonEventReceiver_makeStar = function()
+function buttonEventReceiver_makeStar()
 	buttonEventReceiver_makeTaekwon()
 	ChangeJob("STAR")
 	upgradeLevel_2ndChangeJob()
 	upgradeSkill_Star()
 end
 
-buttonEventReceiver_makeLinker = function()
+function buttonEventReceiver_makeLinker()
 	buttonEventReceiver_makeTaekwon()
 	ChangeJob("LINKER")
 	upgradeLevel_2ndChangeJob()
 	upgradeSkill_Linker()
 end
 
-DebugingInterface_ChangeJob = function()
+function DebugingInterface_ChangeJob()
 	AddString("-- [ 1차 전직 캐릭터 만들기 ] --")
 	AddMenu("검사", buttonEventReceiver_makeSwordman)
 	AddMenu("검사_H", buttonEventReceiver_makeSwordman_H)
@@ -2031,13 +2029,13 @@ DebugingInterface_ChangeJob = function()
 	SetWorkingCondition("집시", SEX_FEMALE)
 end
 
-RegisterExcItemNameTable = function()
+function RegisterExcItemNameTable()
 	for k, v in pairs(excItemNameTable) do
 		SetAddExceptionItemName(k, v.name, v.type)
 	end
 end
 
-ReadDebugWndTabInfo = function()
+function ReadDebugWndTabInfo()
 	SetDebugWndTabInfo(DebugWndInfo.ShowWnd, DebugWndInfo.AddedTabCount, DebugWndInfo.ScrollOffset, DebugWndInfo.CurTabNum, DebugWndInfo.WidthSize, DebugWndInfo.HeightSize)
 	for i = 0, DebugWndInfo.AddedTabCount, 1 do
 		SetDebugWndTabName(_G[string.format("%s_%d", "DebugWndTabName", i)])

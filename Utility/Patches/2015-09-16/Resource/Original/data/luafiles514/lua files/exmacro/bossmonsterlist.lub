@@ -1,5 +1,3 @@
--- Using GRF Editor Decompiler (beta 1.0.3)
-
 BossMonsterTable = {
 	jobtbl.JT_BAPHOMET,
 	jobtbl.JT_DARK_LORD,
@@ -92,7 +90,7 @@ BossMonsterTable = {
 	jobtbl.JT_B_SHECIL
 }
 
-IsBossMonster = function(enemyID)
+function IsBossMonster(enemyID)
 	for k, v in pairs(BossMonsterTable) do
 		if v == enemyID then
 			return true

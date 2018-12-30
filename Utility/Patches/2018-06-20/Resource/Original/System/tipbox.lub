@@ -1,5 +1,3 @@
--- Using GRF Editor Decompiler (beta 1.0.4)
-
 tbl = {
 	[1] = {
 		Title = "ÆÁ¹Ú½º",
@@ -590,7 +588,7 @@ tbl = {
 	}
 }
 
-main = function()
+function main()
 	for DocumentNum, INFO in pairs(tbl) do
 		result, msg = AddTip(DocumentNum, INFO.Title, INFO.Search, INFO.Image)
 		if not result == true then

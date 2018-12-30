@@ -1,7 +1,5 @@
--- Using GRF Editor Decompiler (beta 1.0.3)
 
-
-Iter_getTable = function(tableName)
+function Iter_getTable(tableName)
 	local i = 0
 	return function()
 		i = i + 1
@@ -9,7 +7,7 @@ Iter_getTable = function(tableName)
 	end
 end
 
-Iter_getOptionValue = function(element)
+function Iter_getOptionValue(element)
 	local i = 0
 	return function()
 		i = i + 1
@@ -17,7 +15,7 @@ Iter_getOptionValue = function(element)
 	end
 end
 
-GetSubChatWndList = function(tableName)
+function GetSubChatWndList(tableName)
 	for idx, v in Iter_getTable(tableName) do
 		if v == nil then
 			return

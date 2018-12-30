@@ -1,7 +1,5 @@
--- Using GRF Editor Decompiler (beta 1.0.3)
 
-
-ReqAccName = function(index)
+function ReqAccName(index)
 	if AccNameTable == nil then
 		return ""
 	else
@@ -13,7 +11,7 @@ ReqAccName = function(index)
 	end
 end
 
-ReqAccName_V2 = function(index)
+function ReqAccName_V2(index)
 	if iAccNameTable_Eng == nil then
 		return ReqAccName(index)
 	else

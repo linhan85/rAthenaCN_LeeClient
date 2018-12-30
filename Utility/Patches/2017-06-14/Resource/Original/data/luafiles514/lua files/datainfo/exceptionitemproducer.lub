@@ -1,5 +1,3 @@
--- Using GRF Editor Decompiler (beta 1.0.3)
-
 EXCEPTION_ItemProducer = {
 	[11539] = MsgStrID.MSI_ITEM_PRODUCER_11539,
 	[11540] = MsgStrID.MSI_ITEM_PRODUCER_11540,
@@ -11,16 +9,14 @@ EXCEPTION_ItemProducer = {
 	[11546] = MsgStrID.MSI_ITEM_PRODUCER_11546
 }
 
--- Function #0
-GetExceptionItemProducer = function(ITID)
+function GetExceptionItemProducer(ITID)
 	if HaveExceptionItemProducer(ITID) == true then
 		return EXCEPTION_ItemProducer[ITID]
 	end
 	return ""
 end
 
--- Function #1
-HaveExceptionItemProducer = function(ITID)
+function HaveExceptionItemProducer(ITID)
 	if EXCEPTION_ItemProducer ~= nil and EXCEPTION_ItemProducer[ITID] ~= nil then
 		return true
 	end

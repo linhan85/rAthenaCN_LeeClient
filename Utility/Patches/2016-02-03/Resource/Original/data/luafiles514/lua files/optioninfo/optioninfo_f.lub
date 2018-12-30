@@ -1,7 +1,5 @@
--- Using GRF Editor Decompiler (beta 1.0.3)
 
-
-SetCmdOnOffList = function()
+function SetCmdOnOffList()
 	if CmdOnOffList == nil then
 		return
 	end
@@ -14,7 +12,7 @@ SetCmdOnOffList = function()
 	return
 end
 
-l_GetOptionValue = function(keyName)
+function l_GetOptionValue(keyName)
 	if OptionInfoList == nil then
 		return -1
 	else
@@ -26,7 +24,7 @@ l_GetOptionValue = function(keyName)
 	end
 end
 
-SaveToFileCmdOnOffValue = function()
+function SaveToFileCmdOnOffValue()
 	saveFile = io.open("SaveData\\OptionInfo.lua", "w")
 	if saveFile ~= nil then
 		for k, v in pairs(CmdOnOffOderList) do
@@ -40,7 +38,7 @@ SaveToFileCmdOnOffValue = function()
 	end
 end
 
-l_GetCmdHelpMsg = function(keyName, bIsOn)
+function l_GetCmdHelpMsg(keyName, bIsOn)
 	if CmdHelpList == nil then
 		return ""
 	elseif bIsOn == 1 then
@@ -55,7 +53,7 @@ l_GetCmdHelpMsg = function(keyName, bIsOn)
 	return ""
 end
 
-SaveToFileCmdOnOffValueEx = function(nID)
+function SaveToFileCmdOnOffValueEx(nID)
 	if nID == 0 then
 		saveFile = io.open("SaveData\\OptionInfo.lua", "w")
 	else

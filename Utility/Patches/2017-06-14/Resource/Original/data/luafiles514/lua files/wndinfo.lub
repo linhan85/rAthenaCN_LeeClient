@@ -1,5 +1,3 @@
--- Using GRF Editor Decompiler (beta 1.0.3)
-
 WID_HOTKEYWND = 156
 WID_JOINTO_BATTLEFIELDWND = 157
 WID_RELOADLUASCRIPTWND = 158
@@ -35,8 +33,7 @@ UIExMacroSetUpWnd = { width = 400, height = 530, x = 300, y = 100 }
 CUIDebugingInterfaceWnd = { width = 250, height = 260, x = 570, y = 95 }
 CUIDebugingInterfaceWnd_UserDefine = { width = 250, height = 260, x = 570, y = 260 }
 
--- Function #0
-GetWindowString = function(windowID)
+function GetWindowString(windowID)
 	if windowID == WID_HOTKEYWND then
 		return "UIHotKeyWnd"
 	elseif windowID == WID_JOINTO_BATTLEFIELDWND then
@@ -67,8 +64,7 @@ GetWindowString = function(windowID)
 	return nil
 end
 
--- Function #1
-GetWindowInfo = function(windowID)
+function GetWindowInfo(windowID)
 	local wnd
 	local wndStr = GetWindowString(windowID)
 	if wndStr ~= nil then
@@ -79,8 +75,7 @@ GetWindowInfo = function(windowID)
 	end
 end
 
--- Function #2
-GetSysButtonInfo = function(windowID)
+function GetSysButtonInfo(windowID)
 	local wnd
 	local wndStr = GetWindowString(windowID)
 	if wndStr ~= nil then
