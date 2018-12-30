@@ -1,9 +1,11 @@
+257 Use Default Web Browser for <URL>
 6 Force Send Client Hash Packet
 8 Custom Window Title
 9 Disable 1rag1 type parameters (Recommended)
 19 Enable Title Bar Menu
 24 Fix Camera Angles (Recommended)
 28 Increase Headgear ViewID
+286 Hide zero date (1969-01-01) in guild members window
 32 Increase Zoom Out Max
 35 Read Data Folder First
 36 Read msgstringtable.txt (Recommended)
@@ -32,5 +34,7 @@
 213 Disable Help Message on Login (Recommended)
 222 Show Replay Button
 230 Always load Korea ExternalSettings lua file
+239 Ignore /account: command line argument
 244 Disable Cheat Defender Game Guard (Recommended)
 246 Increase hair style limit in game
+256 Use Default Web Browser In Cashshop
