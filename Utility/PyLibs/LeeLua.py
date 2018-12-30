@@ -75,7 +75,7 @@ class LeeLua:
         encoding = 'latin1' if encoding is None else encoding
 
         try:
-            luafile = open(srcfilepath, 'r', encoding=encoding)
+            luafile = open(srcfilepath, 'r', encoding=encoding, newline='')
             content = luafile.readlines()
             luafile.close()
 
@@ -92,7 +92,7 @@ class LeeLua:
                 os.path.basename(srcfilepath), content
             )
 
-            savefile = open(dstfilepath, 'w', encoding=encoding)
+            savefile = open(dstfilepath, 'w', encoding=encoding, newline='')
             savefile.write('\r\n'.join(content))
             savefile.close()
             return True
