@@ -136,7 +136,7 @@ class LeeLua:
         # 确认结果并输出提示信息表示反编译结束
         if grfCLProc.returncode == 0 and self.leeCommon.isFileExists(lubOutputPath):
             print('已输出到: ' + os.path.relpath(lubOutputPath, self.baseDirectory))
-            self.__lubAmendments(lubOutputPath, lubOutputPath)
+            self.lubAmendments(lubOutputPath, lubOutputPath)
             return True
 
         print('进行反编译时发生错误: ' + os.path.relpath(lubSourcePath, self.baseDirectory))

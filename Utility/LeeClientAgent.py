@@ -266,7 +266,7 @@ class LeeMenu:
                 else:
                     print('已整理: %s' % os.path.relpath(fullpath, patchesDir))
 
-    def maintenanceDetectLubEncoding(self):
+    def maintenanceDetectNonAnsiLubEncoding(self):
         '''
         扫描整个 Patches 目录下的 lub 文件
         检测他们的文件编码, 并列出非 ANSI 编码的文件
@@ -298,6 +298,34 @@ class LeeMenu:
                 if result and encoding not in allowANSI:
                     print('%s - %s' % (
                         encoding, os.path.relpath(fullpath, patchesDir)
+                    ))
+
+        work_elapsed = (timeit.default_timer() - work_start)
+
+        print('扫描并检测完毕, 耗时: %0.2f 秒' % work_elapsed)
+        print('')
+
+    def maintenanceDetectLubWithoutDecompile(self):
+        '''
+        扫描整个 Patches 目录下的 lub 文件
+        检测他们的是否已经被反编译, 并将没有被反编译的 lub 文件列出
+        '''
+        scriptDir = self.leeCommon.getScriptDirectory()
+        patchesDir = os.path.normpath('%s/Patches/' % scriptDir)
+
+        print('正在扫描, 可能会花几分钟时间, 请耐心等待...')
+        print('')
+        work_start = timeit.default_timer()
+
+        for dirpath, _dirnames, filenames in os.walk(patchesDir):
+            for filename in filenames:
+                fullpath = os.path.normpath('%s/%s' % (dirpath, filename))
+                if not filename.lower().endswith('.lub'):
+                    continue
+
+                if LeeLua().isTrulyLubFile(fullpath):
+                    print('尚未反编译 - %s' % (
+                        os.path.relpath(fullpath, patchesDir)
                     ))
 
         work_elapsed = (timeit.default_timer() - work_start)
@@ -449,7 +477,7 @@ class LeeMenu:
         self.leeCommon.simpleInput(
             lines, title, prompt, self, 'menus.maintenanceBatchDecompileLub(user_input)'
         )
-    
+
     def item_MaintenanceBatchAmendmentsLub(self):
         '''
         菜单处理函数
@@ -470,10 +498,10 @@ class LeeMenu:
             lines, title, prompt, self, 'menus.maintenanceBatchAmendmentsLub()'
         )
 
-    def item_MaintenanceDetectLubEncoding(self):
+    def item_MaintenanceDetectNonAnsiLubEncoding(self):
         '''
         菜单处理函数
-        当选择“维护 - 扫描并列出所有 lub 文件的文件编码”时执行
+        当选择“维护 - 扫描并列出所有非 ANSI 编码的 lub 文件”时执行
         '''
         self.leeCommon.cleanScreen()
 
@@ -484,10 +512,29 @@ class LeeMenu:
             '注意: GBK 和 EUC-KR 都属于 ANSI 类型编码, 而 UTF8 则不是.',
             '这里的 lub 文件实际上是 lua 的明文脚本文件.'
         ]
-        title = '扫描并列出所有 lub 文件的文件编码'
+        title = '扫描并列出所有非 ANSI 编码的 lub 文件'
         prompt = '是否立刻执行扫描操作?'
         self.leeCommon.simpleConfirm(
-            lines, title, prompt, self, 'menus.maintenanceDetectLubEncoding()'
+            lines, title, prompt, self, 'menus.maintenanceDetectNonAnsiLubEncoding()'
+        )
+
+    def item_MaintenanceDetectLubWithoutDecompile(self):
+        '''
+        菜单处理函数
+        当选择“维护 - 扫描并列出所有未被反编译的 lub 文件”时执行
+        '''
+        self.leeCommon.cleanScreen()
+
+        lines = [
+            '此操作会将 Patches 目录中的 lub 文件全部找出',
+            '然后判断其是否已经被反编译, 并将没有被反编译的 lub 全部列出.',
+            '',
+            '注意: 为了提高效率, 我们只对文件后缀为 lub 的文件进行判断.'
+        ]
+        title = '扫描并列出所有未被反编译的 lub 文件'
+        prompt = '是否立刻执行扫描操作?'
+        self.leeCommon.simpleConfirm(
+            lines, title, prompt, self, 'menus.maintenanceDetectLubWithoutDecompile()'
         )
 
     def item_End(self):
@@ -551,13 +598,18 @@ def main():
             None
         ],
         [
-            '维护 - 扫描并列出所有 lub 文件的文件编码',
-            'injectClass.item_MaintenanceDetectLubEncoding()',
+            '维护 - 扫描并列出所有非 ANSI 编码的 lub 文件',
+            'injectClass.item_MaintenanceDetectNonAnsiLubEncoding()',
             None
         ],
         [
             '维护 - 批量整理所有 lub 文件的内容',
             'injectClass.item_MaintenanceBatchAmendmentsLub()',
+            None
+        ],
+        [
+            '维护 - 扫描并列出所有未被反编译的 lub 文件',
+            'injectClass.item_MaintenanceDetectLubWithoutDecompile()',
             None
         ],
         # [
