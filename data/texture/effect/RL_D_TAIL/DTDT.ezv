@@ -2,9 +2,9 @@ EVFF0.95
 
 fps=60
 
-maxkey=110
+maxkey=70
 
-layernum=43
+layernum=34
 
 layer:Back
 {
@@ -25,7 +25,7 @@ layer:bback2_2
     texcnt=1
     texname=bback2_2.bmp
 
-    anikeynum=4
+    anikeynum=2
 
     {
         frame=0
@@ -54,59 +54,7 @@ layer:bback2_2
         uvsbias2=0.0000
     }
     {
-        frame=110
-        aniframe=0
-        anitype=0
-        delay=0.0000
-        pos=320.0000,240.0000
-        uv=0.0000,0.0000
-        uvs=1.0000,1.0000
-        uv2=0.0000,0.0000
-        uvs2=1.0000,1.0000
-        scale=800.0000,600.0000
-        angle=0.0000,0.0000,0.0000
-        color=255.0,255.0,255.0,255.0, 5,7
-        mtpreset=0
-        points=-400.0000,-300.0000  400.0000,-300.0000  400.0000,300.0000  -400.0000,300.0000
-        rpoints=-400.0000,-300.0000  400.0000,-300.0000  400.0000,300.0000  -400.0000,300.0000
-        bezier=0.0000,0.0000  0.0000,0.0000
-        afbias=0.0000
-        posbias=0.0000
-        ptbias=0.0000
-        angbias=0.0000
-        uvbias=0.0000
-        uvsbias=0.0000
-        uvbias2=0.0000
-        uvsbias2=0.0000
-    }
-    {
-        frame=31
-        aniframe=0
-        anitype=0
-        delay=0.0000
-        pos=320.0000,240.0000
-        uv=0.0000,0.0000
-        uvs=1.0000,1.0000
-        uv2=0.0000,0.0000
-        uvs2=1.0000,1.0000
-        scale=800.0000,600.0000
-        angle=0.0000,0.0000,0.0000
-        color=255.0,255.0,255.0,255.0, 5,7
-        mtpreset=0
-        points=-400.0000,-300.0000  400.0000,-300.0000  400.0000,300.0000  -400.0000,300.0000
-        rpoints=-400.0000,-300.0000  400.0000,-300.0000  400.0000,300.0000  -400.0000,300.0000
-        bezier=0.0000,0.0000  0.0000,0.0000
-        afbias=0.0000
-        posbias=0.0000
-        ptbias=0.0000
-        angbias=0.0000
-        uvbias=0.0000
-        uvsbias=0.0000
-        uvbias2=0.0000
-        uvsbias2=0.0000
-    }
-    {
-        frame=22
+        frame=70
         aniframe=0
         anitype=0
         delay=0.0000
@@ -208,7 +156,7 @@ layer:puyan
     anikeynum=3
 
     {
-        frame=50
+        frame=0
         aniframe=0
         anitype=0
         delay=0.0000
@@ -234,7 +182,7 @@ layer:puyan
         uvsbias2=0.0000
     }
     {
-        frame=70
+        frame=20
         aniframe=0
         anitype=0
         delay=0.0000
@@ -260,7 +208,7 @@ layer:puyan
         uvsbias2=0.0000
     }
     {
-        frame=80
+        frame=30
         aniframe=0
         anitype=0
         delay=0.0000
@@ -298,7 +246,7 @@ layer:puyan
     anikeynum=3
 
     {
-        frame=55
+        frame=5
         aniframe=0
         anitype=0
         delay=0.0000
@@ -324,7 +272,7 @@ layer:puyan
         uvsbias2=0.0000
     }
     {
-        frame=75
+        frame=25
         aniframe=0
         anitype=0
         delay=0.0000
@@ -350,7 +298,7 @@ layer:puyan
         uvsbias2=0.0000
     }
     {
-        frame=85
+        frame=35
         aniframe=0
         anitype=0
         delay=0.0000
@@ -388,7 +336,7 @@ layer:puyan
     anikeynum=3
 
     {
-        frame=60
+        frame=10
         aniframe=0
         anitype=0
         delay=0.0000
@@ -414,7 +362,7 @@ layer:puyan
         uvsbias2=0.0000
     }
     {
-        frame=80
+        frame=30
         aniframe=0
         anitype=0
         delay=0.0000
@@ -440,7 +388,7 @@ layer:puyan
         uvsbias2=0.0000
     }
     {
-        frame=90
+        frame=40
         aniframe=0
         anitype=0
         delay=0.0000
@@ -478,7 +426,7 @@ layer:puyan
     anikeynum=3
 
     {
-        frame=65
+        frame=15
         aniframe=0
         anitype=0
         delay=0.0000
@@ -504,7 +452,7 @@ layer:puyan
         uvsbias2=0.0000
     }
     {
-        frame=85
+        frame=35
         aniframe=0
         anitype=0
         delay=0.0000
@@ -530,7 +478,7 @@ layer:puyan
         uvsbias2=0.0000
     }
     {
-        frame=95
+        frame=45
         aniframe=0
         anitype=0
         delay=0.0000
@@ -568,7 +516,7 @@ layer:puyan
     anikeynum=3
 
     {
-        frame=55
+        frame=5
         aniframe=0
         anitype=0
         delay=0.0000
@@ -594,7 +542,7 @@ layer:puyan
         uvsbias2=0.0000
     }
     {
-        frame=75
+        frame=25
         aniframe=0
         anitype=0
         delay=0.0000
@@ -620,7 +568,7 @@ layer:puyan
         uvsbias2=0.0000
     }
     {
-        frame=85
+        frame=35
         aniframe=0
         anitype=0
         delay=0.0000
@@ -658,7 +606,7 @@ layer:freeze
     anikeynum=3
 
     {
-        frame=70
+        frame=20
         aniframe=0
         anitype=0
         delay=0.0000
@@ -684,7 +632,7 @@ layer:freeze
         uvsbias2=0.0000
     }
     {
-        frame=90
+        frame=40
         aniframe=0
         anitype=0
         delay=0.0000
@@ -710,7 +658,7 @@ layer:freeze
         uvsbias2=0.0000
     }
     {
-        frame=99
+        frame=49
         aniframe=0
         anitype=0
         delay=0.0000
@@ -748,7 +696,7 @@ layer:freeze
     anikeynum=3
 
     {
-        frame=70
+        frame=20
         aniframe=0
         anitype=0
         delay=0.0000
@@ -774,7 +722,7 @@ layer:freeze
         uvsbias2=0.0000
     }
     {
-        frame=90
+        frame=40
         aniframe=0
         anitype=0
         delay=0.0000
@@ -800,7 +748,7 @@ layer:freeze
         uvsbias2=0.0000
     }
     {
-        frame=99
+        frame=49
         aniframe=0
         anitype=0
         delay=0.0000
@@ -838,7 +786,7 @@ layer:freeze
     anikeynum=3
 
     {
-        frame=65
+        frame=15
         aniframe=0
         anitype=0
         delay=0.0000
@@ -864,7 +812,7 @@ layer:freeze
         uvsbias2=0.0000
     }
     {
-        frame=85
+        frame=35
         aniframe=0
         anitype=0
         delay=0.0000
@@ -890,7 +838,7 @@ layer:freeze
         uvsbias2=0.0000
     }
     {
-        frame=94
+        frame=44
         aniframe=0
         anitype=0
         delay=0.0000
@@ -928,7 +876,7 @@ layer:freeze
     anikeynum=3
 
     {
-        frame=65
+        frame=15
         aniframe=0
         anitype=0
         delay=0.0000
@@ -954,7 +902,7 @@ layer:freeze
         uvsbias2=0.0000
     }
     {
-        frame=85
+        frame=35
         aniframe=0
         anitype=0
         delay=0.0000
@@ -980,7 +928,7 @@ layer:freeze
         uvsbias2=0.0000
     }
     {
-        frame=94
+        frame=44
         aniframe=0
         anitype=0
         delay=0.0000
@@ -1018,7 +966,7 @@ layer:freeze
     anikeynum=3
 
     {
-        frame=72
+        frame=22
         aniframe=0
         anitype=0
         delay=0.0000
@@ -1044,7 +992,7 @@ layer:freeze
         uvsbias2=0.0000
     }
     {
-        frame=92
+        frame=42
         aniframe=0
         anitype=0
         delay=0.0000
@@ -1070,7 +1018,7 @@ layer:freeze
         uvsbias2=0.0000
     }
     {
-        frame=101
+        frame=51
         aniframe=0
         anitype=0
         delay=0.0000
@@ -1108,7 +1056,7 @@ layer:freeze
     anikeynum=3
 
     {
-        frame=65
+        frame=15
         aniframe=0
         anitype=0
         delay=0.0000
@@ -1134,7 +1082,7 @@ layer:freeze
         uvsbias2=0.0000
     }
     {
-        frame=90
+        frame=40
         aniframe=0
         anitype=0
         delay=0.0000
@@ -1160,7 +1108,7 @@ layer:freeze
         uvsbias2=0.0000
     }
     {
-        frame=100
+        frame=50
         aniframe=0
         anitype=0
         delay=0.0000
@@ -1198,7 +1146,7 @@ layer:freeze
     anikeynum=3
 
     {
-        frame=60
+        frame=10
         aniframe=0
         anitype=0
         delay=0.0000
@@ -1224,7 +1172,7 @@ layer:freeze
         uvsbias2=0.0000
     }
     {
-        frame=85
+        frame=35
         aniframe=0
         anitype=0
         delay=0.0000
@@ -1250,7 +1198,7 @@ layer:freeze
         uvsbias2=0.0000
     }
     {
-        frame=105
+        frame=55
         aniframe=0
         anitype=0
         delay=0.0000
@@ -1288,7 +1236,7 @@ layer:freeze
     anikeynum=3
 
     {
-        frame=60
+        frame=10
         aniframe=0
         anitype=0
         delay=0.0000
@@ -1314,7 +1262,7 @@ layer:freeze
         uvsbias2=0.0000
     }
     {
-        frame=85
+        frame=35
         aniframe=0
         anitype=0
         delay=0.0000
@@ -1340,7 +1288,7 @@ layer:freeze
         uvsbias2=0.0000
     }
     {
-        frame=105
+        frame=55
         aniframe=0
         anitype=0
         delay=0.0000
@@ -1558,7 +1506,7 @@ layer:smoke2
     anikeynum=4
 
     {
-        frame=80
+        frame=30
         aniframe=0
         anitype=0
         delay=0.0000
@@ -1584,7 +1532,7 @@ layer:smoke2
         uvsbias2=0.0000
     }
     {
-        frame=95
+        frame=45
         aniframe=0
         anitype=0
         delay=0.0000
@@ -1610,7 +1558,7 @@ layer:smoke2
         uvsbias2=0.0000
     }
     {
-        frame=105
+        frame=55
         aniframe=0
         anitype=0
         delay=0.0000
@@ -1636,7 +1584,7 @@ layer:smoke2
         uvsbias2=0.0000
     }
     {
-        frame=100
+        frame=50
         aniframe=0
         anitype=0
         delay=0.0000
@@ -1854,7 +1802,7 @@ layer:smoke2-1
     anikeynum=2
 
     {
-        frame=70
+        frame=20
         aniframe=0
         anitype=0
         delay=0.0000
@@ -1880,7 +1828,7 @@ layer:smoke2-1
         uvsbias2=0.0000
     }
     {
-        frame=85
+        frame=35
         aniframe=0
         anitype=0
         delay=0.0000
@@ -2046,7 +1994,7 @@ layer:smoke2-2
     anikeynum=3
 
     {
-        frame=80
+        frame=30
         aniframe=0
         anitype=0
         delay=0.0000
@@ -2072,7 +2020,7 @@ layer:smoke2-2
         uvsbias2=0.0000
     }
     {
-        frame=95
+        frame=45
         aniframe=0
         anitype=0
         delay=0.0000
@@ -2098,7 +2046,7 @@ layer:smoke2-2
         uvsbias2=0.0000
     }
     {
-        frame=105
+        frame=55
         aniframe=0
         anitype=0
         delay=0.0000
@@ -2264,7 +2212,7 @@ layer:ring
     anikeynum=3
 
     {
-        frame=80
+        frame=30
         aniframe=0
         anitype=0
         delay=0.0000
@@ -2290,7 +2238,7 @@ layer:ring
         uvsbias2=0.0000
     }
     {
-        frame=100
+        frame=50
         aniframe=0
         anitype=0
         delay=0.0000
@@ -2316,7 +2264,7 @@ layer:ring
         uvsbias2=0.0000
     }
     {
-        frame=90
+        frame=40
         aniframe=0
         anitype=0
         delay=0.0000
@@ -2354,7 +2302,7 @@ layer:ring-1
     anikeynum=3
 
     {
-        frame=75
+        frame=25
         aniframe=0
         anitype=0
         delay=0.0000
@@ -2380,7 +2328,7 @@ layer:ring-1
         uvsbias2=0.0000
     }
     {
-        frame=95
+        frame=45
         aniframe=0
         anitype=0
         delay=0.0000
@@ -2406,7 +2354,7 @@ layer:ring-1
         uvsbias2=0.0000
     }
     {
-        frame=85
+        frame=35
         aniframe=0
         anitype=0
         delay=0.0000
@@ -2444,7 +2392,7 @@ layer:ring-2
     anikeynum=3
 
     {
-        frame=75
+        frame=25
         aniframe=0
         anitype=0
         delay=0.0000
@@ -2470,7 +2418,7 @@ layer:ring-2
         uvsbias2=0.0000
     }
     {
-        frame=95
+        frame=45
         aniframe=0
         anitype=0
         delay=0.0000
@@ -2496,7 +2444,7 @@ layer:ring-2
         uvsbias2=0.0000
     }
     {
-        frame=85
+        frame=35
         aniframe=0
         anitype=0
         delay=0.0000
@@ -2534,7 +2482,7 @@ layer:ring
     anikeynum=3
 
     {
-        frame=85
+        frame=35
         aniframe=0
         anitype=0
         delay=0.0000
@@ -2560,7 +2508,7 @@ layer:ring
         uvsbias2=0.0000
     }
     {
-        frame=105
+        frame=55
         aniframe=0
         anitype=0
         delay=0.0000
@@ -2586,7 +2534,7 @@ layer:ring
         uvsbias2=0.0000
     }
     {
-        frame=95
+        frame=45
         aniframe=0
         anitype=0
         delay=0.0000
@@ -2624,7 +2572,7 @@ layer:ring_b
     anikeynum=2
 
     {
-        frame=60
+        frame=10
         aniframe=0
         anitype=0
         delay=0.0000
@@ -2650,7 +2598,7 @@ layer:ring_b
         uvsbias2=0.0000
     }
     {
-        frame=100
+        frame=50
         aniframe=0
         anitype=0
         delay=0.0000
@@ -2688,7 +2636,7 @@ layer:lord_blast_d
     anikeynum=3
 
     {
-        frame=75
+        frame=25
         aniframe=0
         anitype=0
         delay=0.0000
@@ -2714,7 +2662,7 @@ layer:lord_blast_d
         uvsbias2=0.0000
     }
     {
-        frame=95
+        frame=45
         aniframe=0
         anitype=0
         delay=0.0000
@@ -2740,7 +2688,7 @@ layer:lord_blast_d
         uvsbias2=0.0000
     }
     {
-        frame=105
+        frame=55
         aniframe=0
         anitype=0
         delay=0.0000
@@ -2778,7 +2726,7 @@ layer:lord_blast_d
     anikeynum=3
 
     {
-        frame=65
+        frame=15
         aniframe=0
         anitype=0
         delay=0.0000
@@ -2804,7 +2752,7 @@ layer:lord_blast_d
         uvsbias2=0.0000
     }
     {
-        frame=85
+        frame=35
         aniframe=0
         anitype=0
         delay=0.0000
@@ -2830,7 +2778,7 @@ layer:lord_blast_d
         uvsbias2=0.0000
     }
     {
-        frame=95
+        frame=45
         aniframe=0
         anitype=0
         delay=0.0000
@@ -2845,946 +2793,6 @@ layer:lord_blast_d
         mtpreset=0
         points=-128.0000,-165.0000  128.0000,-165.0000  128.0000,91.0000  -128.0000,91.0000
         rpoints=-28.8291,-206.8281  193.1685,-79.3406  65.6810,142.6569  -156.3166,15.1695
-        bezier=0.0000,0.0000  0.0000,0.0000
-        afbias=0.0000
-        posbias=0.0000
-        ptbias=0.0000
-        angbias=0.0000
-        uvbias=0.0000
-        uvsbias=0.0000
-        uvbias2=0.0000
-        uvsbias2=0.0000
-    }
-}
-
-layer:ring_b
-{
-    display=1
-    group=0
-    type=0
-    texcnt=1
-    texname=ring_b.bmp
-
-    anikeynum=4
-
-    {
-        frame=10
-        aniframe=0
-        anitype=0
-        delay=0.0000
-        pos=314.0000,76.0000
-        uv=0.0000,0.0000
-        uvs=1.0000,1.0000
-        uv2=0.0000,0.0000
-        uvs2=1.0000,1.0000
-        scale=38.0000,25.0000
-        angle=0.0000,0.0000,0.0000
-        color=255.0,255.0,151.0,208.0, 5,7
-        mtpreset=0
-        points=-19.0000,-12.5000  19.0000,-12.5000  19.0000,12.5000  -19.0000,12.5000
-        rpoints=-19.0000,-12.5000  19.0000,-12.5000  19.0000,12.5000  -19.0000,12.5000
-        bezier=0.0000,0.0000  0.0000,0.0000
-        afbias=0.0000
-        posbias=0.0000
-        ptbias=0.0000
-        angbias=0.0000
-        uvbias=0.0000
-        uvsbias=0.0000
-        uvbias2=0.0000
-        uvsbias2=0.0000
-    }
-    {
-        frame=20
-        aniframe=0
-        anitype=0
-        delay=0.0000
-        pos=314.0000,48.0000
-        uv=0.0000,0.0000
-        uvs=1.0000,1.0000
-        uv2=0.0000,0.0000
-        uvs2=1.0000,1.0000
-        scale=115.0000,76.0000
-        angle=0.0000,0.0000,0.0000
-        color=255.0,255.0,151.0,52.0, 5,7
-        mtpreset=0
-        points=-57.5000,-38.0000  57.5000,-38.0000  57.5000,38.0000  -57.5000,38.0000
-        rpoints=-57.5000,-38.0000  57.5000,-38.0000  57.5000,38.0000  -57.5000,38.0000
-        bezier=0.0000,0.0000  0.0000,0.0000
-        afbias=0.0000
-        posbias=0.0000
-        ptbias=0.0000
-        angbias=0.0000
-        uvbias=0.0000
-        uvsbias=0.0000
-        uvbias2=0.0000
-        uvsbias2=0.0000
-    }
-    {
-        frame=21
-        aniframe=0
-        anitype=0
-        delay=0.0000
-        pos=315.0000,145.0000
-        uv=0.0000,0.0000
-        uvs=1.0000,1.0000
-        uv2=0.0000,0.0000
-        uvs2=1.0000,1.0000
-        scale=38.0000,25.0000
-        angle=0.0000,0.0000,0.0000
-        color=255.0,255.0,151.0,208.0, 5,7
-        mtpreset=0
-        points=-19.0000,-12.5000  19.0000,-12.5000  19.0000,12.5000  -19.0000,12.5000
-        rpoints=-19.0000,-12.5000  19.0000,-12.5000  19.0000,12.5000  -19.0000,12.5000
-        bezier=0.0000,0.0000  0.0000,0.0000
-        afbias=0.0000
-        posbias=0.0000
-        ptbias=0.0000
-        angbias=0.0000
-        uvbias=0.0000
-        uvsbias=0.0000
-        uvbias2=0.0000
-        uvsbias2=0.0000
-    }
-    {
-        frame=31
-        aniframe=0
-        anitype=0
-        delay=0.0000
-        pos=315.0000,139.0000
-        uv=0.0000,0.0000
-        uvs=1.0000,1.0000
-        uv2=0.0000,0.0000
-        uvs2=1.0000,1.0000
-        scale=115.0000,76.0000
-        angle=0.0000,0.0000,0.0000
-        color=255.0,255.0,151.0,52.0, 5,7
-        mtpreset=0
-        points=-57.5000,-38.0000  57.5000,-38.0000  57.5000,38.0000  -57.5000,38.0000
-        rpoints=-57.5000,-38.0000  57.5000,-38.0000  57.5000,38.0000  -57.5000,38.0000
-        bezier=0.0000,0.0000  0.0000,0.0000
-        afbias=0.0000
-        posbias=0.0000
-        ptbias=0.0000
-        angbias=0.0000
-        uvbias=0.0000
-        uvsbias=0.0000
-        uvbias2=0.0000
-        uvsbias2=0.0000
-    }
-}
-
-layer:ring_b
-{
-    display=1
-    group=0
-    type=0
-    texcnt=1
-    texname=ring_b.bmp
-
-    anikeynum=4
-
-    {
-        frame=15
-        aniframe=0
-        anitype=0
-        delay=0.0000
-        pos=314.0000,76.0000
-        uv=0.0000,0.0000
-        uvs=1.0000,1.0000
-        uv2=0.0000,0.0000
-        uvs2=1.0000,1.0000
-        scale=38.0000,25.0000
-        angle=0.0000,0.0000,0.0000
-        color=255.0,255.0,151.0,208.0, 5,7
-        mtpreset=0
-        points=-19.0000,-12.5000  19.0000,-12.5000  19.0000,12.5000  -19.0000,12.5000
-        rpoints=-19.0000,-12.5000  19.0000,-12.5000  19.0000,12.5000  -19.0000,12.5000
-        bezier=0.0000,0.0000  0.0000,0.0000
-        afbias=0.0000
-        posbias=0.0000
-        ptbias=0.0000
-        angbias=0.0000
-        uvbias=0.0000
-        uvsbias=0.0000
-        uvbias2=0.0000
-        uvsbias2=0.0000
-    }
-    {
-        frame=25
-        aniframe=0
-        anitype=0
-        delay=0.0000
-        pos=314.0000,48.0000
-        uv=0.0000,0.0000
-        uvs=1.0000,1.0000
-        uv2=0.0000,0.0000
-        uvs2=1.0000,1.0000
-        scale=115.0000,76.0000
-        angle=0.0000,0.0000,0.0000
-        color=255.0,255.0,151.0,52.0, 5,7
-        mtpreset=0
-        points=-57.5000,-38.0000  57.5000,-38.0000  57.5000,38.0000  -57.5000,38.0000
-        rpoints=-57.5000,-38.0000  57.5000,-38.0000  57.5000,38.0000  -57.5000,38.0000
-        bezier=0.0000,0.0000  0.0000,0.0000
-        afbias=0.0000
-        posbias=0.0000
-        ptbias=0.0000
-        angbias=0.0000
-        uvbias=0.0000
-        uvsbias=0.0000
-        uvbias2=0.0000
-        uvsbias2=0.0000
-    }
-    {
-        frame=26
-        aniframe=0
-        anitype=0
-        delay=0.0000
-        pos=315.0000,145.0000
-        uv=0.0000,0.0000
-        uvs=1.0000,1.0000
-        uv2=0.0000,0.0000
-        uvs2=1.0000,1.0000
-        scale=38.0000,25.0000
-        angle=0.0000,0.0000,0.0000
-        color=255.0,255.0,151.0,208.0, 5,7
-        mtpreset=0
-        points=-19.0000,-12.5000  19.0000,-12.5000  19.0000,12.5000  -19.0000,12.5000
-        rpoints=-19.0000,-12.5000  19.0000,-12.5000  19.0000,12.5000  -19.0000,12.5000
-        bezier=0.0000,0.0000  0.0000,0.0000
-        afbias=0.0000
-        posbias=0.0000
-        ptbias=0.0000
-        angbias=0.0000
-        uvbias=0.0000
-        uvsbias=0.0000
-        uvbias2=0.0000
-        uvsbias2=0.0000
-    }
-    {
-        frame=36
-        aniframe=0
-        anitype=0
-        delay=0.0000
-        pos=315.0000,139.0000
-        uv=0.0000,0.0000
-        uvs=1.0000,1.0000
-        uv2=0.0000,0.0000
-        uvs2=1.0000,1.0000
-        scale=115.0000,76.0000
-        angle=0.0000,0.0000,0.0000
-        color=255.0,255.0,151.0,52.0, 5,7
-        mtpreset=0
-        points=-57.5000,-38.0000  57.5000,-38.0000  57.5000,38.0000  -57.5000,38.0000
-        rpoints=-57.5000,-38.0000  57.5000,-38.0000  57.5000,38.0000  -57.5000,38.0000
-        bezier=0.0000,0.0000  0.0000,0.0000
-        afbias=0.0000
-        posbias=0.0000
-        ptbias=0.0000
-        angbias=0.0000
-        uvbias=0.0000
-        uvsbias=0.0000
-        uvbias2=0.0000
-        uvsbias2=0.0000
-    }
-}
-
-layer:ring_b
-{
-    display=1
-    group=0
-    type=0
-    texcnt=1
-    texname=ring_b.bmp
-
-    anikeynum=4
-
-    {
-        frame=20
-        aniframe=0
-        anitype=0
-        delay=0.0000
-        pos=315.0000,120.0000
-        uv=0.0000,0.0000
-        uvs=1.0000,1.0000
-        uv2=0.0000,0.0000
-        uvs2=1.0000,1.0000
-        scale=38.0000,25.0000
-        angle=0.0000,0.0000,0.0000
-        color=255.0,255.0,151.0,208.0, 5,7
-        mtpreset=0
-        points=-19.0000,-12.5000  19.0000,-12.5000  19.0000,12.5000  -19.0000,12.5000
-        rpoints=-19.0000,-12.5000  19.0000,-12.5000  19.0000,12.5000  -19.0000,12.5000
-        bezier=0.0000,0.0000  0.0000,0.0000
-        afbias=0.0000
-        posbias=0.0000
-        ptbias=0.0000
-        angbias=0.0000
-        uvbias=0.0000
-        uvsbias=0.0000
-        uvbias2=0.0000
-        uvsbias2=0.0000
-    }
-    {
-        frame=35
-        aniframe=0
-        anitype=0
-        delay=0.0000
-        pos=316.0000,69.0000
-        uv=0.0000,0.0000
-        uvs=1.0000,1.0000
-        uv2=0.0000,0.0000
-        uvs2=1.0000,1.0000
-        scale=256.0000,102.0000
-        angle=0.0000,0.0000,0.0000
-        color=255.0,255.0,151.0,52.0, 5,7
-        mtpreset=0
-        points=-128.0000,-51.0000  128.0000,-51.0000  128.0000,51.0000  -128.0000,51.0000
-        rpoints=-128.0000,-51.0000  128.0000,-51.0000  128.0000,51.0000  -128.0000,51.0000
-        bezier=0.0000,0.0000  0.0000,0.0000
-        afbias=0.0000
-        posbias=0.0000
-        ptbias=0.0000
-        angbias=0.0000
-        uvbias=0.0000
-        uvsbias=0.0000
-        uvbias2=0.0000
-        uvsbias2=0.0000
-    }
-    {
-        frame=36
-        aniframe=0
-        anitype=0
-        delay=0.0000
-        pos=319.0000,218.0000
-        uv=0.0000,0.0000
-        uvs=1.0000,1.0000
-        uv2=0.0000,0.0000
-        uvs2=1.0000,1.0000
-        scale=38.0000,25.0000
-        angle=0.0000,0.0000,0.0000
-        color=255.0,255.0,151.0,208.0, 5,7
-        mtpreset=0
-        points=-19.0000,-12.5000  19.0000,-12.5000  19.0000,12.5000  -19.0000,12.5000
-        rpoints=-19.0000,-12.5000  19.0000,-12.5000  19.0000,12.5000  -19.0000,12.5000
-        bezier=0.0000,0.0000  0.0000,0.0000
-        afbias=0.0000
-        posbias=0.0000
-        ptbias=0.0000
-        angbias=0.0000
-        uvbias=0.0000
-        uvsbias=0.0000
-        uvbias2=0.0000
-        uvsbias2=0.0000
-    }
-    {
-        frame=51
-        aniframe=0
-        anitype=0
-        delay=0.0000
-        pos=320.0000,219.0000
-        uv=0.0000,0.0000
-        uvs=1.0000,1.0000
-        uv2=0.0000,0.0000
-        uvs2=1.0000,1.0000
-        scale=256.0000,102.0000
-        angle=0.0000,0.0000,0.0000
-        color=255.0,5.0,49.0,52.0, 5,7
-        mtpreset=0
-        points=-128.0000,-51.0000  128.0000,-51.0000  128.0000,51.0000  -128.0000,51.0000
-        rpoints=-128.0000,-51.0000  128.0000,-51.0000  128.0000,51.0000  -128.0000,51.0000
-        bezier=0.0000,0.0000  0.0000,0.0000
-        afbias=0.0000
-        posbias=0.0000
-        ptbias=0.0000
-        angbias=0.0000
-        uvbias=0.0000
-        uvsbias=0.0000
-        uvbias2=0.0000
-        uvsbias2=0.0000
-    }
-}
-
-layer:drg
-{
-    display=1
-    group=0
-    type=0
-    texcnt=1
-    texname=drg.bmp
-
-    anikeynum=3
-
-    {
-        frame=0
-        aniframe=0
-        anitype=0
-        delay=0.0000
-        pos=320.0000,0.0000
-        uv=0.0000,0.0000
-        uvs=1.0000,1.0000
-        uv2=0.0000,0.0000
-        uvs2=1.0000,1.0000
-        scale=120.0000,76.0000
-        angle=0.0000,0.0000,-256.0000
-        color=255.0,255.0,255.0,0.0, 5,7
-        mtpreset=0
-        points=-60.0000,-38.0000  60.0000,-38.0000  60.0000,38.0000  -60.0000,38.0000
-        rpoints=-38.0478,59.9698  -37.9522,-60.0302  38.0478,-59.9698  37.9522,60.0302
-        bezier=0.0000,0.0000  0.0000,0.0000
-        afbias=0.0000
-        posbias=0.0000
-        ptbias=0.0000
-        angbias=0.0000
-        uvbias=0.0000
-        uvsbias=0.0000
-        uvbias2=0.0000
-        uvsbias2=0.0000
-    }
-    {
-        frame=25
-        aniframe=0
-        anitype=0
-        delay=0.0000
-        pos=320.0000,185.0000
-        uv=0.0000,0.0000
-        uvs=1.0000,1.0000
-        uv2=0.0000,0.0000
-        uvs2=1.0000,1.0000
-        scale=120.0000,76.0000
-        angle=0.0000,0.0000,-256.0000
-        color=255.0,255.0,255.0,203.0, 5,7
-        mtpreset=0
-        points=-60.0000,-38.0000  60.0000,-38.0000  60.0000,38.0000  -60.0000,38.0000
-        rpoints=-38.0478,59.9698  -37.9522,-60.0302  38.0478,-59.9698  37.9522,60.0302
-        bezier=0.0000,0.0000  0.0000,0.0000
-        afbias=0.0000
-        posbias=0.0000
-        ptbias=0.0000
-        angbias=0.0000
-        uvbias=0.0000
-        uvsbias=0.0000
-        uvbias2=0.0000
-        uvsbias2=0.0000
-    }
-    {
-        frame=45
-        aniframe=0
-        anitype=0
-        delay=0.0000
-        pos=320.0000,200.0000
-        uv=0.0000,0.0000
-        uvs=1.0000,1.0000
-        uv2=0.0000,0.0000
-        uvs2=1.0000,1.0000
-        scale=120.0000,76.0000
-        angle=0.0000,0.0000,-256.0000
-        color=255.0,255.0,255.0,0.0, 5,7
-        mtpreset=0
-        points=-60.0000,-38.0000  60.0000,-38.0000  60.0000,38.0000  -60.0000,38.0000
-        rpoints=-38.0478,59.9698  -37.9522,-60.0302  38.0478,-59.9698  37.9522,60.0302
-        bezier=0.0000,0.0000  0.0000,0.0000
-        afbias=0.0000
-        posbias=0.0000
-        ptbias=0.0000
-        angbias=0.0000
-        uvbias=0.0000
-        uvsbias=0.0000
-        uvbias2=0.0000
-        uvsbias2=0.0000
-    }
-}
-
-layer:drg
-{
-    display=1
-    group=0
-    type=0
-    texcnt=1
-    texname=drg.bmp
-
-    anikeynum=3
-
-    {
-        frame=5
-        aniframe=0
-        anitype=0
-        delay=0.0000
-        pos=320.0000,0.0000
-        uv=0.0000,0.0000
-        uvs=1.0000,1.0000
-        uv2=0.0000,0.0000
-        uvs2=1.0000,1.0000
-        scale=120.0000,0.0000
-        angle=0.0000,0.0000,-256.0000
-        color=255.0,255.0,255.0,0.0, 5,7
-        mtpreset=0
-        points=-60.0000,0.0000  60.0000,0.0000  60.0000,0.0000  -60.0000,0.0000
-        rpoints=-0.0478,60.0000  0.0478,-60.0000  0.0478,-60.0000  -0.0478,60.0000
-        bezier=0.0000,0.0000  0.0000,0.0000
-        afbias=0.0000
-        posbias=0.0000
-        ptbias=0.0000
-        angbias=0.0000
-        uvbias=0.0000
-        uvsbias=0.0000
-        uvbias2=0.0000
-        uvsbias2=0.0000
-    }
-    {
-        frame=30
-        aniframe=0
-        anitype=0
-        delay=0.0000
-        pos=320.0000,185.0000
-        uv=0.0000,0.0000
-        uvs=1.0000,1.0000
-        uv2=0.0000,0.0000
-        uvs2=1.0000,1.0000
-        scale=120.0000,76.0000
-        angle=0.0000,0.0000,-256.0000
-        color=255.0,255.0,255.0,203.0, 5,7
-        mtpreset=0
-        points=-60.0000,-38.0000  60.0000,-38.0000  60.0000,38.0000  -60.0000,38.0000
-        rpoints=-38.0478,59.9698  -37.9522,-60.0302  38.0478,-59.9698  37.9522,60.0302
-        bezier=0.0000,0.0000  0.0000,0.0000
-        afbias=0.0000
-        posbias=0.0000
-        ptbias=0.0000
-        angbias=0.0000
-        uvbias=0.0000
-        uvsbias=0.0000
-        uvbias2=0.0000
-        uvsbias2=0.0000
-    }
-    {
-        frame=50
-        aniframe=0
-        anitype=0
-        delay=0.0000
-        pos=320.0000,200.0000
-        uv=0.0000,0.0000
-        uvs=1.0000,1.0000
-        uv2=0.0000,0.0000
-        uvs2=1.0000,1.0000
-        scale=120.0000,76.0000
-        angle=0.0000,0.0000,-256.0000
-        color=255.0,255.0,255.0,0.0, 5,7
-        mtpreset=0
-        points=-60.0000,-38.0000  60.0000,-38.0000  60.0000,38.0000  -60.0000,38.0000
-        rpoints=-38.0478,59.9698  -37.9522,-60.0302  38.0478,-59.9698  37.9522,60.0302
-        bezier=0.0000,0.0000  0.0000,0.0000
-        afbias=0.0000
-        posbias=0.0000
-        ptbias=0.0000
-        angbias=0.0000
-        uvbias=0.0000
-        uvsbias=0.0000
-        uvbias2=0.0000
-        uvsbias2=0.0000
-    }
-}
-
-layer:badakk
-{
-    display=1
-    group=0
-    type=0
-    texcnt=1
-    texname=badakk.bmp
-
-    anikeynum=4
-
-    {
-        frame=41
-        aniframe=0
-        anitype=0
-        delay=0.0000
-        pos=318.0000,236.0000
-        uv=0.0000,0.0000
-        uvs=1.0000,1.0000
-        uv2=0.0000,0.0000
-        uvs2=1.0000,1.0000
-        scale=153.0000,120.0000
-        angle=0.0000,0.0000,0.0000
-        color=255.0,255.0,255.0,38.0, 5,7
-        mtpreset=0
-        points=-76.5000,-60.0000  76.5000,-60.0000  76.5000,60.0000  -76.5000,60.0000
-        rpoints=-76.5000,-60.0000  76.5000,-60.0000  76.5000,60.0000  -76.5000,60.0000
-        bezier=0.0000,0.0000  0.0000,0.0000
-        afbias=0.0000
-        posbias=0.0000
-        ptbias=0.0000
-        angbias=0.0000
-        uvbias=0.0000
-        uvsbias=0.0000
-        uvbias2=0.0000
-        uvsbias2=0.0000
-    }
-    {
-        frame=49
-        aniframe=0
-        anitype=0
-        delay=0.0000
-        pos=318.0000,238.0000
-        uv=0.0000,0.0000
-        uvs=1.0000,1.0000
-        uv2=0.0000,0.0000
-        uvs2=1.0000,1.0000
-        scale=153.0000,120.0000
-        angle=0.0000,0.0000,0.0000
-        color=255.0,255.0,255.0,217.0, 5,7
-        mtpreset=0
-        points=-76.5000,-60.0000  76.5000,-60.0000  76.5000,60.0000  -76.5000,60.0000
-        rpoints=-76.5000,-60.0000  76.5000,-60.0000  76.5000,60.0000  -76.5000,60.0000
-        bezier=0.0000,0.0000  0.0000,0.0000
-        afbias=0.0000
-        posbias=0.0000
-        ptbias=0.0000
-        angbias=0.0000
-        uvbias=0.0000
-        uvsbias=0.0000
-        uvbias2=0.0000
-        uvsbias2=0.0000
-    }
-    {
-        frame=45
-        aniframe=0
-        anitype=0
-        delay=0.0000
-        pos=318.0000,235.0000
-        uv=0.0000,0.0000
-        uvs=1.0000,1.0000
-        uv2=0.0000,0.0000
-        uvs2=1.0000,1.0000
-        scale=150.0000,118.0000
-        angle=0.0000,0.0000,0.0000
-        color=255.0,255.0,255.0,137.4, 5,7
-        mtpreset=0
-        points=-75.0000,-59.0000  75.0000,-59.0000  75.0000,59.0000  -75.0000,59.0000
-        rpoints=-75.0000,-59.0000  75.0000,-59.0000  75.0000,59.0000  -75.0000,59.0000
-        bezier=0.0000,0.0000  0.0000,0.0000
-        afbias=0.0000
-        posbias=0.0000
-        ptbias=0.0000
-        angbias=0.0000
-        uvbias=0.0000
-        uvsbias=0.0000
-        uvbias2=0.0000
-        uvsbias2=0.0000
-    }
-    {
-        frame=53
-        aniframe=0
-        anitype=0
-        delay=0.0000
-        pos=318.0000,236.0000
-        uv=0.0000,0.0000
-        uvs=1.0000,1.0000
-        uv2=0.0000,0.0000
-        uvs2=1.0000,1.0000
-        scale=153.0000,120.0000
-        angle=0.0000,0.0000,0.0000
-        color=255.0,255.0,255.0,166.2, 5,7
-        mtpreset=0
-        points=-76.5000,-60.0000  76.5000,-60.0000  76.5000,60.0000  -76.5000,60.0000
-        rpoints=-76.5000,-60.0000  76.5000,-60.0000  76.5000,60.0000  -76.5000,60.0000
-        bezier=0.0000,0.0000  0.0000,0.0000
-        afbias=0.0000
-        posbias=0.0000
-        ptbias=0.0000
-        angbias=0.0000
-        uvbias=0.0000
-        uvsbias=0.0000
-        uvbias2=0.0000
-        uvsbias2=0.0000
-    }
-}
-
-layer:badakk
-{
-    display=1
-    group=0
-    type=0
-    texcnt=1
-    texname=badakk.bmp
-
-    anikeynum=4
-
-    {
-        frame=45
-        aniframe=0
-        anitype=0
-        delay=0.0000
-        pos=318.0000,236.0000
-        uv=0.0000,0.0000
-        uvs=1.0000,1.0000
-        uv2=0.0000,0.0000
-        uvs2=1.0000,1.0000
-        scale=153.0000,120.0000
-        angle=0.0000,0.0000,0.0000
-        color=255.0,255.0,255.0,38.0, 5,7
-        mtpreset=0
-        points=-76.5000,-60.0000  76.5000,-60.0000  76.5000,60.0000  -76.5000,60.0000
-        rpoints=-76.5000,-60.0000  76.5000,-60.0000  76.5000,60.0000  -76.5000,60.0000
-        bezier=0.0000,0.0000  0.0000,0.0000
-        afbias=0.0000
-        posbias=0.0000
-        ptbias=0.0000
-        angbias=0.0000
-        uvbias=0.0000
-        uvsbias=0.0000
-        uvbias2=0.0000
-        uvsbias2=0.0000
-    }
-    {
-        frame=53
-        aniframe=0
-        anitype=0
-        delay=0.0000
-        pos=318.0000,238.0000
-        uv=0.0000,0.0000
-        uvs=1.0000,1.0000
-        uv2=0.0000,0.0000
-        uvs2=1.0000,1.0000
-        scale=153.0000,120.0000
-        angle=0.0000,0.0000,0.0000
-        color=255.0,255.0,255.0,217.0, 5,7
-        mtpreset=0
-        points=-76.5000,-60.0000  76.5000,-60.0000  76.5000,60.0000  -76.5000,60.0000
-        rpoints=-76.5000,-60.0000  76.5000,-60.0000  76.5000,60.0000  -76.5000,60.0000
-        bezier=0.0000,0.0000  0.0000,0.0000
-        afbias=0.0000
-        posbias=0.0000
-        ptbias=0.0000
-        angbias=0.0000
-        uvbias=0.0000
-        uvsbias=0.0000
-        uvbias2=0.0000
-        uvsbias2=0.0000
-    }
-    {
-        frame=49
-        aniframe=0
-        anitype=0
-        delay=0.0000
-        pos=318.0000,235.0000
-        uv=0.0000,0.0000
-        uvs=1.0000,1.0000
-        uv2=0.0000,0.0000
-        uvs2=1.0000,1.0000
-        scale=150.0000,118.0000
-        angle=0.0000,0.0000,0.0000
-        color=255.0,255.0,255.0,137.4, 5,7
-        mtpreset=0
-        points=-75.0000,-59.0000  75.0000,-59.0000  75.0000,59.0000  -75.0000,59.0000
-        rpoints=-75.0000,-59.0000  75.0000,-59.0000  75.0000,59.0000  -75.0000,59.0000
-        bezier=0.0000,0.0000  0.0000,0.0000
-        afbias=0.0000
-        posbias=0.0000
-        ptbias=0.0000
-        angbias=0.0000
-        uvbias=0.0000
-        uvsbias=0.0000
-        uvbias2=0.0000
-        uvsbias2=0.0000
-    }
-    {
-        frame=57
-        aniframe=0
-        anitype=0
-        delay=0.0000
-        pos=318.0000,236.0000
-        uv=0.0000,0.0000
-        uvs=1.0000,1.0000
-        uv2=0.0000,0.0000
-        uvs2=1.0000,1.0000
-        scale=153.0000,120.0000
-        angle=0.0000,0.0000,0.0000
-        color=255.0,255.0,255.0,166.2, 5,7
-        mtpreset=0
-        points=-76.5000,-60.0000  76.5000,-60.0000  76.5000,60.0000  -76.5000,60.0000
-        rpoints=-76.5000,-60.0000  76.5000,-60.0000  76.5000,60.0000  -76.5000,60.0000
-        bezier=0.0000,0.0000  0.0000,0.0000
-        afbias=0.0000
-        posbias=0.0000
-        ptbias=0.0000
-        angbias=0.0000
-        uvbias=0.0000
-        uvsbias=0.0000
-        uvbias2=0.0000
-        uvsbias2=0.0000
-    }
-}
-
-layer:thunder_center
-{
-    display=1
-    group=0
-    type=0
-    texcnt=1
-    texname=thunder_center.bmp
-
-    anikeynum=3
-
-    {
-        frame=15
-        aniframe=0
-        anitype=0
-        delay=0.0000
-        pos=318.0000,196.0000
-        uv=0.0000,0.0000
-        uvs=1.0000,1.0000
-        uv2=0.0000,0.0000
-        uvs2=1.0000,1.0000
-        scale=64.0000,64.0000
-        angle=0.0000,0.0000,0.0000
-        color=255.0,255.0,38.0,24.0, 5,7
-        mtpreset=0
-        points=-32.0000,-56.0000  32.0000,-56.0000  32.0000,8.0000  -32.0000,8.0000
-        rpoints=-32.0000,-56.0000  32.0000,-56.0000  32.0000,8.0000  -32.0000,8.0000
-        bezier=0.0000,0.0000  0.0000,0.0000
-        afbias=0.0000
-        posbias=0.0000
-        ptbias=0.0000
-        angbias=0.0000
-        uvbias=0.0000
-        uvsbias=0.0000
-        uvbias2=0.0000
-        uvsbias2=0.0000
-    }
-    {
-        frame=25
-        aniframe=0
-        anitype=0
-        delay=0.0000
-        pos=318.0000,196.0000
-        uv=0.0000,0.0000
-        uvs=1.0000,1.0000
-        uv2=0.0000,0.0000
-        uvs2=1.0000,1.0000
-        scale=128.0000,128.0000
-        angle=0.0000,0.0000,0.0000
-        color=255.0,0.0,0.0,208.0, 5,7
-        mtpreset=0
-        points=-64.0000,-112.0000  64.0000,-112.0000  64.0000,16.0000  -64.0000,16.0000
-        rpoints=-64.0000,-112.0000  64.0000,-112.0000  64.0000,16.0000  -64.0000,16.0000
-        bezier=0.0000,0.0000  0.0000,0.0000
-        afbias=0.0000
-        posbias=0.0000
-        ptbias=0.0000
-        angbias=0.0000
-        uvbias=0.0000
-        uvsbias=0.0000
-        uvbias2=0.0000
-        uvsbias2=0.0000
-    }
-    {
-        frame=30
-        aniframe=0
-        anitype=0
-        delay=0.0000
-        pos=318.0000,196.0000
-        uv=0.0000,0.0000
-        uvs=1.0000,1.0000
-        uv2=0.0000,0.0000
-        uvs2=1.0000,1.0000
-        scale=64.0000,384.0000
-        angle=0.0000,0.0000,0.0000
-        color=255.0,255.0,255.0,203.0, 5,7
-        mtpreset=0
-        points=-32.0000,-336.0000  32.0000,-336.0000  32.0000,48.0000  -32.0000,48.0000
-        rpoints=-32.0000,-336.0000  32.0000,-336.0000  32.0000,48.0000  -32.0000,48.0000
-        bezier=0.0000,0.0000  0.0000,0.0000
-        afbias=0.0000
-        posbias=0.0000
-        ptbias=0.0000
-        angbias=0.0000
-        uvbias=0.0000
-        uvsbias=0.0000
-        uvbias2=0.0000
-        uvsbias2=0.0000
-    }
-}
-
-layer:thunder_center
-{
-    display=0
-    group=0
-    type=0
-    texcnt=1
-    texname=thunder_center.bmp
-
-    anikeynum=3
-
-    {
-        frame=20
-        aniframe=0
-        anitype=0
-        delay=0.0000
-        pos=318.0000,196.0000
-        uv=0.0000,0.0000
-        uvs=1.0000,1.0000
-        uv2=0.0000,0.0000
-        uvs2=1.0000,1.0000
-        scale=64.0000,64.0000
-        angle=0.0000,0.0000,0.0000
-        color=255.0,255.0,38.0,24.0, 5,7
-        mtpreset=0
-        points=-32.0000,-56.0000  32.0000,-56.0000  32.0000,8.0000  -32.0000,8.0000
-        rpoints=-32.0000,-56.0000  32.0000,-56.0000  32.0000,8.0000  -32.0000,8.0000
-        bezier=0.0000,0.0000  0.0000,0.0000
-        afbias=0.0000
-        posbias=0.0000
-        ptbias=0.0000
-        angbias=0.0000
-        uvbias=0.0000
-        uvsbias=0.0000
-        uvbias2=0.0000
-        uvsbias2=0.0000
-    }
-    {
-        frame=30
-        aniframe=0
-        anitype=0
-        delay=0.0000
-        pos=318.0000,196.0000
-        uv=0.0000,0.0000
-        uvs=1.0000,1.0000
-        uv2=0.0000,0.0000
-        uvs2=1.0000,1.0000
-        scale=128.0000,128.0000
-        angle=0.0000,0.0000,0.0000
-        color=255.0,0.0,0.0,208.0, 5,7
-        mtpreset=0
-        points=-64.0000,-112.0000  64.0000,-112.0000  64.0000,16.0000  -64.0000,16.0000
-        rpoints=-64.0000,-112.0000  64.0000,-112.0000  64.0000,16.0000  -64.0000,16.0000
-        bezier=0.0000,0.0000  0.0000,0.0000
-        afbias=0.0000
-        posbias=0.0000
-        ptbias=0.0000
-        angbias=0.0000
-        uvbias=0.0000
-        uvsbias=0.0000
-        uvbias2=0.0000
-        uvsbias2=0.0000
-    }
-    {
-        frame=35
-        aniframe=0
-        anitype=0
-        delay=0.0000
-        pos=318.0000,196.0000
-        uv=0.0000,0.0000
-        uvs=1.0000,1.0000
-        uv2=0.0000,0.0000
-        uvs2=1.0000,1.0000
-        scale=64.0000,384.0000
-        angle=0.0000,0.0000,0.0000
-        color=255.0,255.0,255.0,203.0, 5,7
-        mtpreset=0
-        points=-32.0000,-336.0000  32.0000,-336.0000  32.0000,48.0000  -32.0000,48.0000
-        rpoints=-32.0000,-336.0000  32.0000,-336.0000  32.0000,48.0000  -32.0000,48.0000
         bezier=0.0000,0.0000  0.0000,0.0000
         afbias=0.0000
         posbias=0.0000
