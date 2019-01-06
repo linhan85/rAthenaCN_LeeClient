@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 
-import os
 import glob
+import os
+import re
+import struct
 import time
 import timeit
-import struct
-import re
-from PyLibs import LeeCommon
-from PyLibs import LeeIteminfoLua
+
+from PyLibs import LeeCommon, LeeIteminfoLua
+
 
 class LeeVerifier:
     '''
@@ -16,9 +17,9 @@ class LeeVerifier:
     '''
     def __init__(self):
         self.leeCommon = LeeCommon()
-        self.textureDirs = ['data/texture/']
-        self.modelDirs = ['data/model/']
-        self.spriteDirs = ['data/sprite/']
+        self.textureDirs = ['data/texture']
+        self.modelDirs = ['data/model']
+        self.spriteDirs = ['data/sprite']
 
         self.reportInfo = []
         self.reportStartTime = 0    # 用于记录当前检测项目的启动时间
@@ -36,9 +37,12 @@ class LeeVerifier:
         Returns:
             转换后的字符串
         '''
+        zeroEndBytes = 0
         for x in range(len(bytesArray)):
-            if (bytesArray[x] == 0): break
-        asciiString = bytesArray.decode('latin1')[:x]
+            zeroEndBytes = x
+            if bytesArray[zeroEndBytes] == 0:
+                break
+        asciiString = bytesArray.decode('latin1')[:zeroEndBytes]
         return asciiString.encode('latin1').decode(targetCode)
 
     def __readFormatVersionInfo(self, f):
@@ -184,8 +188,8 @@ class LeeVerifier:
         for _i in range(objectCount):
             objectType = struct.unpack("1I", rswfile.read(struct.calcsize("1I")))[0]
 
-            if (objectType == 1): # Model - 关注会加载的 RSM 模型
-                if (isCompatible(1, 3)):
+            if objectType == 1: # Model - 关注会加载的 RSM 模型
+                if isCompatible(1, 3):
                     _ModelName = self.__bytesToString(struct.unpack("40s", rswfile.read(struct.calcsize("40s")))[0])
                     _AnimationType = struct.unpack("1I", rswfile.read(struct.calcsize("1I")))[0]
                     _AnimationSpeed = struct.unpack("1f", rswfile.read(struct.calcsize("1f")))[0]
@@ -223,7 +227,9 @@ class LeeVerifier:
         fmtMajor, fmtMinor, _Version = self.__readFormatVersionInfo(rsmfile)
 
         def isCompatible(major, minor):
-            return (fmtMajor > major or (fmtMajor == major and fmtMinor >= minor))
+            return (
+                fmtMajor > major or (fmtMajor == major and fmtMinor >= minor)
+            )
 
         _AnimationLength, _ShadeType = struct.unpack("2I", rsmfile.read(struct.calcsize("2I")))
         _Alpha = 0 if not isCompatible(1, 4) else struct.unpack("1b", rsmfile.read(struct.calcsize("1b")))[0]
@@ -279,58 +285,85 @@ class LeeVerifier:
             print("读取 Iteminfo 文件失败, 文件不存在: %s" % iteminfofilepath)
             return False, [], []
 
-        iteminfoLua = LeeIteminfoLua()
-        iteminfoLua.load(iteminfofilepath)
+        itemLua = LeeIteminfoLua()
+        itemLua.load(iteminfofilepath)
 
         texturePathList = []
         spritePathList = []
 
-        for itemID in iteminfoLua.items():
-            unidentifiedResourceName = iteminfoLua.getItemAttribute(itemID, 'unidentifiedResourceName')
-            texturePathList.append('蜡历牢磐其捞胶/collection/%s.bmp' % unidentifiedResourceName)
-            texturePathList.append('蜡历牢磐其捞胶/item/%s.bmp' % unidentifiedResourceName)
-            spritePathList.append('酒捞袍/%s.spr' % unidentifiedResourceName)
-            spritePathList.append('酒捞袍/%s.act' % unidentifiedResourceName)
+        for itemID in itemLua.items():
+            unidentifiedResourceName = itemLua.getItemAttribute(itemID, 'unidentifiedResourceName')
+            if unidentifiedResourceName.strip() != '':
+                texturePathList.append('蜡历牢磐其捞胶/collection/%s.bmp' % unidentifiedResourceName)
+                texturePathList.append('蜡历牢磐其捞胶/item/%s.bmp' % unidentifiedResourceName)
+                spritePathList.append('酒捞袍/%s.spr' % unidentifiedResourceName)
+                spritePathList.append('酒捞袍/%s.act' % unidentifiedResourceName)
 
-            identifiedResourceName = iteminfoLua.getItemAttribute(itemID, 'identifiedResourceName')
-            texturePathList.append('蜡历牢磐其捞胶/collection/%s.bmp' % identifiedResourceName)
-            texturePathList.append('蜡历牢磐其捞胶/item/%s.bmp' % identifiedResourceName)
-            spritePathList.append('酒捞袍/%s.spr' % identifiedResourceName)
-            spritePathList.append('酒捞袍/%s.act' % identifiedResourceName)
+            identifiedResourceName = itemLua.getItemAttribute(itemID, 'identifiedResourceName')
+            if identifiedResourceName.strip() != '':
+                texturePathList.append('蜡历牢磐其捞胶/collection/%s.bmp' % identifiedResourceName)
+                texturePathList.append('蜡历牢磐其捞胶/item/%s.bmp' % identifiedResourceName)
+                spritePathList.append('酒捞袍/%s.spr' % identifiedResourceName)
+                spritePathList.append('酒捞袍/%s.act' % identifiedResourceName)
 
         texturePathList = list(set(texturePathList))
         spritePathList = list(set(spritePathList))
 
         return True, texturePathList, spritePathList
 
-    def __verifyGnd(self, gndfilepath):
+    def __verifyGnd(self, gndfilepath, priorityDataDir = None):
         result, texturePathList = self.__parseGnd(gndfilepath)
-        if not result: return None
+        if not result:
+            return None, None
 
         missTexturePathList = []
+        existsTexturePathList = []
         leeClientDir = self.leeCommon.getLeeClientDirectory()
 
         for texturePath in texturePathList:
+            if priorityDataDir:
+                fullpath = self.leeCommon.normpath(
+                    '%s/%s/texture/%s' % (leeClientDir, priorityDataDir, texturePath)
+                )
+                # print(fullpath)
+                if self.leeCommon.isFileExists(fullpath):
+                    existsTexturePathList.append(fullpath)
+                    continue
             for textureDir in self.textureDirs:
-                fullpath = self.leeCommon.normpath('%s/%s/%s' % (leeClientDir, textureDir, texturePath))
-                if self.leeCommon.isFileExists(fullpath): break
+                fullpath = self.leeCommon.normpath(
+                    '%s/%s/%s' % (leeClientDir, textureDir, texturePath)
+                )
+                if self.leeCommon.isFileExists(fullpath):
+                    existsTexturePathList.append(fullpath)
+                    break
             else:
-                print(texturePath)
+                # print(texturePath)
                 missTexturePathList.append(fullpath)
 
-        return missTexturePathList
+        return existsTexturePathList, missTexturePathList
 
-    def __verifyRsw(self, rswfilepath):
+    def __verifyRsw(self, rswfilepath, priorityDataDir = None):
         result, modelPathList = self.__parseRsw(rswfilepath)
-        if not result: return None, None
+        if not result:
+            return None, None
 
         missModelPathList = []
         existsModelPathList = []
         leeClientDir = self.leeCommon.getLeeClientDirectory()
 
         for modelPath in modelPathList:
+            if priorityDataDir:
+                fullpath = self.leeCommon.normpath(
+                    '%s/%s/model/%s' % (leeClientDir, priorityDataDir, modelPath)
+                )
+                # print(fullpath)
+                if self.leeCommon.isFileExists(fullpath):
+                    existsModelPathList.append(fullpath)
+                    continue
             for modelDir in self.modelDirs:
-                fullpath = self.leeCommon.normpath('%s/%s/%s' % (leeClientDir, modelDir, modelPath))
+                fullpath = self.leeCommon.normpath(
+                    '%s/%s/%s' % (leeClientDir, modelDir, modelPath)
+                )
                 if self.leeCommon.isFileExists(fullpath):
                     # print('existsModelPathList: %s' % modelPath)
                     existsModelPathList.append(fullpath)
@@ -341,57 +374,103 @@ class LeeVerifier:
 
         return existsModelPathList, missModelPathList
 
-    def __verifyRsm(self, rsmfilepath):
+    def __verifyRsm(self, rsmfilepath, priorityDataDir = None):
         result, texturePathList = self.__parseRsm(rsmfilepath)
         if not result:
-            return None
+            return None, None
 
         missTexturePathList = []
+        existsTexturePathList = []
         leeClientDir = self.leeCommon.getLeeClientDirectory()
 
         for texturePath in texturePathList:
+            if priorityDataDir:
+                fullpath = self.leeCommon.normpath(
+                    '%s/%s/texture/%s' % (leeClientDir, priorityDataDir, texturePath)
+                )
+                # print(fullpath)
+                if self.leeCommon.isFileExists(fullpath):
+                    existsTexturePathList.append(fullpath)
+                    continue
             for textureDir in self.textureDirs:
-                fullpath = self.leeCommon.normpath('%s/%s/%s' % (leeClientDir, textureDir, texturePath))
-                if self.leeCommon.isFileExists(fullpath): break
+                fullpath = self.leeCommon.normpath(
+                    '%s/%s/%s' % (leeClientDir, textureDir, texturePath)
+                )
+                if self.leeCommon.isFileExists(fullpath):
+                    existsTexturePathList.append(fullpath)
+                    break
             else:
                 print(texturePath)
                 missTexturePathList.append(fullpath)
 
-        return missTexturePathList
+        return existsTexturePathList, missTexturePathList
 
-    def __verifyStr(self, strfilepath):
+    def __verifyStr(self, strfilepath, priorityDataDir = None):
         result, texturePathList = self.__parseStr(strfilepath)
         if not result:
-            return None
+            return None, None
+        texturePathList = list(set(texturePathList))    # 文件名消重(str解析出来重复的图档文件名太多)
 
         missTexturePathList = []
-        leeClientDir = self.leeCommon.getLeeClientDirectory()
-        strBaseDirectory = os.path.dirname(strfilepath)
+        existsTexturePathList = []
 
-        # 素材文件的归属位置略有不同, 优先探测 str 所在目录
-        # 这一步保存的 missTexturePathList 只是资源的相对路径, 并非全路径
+        leeClientDir = self.leeCommon.getLeeClientDirectory()[:-1]
+        leeClientCommonDataDir = '%s/data' % leeClientDir
+        isPatchStrFile = leeClientCommonDataDir.lower() not in strfilepath.lower()
+
+        dataPostion = strfilepath.lower().rfind('data/')
+        strfileDirBaseonData = os.path.dirname(strfilepath[dataPostion:])
+
+        if priorityDataDir is not None and priorityDataDir.lower().endswith('/data'):
+            priorityDataDir = priorityDataDir[:-len('/data')]
+
         for texturePath in texturePathList:
-            fullpath = self.leeCommon.normpath('%s/%s' % (strBaseDirectory, texturePath))
-            if self.leeCommon.isFileExists(fullpath): break
-        else:
-            missTexturePathList.append(texturePath)
+            if isPatchStrFile and priorityDataDir is not None:
+                # leeClientDir + priorityDataDir + strfileDirBaseonData + 文件名
+                fullpath = self.leeCommon.normpath('%s/%s/%s/%s' % (
+                    leeClientDir, priorityDataDir, strfileDirBaseonData, texturePath
+                ))
+                if self.leeCommon.isFileExists(fullpath):
+                    existsTexturePathList.append(fullpath)
+                    continue
 
-        # 在 str 所在目录探测失败的再到 data/texture/effect 下找找
-        # 这一步会将 missTexturePathList 中的路径处理成全路径, 而非资源的相对路径
-        for texturePath in missTexturePathList:
-            fullpath = self.leeCommon.normpath('%s/data/texture/effect/%s' % (leeClientDir, texturePath))
+                # leeClientDir + priorityDataDir + self.textureDirs + '/effect' + 文件名
+                isFound = False
+                for textureDir in self.textureDirs:
+                    fullpath = self.leeCommon.normpath('%s/%s/%s/effect/%s' % (
+                        leeClientDir, priorityDataDir, textureDir, texturePath
+                    ))
+                    if self.leeCommon.isFileExists(fullpath):
+                        existsTexturePathList.append(fullpath)
+                        isFound = True
+                        break
+                if isFound:
+                    continue
+
+            # leeClientDir + strfileDirBaseonData + 文件名
+            fullpath = self.leeCommon.normpath('%s/%s/%s' % (
+                leeClientDir, strfileDirBaseonData, texturePath
+            ))
             if self.leeCommon.isFileExists(fullpath):
-                missTexturePathList.remove(texturePath)
-            else:
-                missTexturePathList.remove(texturePath)
+                existsTexturePathList.append(fullpath)
+                continue
+
+            # leeClientDir + self.textureDirs + '/effect'
+            isFound = False
+            for textureDir in self.textureDirs:
+                fullpath = self.leeCommon.normpath('%s/%s/effect/%s' % (
+                    leeClientDir, textureDir, texturePath
+                ))
+                if self.leeCommon.isFileExists(fullpath):
+                    existsTexturePathList.append(fullpath)
+                    isFound = True
+                    break
+            if not isFound:
                 missTexturePathList.append(fullpath)
 
-        # for missTexturePath in missTexturePathList:
-        #     print(missTexturePath)
+        return existsTexturePathList, missTexturePathList
 
-        return missTexturePathList
-
-    def __verifyIteminfo(self, iteminfofilepath):
+    def __verifyIteminfo(self, iteminfofilepath, priorityDataDir = None):
         result, texturePathList, spritePathList = self.__parseIteminfo(iteminfofilepath)
         if not result:
             return None, None
@@ -400,8 +479,17 @@ class LeeVerifier:
 
         missTexturePathList = []
         for texturePath in texturePathList:
+            if priorityDataDir:
+                fullpath = self.leeCommon.normpath(
+                    '%s/%s/texture/%s' % (leeClientDir, priorityDataDir, texturePath)
+                )
+                # print(fullpath)
+                if self.leeCommon.isFileExists(fullpath):
+                    continue
             for textureDir in self.textureDirs:
-                fullpath = self.leeCommon.normpath('%s/%s/%s' % (leeClientDir, textureDir, texturePath))
+                fullpath = self.leeCommon.normpath(
+                    '%s/%s/%s' % (leeClientDir, textureDir, texturePath)
+                )
                 if self.leeCommon.isFileExists(fullpath):
                     break
             else:
@@ -410,8 +498,17 @@ class LeeVerifier:
 
         missSpritePathList = []
         for spritePath in spritePathList:
+            if priorityDataDir:
+                fullpath = self.leeCommon.normpath(
+                    '%s/%s/sprite/%s' % (leeClientDir, priorityDataDir, spritePath)
+                )
+                # print(fullpath)
+                if self.leeCommon.isFileExists(fullpath):
+                    continue
             for spriteDir in self.spriteDirs:
-                fullpath = self.leeCommon.normpath('%s/%s/%s' % (leeClientDir, spriteDir, spritePath))
+                fullpath = self.leeCommon.normpath(
+                    '%s/%s/%s' % (leeClientDir, spriteDir, spritePath)
+                )
                 if self.leeCommon.isFileExists(fullpath):
                     break
             else:
@@ -434,28 +531,43 @@ class LeeVerifier:
         elif mesType.lower() == 'footer':
             # 总结耗时以及写入一些统计信息
             spendTime = timeit.default_timer() - self.reportStartTime
-            resourceInfo = '此项目无任何文件缺失' if self.reportFileCount == 0 else '共有 %d 个文件缺失 %d 个资源' % (
+            resourceInfo = '非常好, 此项目无任何文件缺失!' if self.reportFileCount == 0 else '有 %d 个文件共计缺失 %d 个资源' % (
                 self.reportFileCount, self.reportMissCount
             )
-            self.reportInfo.append('%s / 校验耗时: %.2f 秒' % (resourceInfo, spendTime))
+            self.reportInfo.append('%s / 耗时: %.2f 秒' % (resourceInfo, spendTime))
             self.reportInfo.append('=============================================')
             self.reportInfo.append('')
             self.reportInfo.append('')
 
-    def __appendReportData(self, sourceFile, firstMissFiles, secondMissFiles = None):
-        if len(firstMissFiles) <= 0: return
+    def __appendReportData(self, sourceFile, missFilesList):
         leeClientDir = self.leeCommon.getLeeClientDirectory()
-        missFileCount = len(firstMissFiles) + (0 if secondMissFiles is None else len(secondMissFiles))
+        relSourceFile = os.path.relpath(sourceFile, leeClientDir)
 
-        self.reportInfo.append('>>>> %s (缺失 %d 个文件)' % (os.path.relpath(sourceFile, leeClientDir), missFileCount))
+        missFileCount = 0
+        for fileslist in missFilesList:
+            if not fileslist or not fileslist['files']:
+                continue
+            missFileCount = missFileCount + len(fileslist['files'])
 
-        if firstMissFiles is not None:
-            for missFile in firstMissFiles:
-                self.reportInfo.append('     缺失: %s' % os.path.relpath(missFile, leeClientDir))
+        if not missFileCount:
+            return
 
-        if secondMissFiles is not None:
-            for missFile in secondMissFiles:
-                self.reportInfo.append('     缺失: %s' % os.path.relpath(missFile, leeClientDir))
+        self.reportInfo.append(
+            '>>> %s (缺失 %d 个文件)' % (
+                relSourceFile, missFileCount
+            )
+        )
+
+        for fileslist in missFilesList:
+            if not fileslist:
+                continue
+            for missFile in fileslist['files']:
+                self.reportInfo.append(
+                    '    缺失%s: %s' % (
+                        fileslist['name'],
+                        os.path.relpath(missFile, leeClientDir)
+                    )
+                )
 
         self.reportInfo.append('')
         self.reportFileCount = self.reportFileCount + 1
@@ -473,73 +585,285 @@ class LeeVerifier:
 
         print('校验结果已保存到 : %s' % os.path.relpath(savePath, leeClientDir))
 
-    def runVerifier(self):
-        self.__resetReport()
+    def __getFilesInfo(self, glob_or_re, reWalkDir, pattern, baseDir_or_reGroupID,
+                       baseDir_append = None):
+        filesinfo = []
+
+        if glob_or_re == 'glob':
+            for filepath in glob.glob(pattern):
+                datadir = baseDir_or_reGroupID
+                if baseDir_append:
+                    datadir = datadir + baseDir_append
+                filesinfo.append({
+                    'datadir' : datadir,
+                    'filepath': filepath
+                })
+        elif glob_or_re == 're':
+            pattern = self.leeCommon.normPattern(pattern)
+            for dirpath, _dirnames, filenames in os.walk(reWalkDir):
+                for filename in filenames:
+                    fullpath = os.path.normpath('%s/%s' % (dirpath, filename))
+                    matches = re.match(pattern, fullpath, re.I)
+                    if not matches:
+                        continue
+
+                    datadir = None
+                    if baseDir_or_reGroupID is not None:
+                        datadir = matches.group(baseDir_or_reGroupID)
+                    if datadir and baseDir_append:
+                        datadir = datadir + baseDir_append
+
+                    filesinfo.append({
+                        'datadir' : datadir,
+                        'filepath': fullpath
+                    })
+        else:
+            self.leeCommon.exitWithMessage('指定的 glob_or_re 的值无效, 程序终止')
+
+        return filesinfo
+
+    def __subVerifier(self, filesinfo, parsefunc, subject, returnPathListIndex = None,
+                      reportMissInfo = None):
+
+        if filesinfo is None:
+            return None
+
+        self.__appendReportMessage('header', '%s - 共 %d 个' % (subject, len(filesinfo)))
+        print('正在%s - 共 %d 个' % (subject, len(filesinfo)))
+
+        if filesinfo and not isinstance(filesinfo[0], dict):
+            restructFilesinfo = []
+            for filepath in filesinfo:
+                restructFilesinfo.append({
+                    'filepath' : filepath,
+                    'datadir' : None
+                })
+            filesinfo = restructFilesinfo
+
+        for fileinfo in filesinfo:
+            filepath = fileinfo['filepath']
+            datadir = fileinfo['datadir']
+            parsefuncResult = parsefunc(filepath, datadir)
+
+            if not reportMissInfo:
+                continue
+
+            needReportFilelist = []
+            for missinfo in reportMissInfo:
+                needReportFilelist.append({
+                    'name' : missinfo['name'],
+                    'files' : parsefuncResult[missinfo['resultIndex']]
+                })
+
+            self.__appendReportData(filepath, needReportFilelist)
+        self.__appendReportMessage('footer', '')
+
+        if returnPathListIndex is None:
+            return None
+        return parsefuncResult[returnPathListIndex]
+
+    def __globalResourceVerifier(self):
         leeClientDir = self.leeCommon.getLeeClientDirectory()
 
-        # 校验地图基础文件的 gnd 文件（地表纹理）
-        gndfiles = glob.glob('%s/data/*.gnd' % leeClientDir)
-        self.__appendReportMessage('header', '校验 gnd 地图文件共 %d 个' % len(gndfiles))
-        print('正在校验 gnd 地图文件共 %d 个' % len(gndfiles))
-        for gndfile in gndfiles:
-            _missTexturePathList = self.__verifyGnd(gndfile)
-            self.__appendReportData(gndfile, _missTexturePathList)
-        self.__appendReportMessage('footer', '')
+        # 校验公用目录中地图文件所需的图档文件
+        # =====================================================================
 
-        # 校验地图基础文件的 rsw 文件（模型层）
-        rswfiles = glob.glob('%s/data/*.rsw' % leeClientDir)
-        self.__appendReportMessage('header', '校验 rsw 地图文件共 %d 个' % len(rswfiles))
-        print('正在校验 rsw 地图文件共 %d 个' % len(rswfiles))
-        validModelPathList = []
-        for rswfile in rswfiles:
-            _existsModelPathList, _missModelPathList = self.__verifyRsw(rswfile)
-            self.__appendReportData(rswfile, _missModelPathList)
-            validModelPathList.extend(_existsModelPathList)
-        self.__appendReportMessage('footer', '')
+        # 校验地图的 gnd 文件（纹理层）
 
-        # 校验地图中有效的 rsm 模型文件的贴图
-        # 这里的 validModelPathList 存储的是有效的全路径
-        self.__appendReportMessage('header', '校验 rsm 模型文件共 %d 个' % len(validModelPathList))
-        print('正在校验 rsm 模型文件共 %d 个' % len(validModelPathList))
-        for modelpath in validModelPathList:
-            _missTexturePathList = self.__verifyRsm(modelpath)
-            self.__appendReportData(modelpath, _missTexturePathList)
-        self.__appendReportMessage('footer', '')
+        self.__subVerifier(
+            filesinfo = self.__getFilesInfo(
+                glob_or_re = 'glob',
+                reWalkDir = None,
+                pattern = '%s/data/*.gnd' % leeClientDir,
+                baseDir_or_reGroupID = None,
+                baseDir_append = None
+            ),
+            parsefunc = self.__verifyGnd,
+            subject = '校验通用资源目录中的 gnd 文件',
+            returnPathListIndex = None,
+            reportMissInfo = [
+                { 'name' : '地表贴图', 'resultIndex' : 1 }
+            ]
+        )
 
-        # 校验动画效果索引文件 str 中所需的贴图
-        strFilepathList = []
-        for dirpath, _dirnames, filenames in os.walk(('%s/data' % leeClientDir)):
-            for filename in filenames:
-                fullpath = os.path.join(dirpath, filename)
-                if fullpath.lower().endswith('.str'):
-                    strFilepathList.append(fullpath)
+        # 校验地图的 rsw 文件（模型层）
 
-        self.__appendReportMessage('header', '校验 str 动画描述文件共 %d 个' % len(strFilepathList))
-        print('正在校验 str 动画描述文件共 %d 个' % len(strFilepathList))
-        for strfilepath in strFilepathList:
-            _missTexturePathList = self.__verifyStr(strfilepath)
-            self.__appendReportData(strfilepath, _missTexturePathList)
-        self.__appendReportMessage('footer', '')
+        self.__subVerifier(
+            filesinfo = self.__getFilesInfo(
+                glob_or_re = 'glob',
+                reWalkDir = None,
+                pattern = '%s/data/*.rsw' % leeClientDir,
+                baseDir_or_reGroupID = None,
+                baseDir_append = None
+            ),
+            parsefunc = self.__verifyRsw,
+            subject = '校验通用资源目录中的 rsw 文件',
+            returnPathListIndex = None,
+            reportMissInfo = [
+                { 'name' : 'RSM模型文件', 'resultIndex' : 1 }
+            ]
+        )
 
-        # 校验 Iteminfo 文件中所需的贴图
+        # 校验地图中 rsm 模型文件的贴图
+
+        self.__subVerifier(
+            filesinfo = self.__getFilesInfo(
+                glob_or_re = 'glob',
+                reWalkDir = None,
+                pattern = '%s/data/*.rsm' % leeClientDir,
+                baseDir_or_reGroupID = None,
+                baseDir_append = None
+            ),
+            parsefunc = self.__verifyRsm,
+            subject = '校验通用资源目录中的 rsm 模型的贴图文件',
+            returnPathListIndex = None,
+            reportMissInfo = [
+                { 'name' : 'RSM模型文件的贴图文件', 'resultIndex' : 1 }
+            ]
+        )
+
+        # 校验公用目录中动画效果索引文件 str 中所需的贴图
+        # =====================================================================
+
+        self.__subVerifier(
+            filesinfo = self.__getFilesInfo(
+                glob_or_re = 're',
+                reWalkDir = '%s/data' % leeClientDir,
+                pattern = r'^.*?/data/.*?\.(str)',
+                baseDir_or_reGroupID = None,
+                baseDir_append = None
+            ),
+            parsefunc = self.__verifyStr,
+            subject = '校验通用资源目录中 str 文档所需的贴图文件',
+            returnPathListIndex = None,
+            reportMissInfo = [
+                { 'name' : '动画索引贴图文件', 'resultIndex' : 1 }
+            ]
+        )
+
+        # 校验各个补丁目录中 Iteminfo 文件中所需的贴图
+        # =====================================================================
+
+        self.__subVerifier(
+            filesinfo = self.__getFilesInfo(
+                glob_or_re = 're',
+                reWalkDir = '%s/System' % leeClientDir,
+                pattern = r'^.*?/iteminfo.*?\.(lua|lub)',
+                baseDir_or_reGroupID = None,
+                baseDir_append = None
+            ),
+            parsefunc = self.__verifyIteminfo,
+            subject = '校验通用资源目录中的 iteminfo 道具描述文件',
+            returnPathListIndex = None,
+            reportMissInfo = [
+                { 'name' : '道具图片', 'resultIndex' : 0 },
+                { 'name' : '掉落和拖动时的图档', 'resultIndex' : 1 }
+            ]
+        )
+
+    def __patchesResourceVerifier(self):
         scriptDir = self.leeCommon.getScriptDirectory()
         patchesDir = os.path.normpath('%s/Patches/' % scriptDir)
-        rePathPattern = self.leeCommon.normPattern(r'^.*?/Patches/.*?/Resource/Original/System/iteminfo.*?\.(lua|lub)')
 
-        iteminfoFilepathList = []
-        for dirpath, _dirnames, filenames in os.walk(patchesDir):
-            for filename in filenames:
-                fullpath = os.path.normpath('%s/%s' % (dirpath, filename))
-                if not (filename.lower().startswith('iteminfo')): continue
-                if not re.match(rePathPattern, fullpath, re.I): continue
-                iteminfoFilepathList.append(fullpath)
+        # 校验各个补丁目录中地图文件所需的图档文件
+        # =====================================================================
 
-        self.__appendReportMessage('header', '校验 Iteminfo 道具描述文件共 %d 个' % len(iteminfoFilepathList))
-        print('正在校验 Iteminfo 道具描述文件共 %d 个' % len(iteminfoFilepathList))
-        for iteminfofilepath in iteminfoFilepathList:
-            _missTexturePathList, _missSpritePathList = self.__verifyIteminfo(iteminfofilepath)
-            self.__appendReportData(iteminfofilepath, _missTexturePathList, _missSpritePathList)
-        self.__appendReportMessage('footer', '')
+        # 校验地图的 gnd 文件（纹理层）
 
-        # TODO: 未来可能还有更多的数据校验...
+        self.__subVerifier(
+            filesinfo = self.__getFilesInfo(
+                glob_or_re = 're',
+                reWalkDir = patchesDir,
+                pattern = r'^.*?/(Utility/Patches/.*?/Resource/Original/data)/.*?\.(gnd)',
+                baseDir_or_reGroupID = 1,
+                baseDir_append = None
+            ),
+            parsefunc = self.__verifyGnd,
+            subject = '校验各补丁目录中的 gnd 文件',
+            returnPathListIndex = None,
+            reportMissInfo = [
+                { 'name' : '地表贴图', 'resultIndex' : 1 }
+            ]
+        )
+
+        # 校验地图的 rsw 文件（模型层）
+
+        self.__subVerifier(
+            filesinfo = self.__getFilesInfo(
+                glob_or_re = 're',
+                reWalkDir = patchesDir,
+                pattern = r'^.*?/(Utility/Patches/.*?/Resource/Original/data)/.*?\.(rsw)',
+                baseDir_or_reGroupID = 1,
+                baseDir_append = None
+            ),
+            parsefunc = self.__verifyRsw,
+            subject = '校验各补丁目录中的 rsw 文件',
+            returnPathListIndex = None,
+            reportMissInfo = [
+                { 'name' : 'RSM模型文件', 'resultIndex' : 1 }
+            ]
+        )
+
+        # 校验地图中 rsm 模型文件的贴图
+
+        self.__subVerifier(
+            filesinfo = self.__getFilesInfo(
+                glob_or_re = 're',
+                reWalkDir = patchesDir,
+                pattern = r'^.*?/(Utility/Patches/.*?/Resource/Original/data)/.*?\.(rsm)',
+                baseDir_or_reGroupID = 1,
+                baseDir_append = None
+            ),
+            parsefunc = self.__verifyRsm,
+            subject = '校验各补丁目录中的 rsm 模型的贴图文件',
+            returnPathListIndex = None,
+            reportMissInfo = [
+                { 'name' : 'RSM模型文件的贴图文件', 'resultIndex' : 1 }
+            ]
+        )
+
+        # 校验各个补丁目录中动画效果索引文件 str 中所需的贴图
+        # =====================================================================
+
+        self.__subVerifier(
+            filesinfo = self.__getFilesInfo(
+                glob_or_re = 're',
+                reWalkDir = patchesDir,
+                pattern = r'^.*?/(Utility/Patches/.*?/Resource/Original/data)/.*?\.(str)',
+                baseDir_or_reGroupID = 1,
+                baseDir_append = None
+            ),
+            parsefunc = self.__verifyStr,
+            subject = '校验各补丁目录中 str 文档所需的贴图文件',
+            returnPathListIndex = None,
+            reportMissInfo = [
+                { 'name' : '动画索引贴图文件', 'resultIndex' : 1 }
+            ]
+        )
+
+        # 校验各个补丁目录中 Iteminfo 文件中所需的贴图
+        # =====================================================================
+
+        self.__subVerifier(
+            filesinfo = self.__getFilesInfo(
+                glob_or_re = 're',
+                reWalkDir = patchesDir,
+                pattern = r'^.*?/(Utility/Patches/.*?/Resource/Original)/System/' +
+                r'iteminfo.*?\.(lua|lub)',
+                baseDir_or_reGroupID = 1,
+                baseDir_append = '/data'
+            ),
+            parsefunc = self.__verifyIteminfo,
+            subject = '校验各补丁目录中的 iteminfo 道具描述文件',
+            returnPathListIndex = None,
+            reportMissInfo = [
+                { 'name' : '道具图片', 'resultIndex' : 0 },
+                { 'name' : '掉落和拖动时的图档', 'resultIndex' : 1 }
+            ]
+        )
+
+    def runVerifier(self):
+        self.__resetReport()
+        self.__globalResourceVerifier()
+        self.__patchesResourceVerifier()
         self.__saveReport()
