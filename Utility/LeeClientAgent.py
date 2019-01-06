@@ -10,11 +10,6 @@ from PyLibs import (LeeButtonTranslator, LeeCommon, LeeConstant, LeeGrf,
                     LeeSkillinfolistTranslator, LeeTowninfoTranslator,
                     LeeVerifier)
 
-# pip3 install pygame -i https://pypi.douban.com/simple --trusted-host=pypi.douban.com
-# pip3 install pillow -i https://pypi.douban.com/simple --trusted-host=pypi.douban.com
-# pip3 install lupa -i https://pypi.douban.com/simple --trusted-host=pypi.douban.com
-# pip3 install pyyaml -i https://pypi.douban.com/simple --trusted-host=pypi.douban.com
-
 LeeConstant().Environment = 'develop'
 LeeConstant().EncodingForSaveFile = 'utf-8'
 
