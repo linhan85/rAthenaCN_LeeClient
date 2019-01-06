@@ -400,7 +400,7 @@ class LeeVerifier:
                     existsTexturePathList.append(fullpath)
                     break
             else:
-                print(texturePath)
+                # print(texturePath)
                 missTexturePathList.append(fullpath)
 
         return existsTexturePathList, missTexturePathList
@@ -708,9 +708,9 @@ class LeeVerifier:
 
         self.__subVerifier(
             filesinfo = self.__getFilesInfo(
-                glob_or_re = 'glob',
-                reWalkDir = None,
-                pattern = '%s/data/*.rsm' % leeClientDir,
+                glob_or_re = 're',
+                reWalkDir = '%s/data' % leeClientDir,
+                pattern = r'^.*?/data/.*?\.(rsm)',
                 baseDir_or_reGroupID = None,
                 baseDir_append = None
             ),
