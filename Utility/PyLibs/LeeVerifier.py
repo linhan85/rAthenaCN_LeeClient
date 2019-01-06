@@ -218,30 +218,36 @@ class LeeVerifier:
             result: Boolean 执行成功与否
             texturePathList: List 保存着贴图文件路径的数组, 相对于 data/texture/ 目录
         '''
-        if not self.leeCommon.isFileExists(rsmfilepath):
-            print("读取 Rsm 文件失败, 文件不存在: %s" % rsmfilepath)
-            return False, []
-
-        rsmfile = open(rsmfilepath, "rb")
-        rsmfile.seek(len(b'GRSM')) # Magic Bytes
-        fmtMajor, fmtMinor, _Version = self.__readFormatVersionInfo(rsmfile)
 
         def isCompatible(major, minor):
             return (
                 fmtMajor > major or (fmtMajor == major and fmtMinor >= minor)
             )
 
-        _AnimationLength, _ShadeType = struct.unpack("2I", rsmfile.read(struct.calcsize("2I")))
-        _Alpha = 0 if not isCompatible(1, 4) else struct.unpack("1b", rsmfile.read(struct.calcsize("1b")))[0]
-        _unknow = struct.unpack("16s", rsmfile.read(struct.calcsize("16s")))[0]
-        textureCount = struct.unpack("1I", rsmfile.read(struct.calcsize("1I")))[0]
+        try:
+            if not self.leeCommon.isFileExists(rsmfilepath):
+                print("读取 Rsm 文件失败, 文件不存在: %s" % rsmfilepath)
+                return False, []
 
-        texturePathList = []
-        for _i in range(textureCount):
-            texturePath = self.__bytesToString(struct.unpack("40s", rsmfile.read(struct.calcsize("40s")))[0])
-            texturePathList.append(texturePath)
+            rsmfile = open(rsmfilepath, "rb")
+            rsmfile.seek(len(b'GRSM')) # Magic Bytes
+            fmtMajor, fmtMinor, _Version = self.__readFormatVersionInfo(rsmfile)
 
-        rsmfile.close()
+            _AnimationLength, _ShadeType = struct.unpack("2I", rsmfile.read(struct.calcsize("2I")))
+            _Alpha = 0 if not isCompatible(1, 4) else struct.unpack("1b", rsmfile.read(struct.calcsize("1b")))[0]
+            _unknow = struct.unpack("16s", rsmfile.read(struct.calcsize("16s")))[0]
+            textureCount = struct.unpack("1I", rsmfile.read(struct.calcsize("1I")))[0]
+
+            texturePathList = []
+            for _i in range(textureCount):
+                texturePath = self.__bytesToString(struct.unpack("40s", rsmfile.read(struct.calcsize("40s")))[0])
+                texturePathList.append(texturePath)
+
+            rsmfile.close()
+        except Exception as _err:
+            print('处理 rsm 文件时出错了: %s' % rsmfilepath)
+            raise
+
         return True, texturePathList
 
     def __parseStr(self, strfilepath):
